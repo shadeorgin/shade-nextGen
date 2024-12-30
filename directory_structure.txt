@@ -1,0 +1,33 @@
+SHaDE/
+├── assets/
+│   ├── css/
+│   │   └── bootstrap.min.css
+│   ├── js/
+│   │   └── bootstrap.js
+│   └── images/
+│       ├── charity1.jpg
+│       ├── charity2.jpg
+│       └── charity3.jpg
+├── includes/
+│   ├── header.php
+│   └── footer.php
+├── pages/
+│   ├── about.php
+│   ├── contact.php
+│   ├── login.php
+│   ├── register.php
+│   └── reports.php
+└── index.php
+
+Permissions and ownership should be:
+drwxr-xr-x  assets/
+drwxr-xr-x  includes/
+drwxr-xr-x  pages/
+-rw-r--r--  index.php
+-rw-r--r--  includes/header.php
+-rw-r--r--  includes/footer.php
+-rw-r--r--  pages/*.php
+-rw-r--r--  assets/css/bootstrap.min.css
+-rw-r--r--  assets/js/bootstrap.js
+-rw-r--r--  assets/images/*.jpg
+
