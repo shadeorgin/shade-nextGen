@@ -3,8 +3,8 @@
 <!-- Hero Section -->
 <div class="container-fluid bg-success bg-gradient text-white py-5">
     <div class="container py-5">
-        <h1 class="display-4 fw-bold">Welcome to SHaDE-nextGen</h1>
-        <p class="col-md-8 fs-4">Empowering communities through sustainable development and environmental conservation.</p>
+        <h1 class="display-4 fw-bold">Welcome to SHaDE <small class="fs-6 d-block text-light">(Share, Help and ADorE)</small></h1>
+        <p class="col-md-8 fs-4">Empowering lives since 2008 through charitable initiatives, educational support, and disaster relief. Based in Tamil Nadu, serving humanity across India.</p>
         <a class="btn btn-light btn-lg" href="#learn-more">Learn More</a>
     </div>
 </div>
@@ -18,24 +18,24 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="assets/images/slide1.jpg" class="d-block w-100" alt="Community Projects">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Community Projects</h5>
-                <p>Supporting local initiatives for sustainable development.</p>
+            <img src="assets/images/food-aid.jpg" class="d-block w-100" alt="SHaDE volunteers providing food and medical assistance to those in need">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                <h5>Food & Medical Aid</h5>
+                <p>Providing essential support to individuals and organizations across Tamil Nadu since 2008.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="assets/images/slide2.jpg" class="d-block w-100" alt="Environmental Conservation">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Environmental Conservation</h5>
-                <p>Protecting our planet for future generations.</p>
+            <img src="assets/images/education.jpg" class="d-block w-100" alt="SHaDE Sponsored Students program empowering education">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                <h5>SHaDE Sponsored Students (SSS)</h5>
+                <p>Transforming lives through education since 2011, supporting students across multiple states.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="assets/images/slide3.jpg" class="d-block w-100" alt="Education Programs">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>Education Programs</h5>
-                <p>Empowering through knowledge and skills.</p>
+            <img src="assets/images/disaster-relief.jpg" class="d-block w-100" alt="SHaDE emergency response team providing disaster relief">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                <h5>Emergency Relief</h5>
+                <p>Swift response to floods, COVID-19, and other emergencies, working with local NGO partners.</p>
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@
     <div class="row">
         <div class="col-lg-8 mx-auto">
             <h2 class="text-center mb-4">Our Mission</h2>
-            <p class="lead text-center">To promote sustainable development and environmental conservation through community engagement, education, and innovative solutions.</p>
+            <p class="lead text-center">To uplift lives through charitable initiatives, with focus on food & medical aid, education support, and disaster relief. Operating from Tamil Nadu, we collaborate with local NGOs to create lasting positive impact across India.</p>
         </div>
     </div>
 </div>
@@ -62,27 +62,35 @@
 <!-- Featured Content -->
 <div class="container my-5">
     <div class="row g-4">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 border-success">
                 <div class="card-body">
-                    <h5 class="card-title">Sustainable Development</h5>
-                    <p class="card-text">Supporting initiatives that promote environmental, social, and economic sustainability in communities.</p>
+                    <h5 class="card-title">Food & Medical Aid</h5>
+                    <p class="card-text">Supporting individuals and organizations with essential needs since our inception in 2008.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 border-success">
                 <div class="card-body">
-                    <h5 class="card-title">Community Engagement</h5>
-                    <p class="card-text">Building strong partnerships with local communities to create lasting positive impact.</p>
+                    <h5 class="card-title">Education Support (SSS)</h5>
+                    <p class="card-text">Our SHaDE Sponsored Students program has been transforming lives through education since 2011.</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="card h-100 border-success">
                 <div class="card-body">
-                    <h5 class="card-title">Innovation Hub</h5>
-                    <p class="card-text">Developing creative solutions to address environmental and social challenges.</p>
+                    <h5 class="card-title">Disaster Relief</h5>
+                    <p class="card-text">Providing emergency support during floods, COVID-19, and other natural calamities.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card h-100 border-success">
+                <div class="card-body">
+                    <h5 class="card-title">NGO Collaborations</h5>
+                    <p class="card-text">Working hand in hand with Indian NGOs to amplify our impact and reach.</p>
                 </div>
             </div>
         </div>

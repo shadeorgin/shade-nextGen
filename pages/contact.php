@@ -2,7 +2,7 @@
 
 <div class="container my-5">
     <h1 class="text-center mb-5">Contact Us</h1>
-    
+
     <div class="row">
         <!-- Contact Form -->
         <div class="col-lg-6 mb-4">
@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Contact Information -->
         <div class="col-lg-6">
             <div class="card border-success mb-4">
@@ -57,26 +57,26 @@
                         <i class="bi bi-geo-alt-fill text-success me-3 fs-4"></i>
                         <div>
                             <h6 class="mb-1">Address</h6>
-                            <p class="mb-0">123 Eco Street, Green City<br>Environment State, 12345</p>
+                            <p class="mb-0">Chennai, Tamilnadu, India</p>
                         </div>
                     </div>
                     <div class="d-flex mb-3">
                         <i class="bi bi-telephone-fill text-success me-3 fs-4"></i>
                         <div>
                             <h6 class="mb-1">Phone</h6>
-                            <p class="mb-0">(123) 456-7890</p>
+                            <p class="mb-0">+91 80952 61616</p>
                         </div>
                     </div>
                     <div class="d-flex mb-3">
                         <i class="bi bi-envelope-fill text-success me-3 fs-4"></i>
                         <div>
                             <h6 class="mb-1">Email</h6>
-                            <p class="mb-0">info@shade-nextgen.org</p>
+                            <p class="mb-0">shadedotteam@gmail.com</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Map Section -->
             <div class="card border-success mb-4">
                 <div class="card-header bg-success text-white">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Social Media Links -->
             <div class="card border-success">
                 <div class="card-header bg-success text-white">
@@ -97,9 +97,9 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-around">
-                        <a href="#" class="text-success fs-3"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="text-success fs-3"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="text-success fs-3"><i class="bi bi-linkedin"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100080343721975" class="text-success fs-3"><i class="bi bi-facebook"></i></a>
+                        <a href="https://x.com/shadegroup" class="text-success fs-3"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/shadedotorgdotin/" class="text-success fs-3"><i class="bi bi-linkedin"></i></a>
                         <a href="#" class="text-success fs-3"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
@@ -127,4 +127,3 @@
 </script>
 
 <?php require_once '../includes/footer.php'; ?>
-

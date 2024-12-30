@@ -6,7 +6,7 @@ trap 'echo "Error occurred at line $LINENO. Exit code: $?" >&2' ERR
 
 # Create necessary directories
 echo "Creating directories..."
-mkdir -p assets/{css,js,images}
+mkdir -p assets/{css,js,images,fonts}
 
 # Function to download file with error handling
 download_file() {
@@ -29,19 +29,27 @@ download_file "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.m
 download_file "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" \
             "assets/js/bootstrap.bundle.min.js"
 
-# Download Bootstrap Icons CSS
-download_file "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" \
+# Download Bootstrap Icons CSS and fonts
+BOOTSTRAP_ICONS_VERSION="1.11.1"
+download_file "https://cdn.jsdelivr.net/npm/bootstrap-icons@${BOOTSTRAP_ICONS_VERSION}/font/bootstrap-icons.css" \
             "assets/css/bootstrap-icons.css"
 
-# Download placeholder images for carousel
-echo "Downloading placeholder images..."
-for i in {1..3}; do
-    download_file "https://placehold.co/1200x400/198754/FFFFFF/png/text=Slide+$i" \
-                "assets/images/slide$i.jpg"
-done
+# Download Bootstrap Icons fonts
+download_file "https://cdn.jsdelivr.net/npm/bootstrap-icons@${BOOTSTRAP_ICONS_VERSION}/font/fonts/bootstrap-icons.woff" \
+            "assets/fonts/bootstrap-icons.woff"
+download_file "https://cdn.jsdelivr.net/npm/bootstrap-icons@${BOOTSTRAP_ICONS_VERSION}/font/fonts/bootstrap-icons.woff2" \
+            "assets/fonts/bootstrap-icons.woff2"
+
+# Download meaningful images for carousel
+echo "Downloading carousel images..."
+download_file "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c" \
+            "assets/images/food-aid.jpg"
+download_file "https://images.unsplash.com/photo-1503676260728-1c00da094a0b" \
+            "assets/images/education.jpg"
+download_file "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b" \
+            "assets/images/disaster-relief.jpg"
 
 echo "All assets downloaded and created successfully!"
 
 # Make the downloaded files readable
-chmod 644 assets/css/* assets/js/* assets/images/*
-
+chmod 644 assets/css/* assets/js/* assets/images/* assets/fonts/*

@@ -12,10 +12,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Maintained consistent green theme
     - Improved responsive behavior
     - Better user experience on all page lengths
-- Modified body structure for flexible content layout
+    - Integrated social media icons (Facebook, Twitter, Instagram)
+- Modified body structure for flexible content layout:
     - Added flex column display
     - Set minimum viewport height
     - Better content distribution
+- Updated organization branding:
+    - Changed name from SHaDE-nextGen to SHaDE
+    - Added full form: Share, Help and ADorE
+    - Updated all references for consistency
 - Added toast notification system:
     - Work-in-progress status indicator
     - Auto-show on page load
@@ -25,7 +30,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Added informative tooltips for Login/Register links
     - Clear user feedback about upcoming functionality
     - Improved user experience with status indicators
+### UI/UX Updates
+- Enhanced visual content:
+    - Added meaningful charity and education images to carousel
+    - Improved carousel captions with semi-transparent backgrounds
+    - Added detailed alt text for accessibility
+    - Updated image descriptions to reflect actual initiatives
 
+### Technical Details
+- Added Unsplash images for authentic representation
+- Updated download script for specific images
+- Enhanced carousel caption styling
+- Improved image naming convention
 ### Added
 - Initial project setup with Bootstrap integration
 - Directory structure:
@@ -64,10 +80,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CHANGELOG.md` - Project history
 - `LICENSE` - Project license
 
+### Organization Updates
+- Added actual team member information:
+    - Leadership roles and responsibilities
+    - Technical team composition
+    - Administrative team members
+- Updated organizational history and facts:
+    - Founded in 2008
+    - 200+ current members
+    - Tamil Nadu-based operations
+    - Multi-state beneficiary coverage
+    - Partnerships with Indian NGOs
+    - International funding sources
+
 ### Technical Details
 - Bootstrap 5 integration
 - PHP 7+ compatibility
-- Local asset management
+- Local asset management:
+    - Added Bootstrap Icons local setup
+    - Configured font files and CSS
+    - Optimized asset loading
 - Modular PHP structure with includes
 - Form validation implementation
 - Responsive design principles
