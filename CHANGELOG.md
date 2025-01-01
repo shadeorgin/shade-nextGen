@@ -4,8 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-12-31
+## [1.0.1] - 2025-01-01
 
+### Reports Module
+- Added Appeal Summary report functionality:
+    - Year-wise filtering for appeal data
+    - Transaction matching analysis
+    - Status-wise appeal summaries
+    - Appeals without transactions tracking
+- Implemented database infrastructure:
+    - Singleton Database connection class
+    - Secure configuration management
+    - Query execution utilities
+- Enhanced reports organization:
+    - Centralized reports landing page
+    - Modular report components
+    - Consistent styling across reports
+    - Analytics dashboard integration
+
+## [1.0.0] - 2024-12-31
 ### UI/UX Updates
 - Enhanced footer implementation:
     - Added sticky footer functionality
