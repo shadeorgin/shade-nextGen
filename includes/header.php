@@ -45,7 +45,25 @@
         .navbar-custom .nav-link:hover {
             color: rgba(255,255,255,0.8);
         }
-    </style>
+    .social-icon {
+        color: white;
+        font-size: 1.5rem;
+        margin: 0 10px;
+        transition: all 0.3s ease;
+    }
+    .social-icon:hover {
+        transform: scale(1.2);
+    }
+    .social-icon.facebook:hover {
+        color: #1877f2;
+    }
+    .social-icon.twitter:hover {
+        color: #1da1f2;
+    }
+    .social-icon.instagram:hover {
+        color: #e4405f;
+    }
+</style>
 </head>
 <body class="d-flex flex-column min-vh-100">
     <div class="toast-container">
@@ -75,7 +93,7 @@
                         <a class="nav-link" href="/pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pages/reports.php">Reports</a>
+                        <a class="nav-link" href="/reports/">Reports</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/pages/login.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Login</a>

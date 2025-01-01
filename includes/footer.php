@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6">
-                <p class="text-white mb-0">&copy; 2024 SHaDE. All rights reserved.</p>
+                <p class="text-white mb-0">&copy; 2008-2025 SHaDE. All rights reserved.</p>
             </div>
             <div class="col-md-6 d-flex justify-content-end align-items-center">
                 <p class="text-white mb-0 me-3">Created with <i class="bi bi-heart-fill text-danger"></i> for a better future</p>

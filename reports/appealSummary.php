@@ -1,0 +1,173 @@
+<?php
+require_once('../includes/header.php');
+require_once('../includes/Database.php');
+require_once('./includes/report_utilities.php');
+
+// Get selected year or default to previous year
+$selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
+
+// Initialize error message
+$error = '';
+
+try {
+    // Initialize database connection
+    $db = Database::getInstance();
+
+    // Query 1: Total TblAppealInfo matching with Transactions
+    $query1 = "SELECT
+        COUNT(DISTINCT a.id) as total_TblAppealInfo,
+        COALESCE(SUM(t.amount), 0) as total_amount
+    FROM TblAppealInfo a
+    JOIN TblTxDetails t ON a.id = t.appealid
+    WHERE YEAR(t.created_date) = :year";
+
+    $totalSummary = $db->queryOne($query1, ['year' => $selectedYear]);
+
+    // Query 2: Statuswise TblAppealInfo matching with Transactions
+    $query2 = "SELECT
+        a.status,
+        COUNT(DISTINCT a.id) as appeal_count,
+        COALESCE(SUM(t.amount), 0) as total_amount
+    FROM TblAppealInfo a
+    JOIN TblTxDetails t ON a.id = t.appealid
+    WHERE YEAR(t.created_date) = :year
+    GROUP BY a.status";
+
+    $statusSummary = $db->queryAll($query2, ['year' => $selectedYear]);
+
+    // Query 3: TblAppealInfo without Transactions
+    $query3 = "SELECT
+        a.id,
+        a.name,
+        a.status,
+        a.created_date
+    FROM TblAppealInfo a
+    LEFT JOIN TblTxDetails t ON a.id = t.appealid
+    WHERE t.TxId IS NULL
+    AND YEAR(a.created_date) = :year";
+
+    $noTransactions = $db->queryAll($query3, ['year' => $selectedYear]);
+
+} catch (Exception $e) {
+    $error = "Database error: " . $e->getMessage();
+}
+?>
+
+<div class="container mt-4">
+    <!-- Back Button -->
+    <a href="index.php" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Back to Reports
+    </a>
+
+    <h1 class="mb-4">Appeal Summary Report</h1>
+
+    <!-- Year Selection Form -->
+    <form method="GET" class="mb-4">
+        <div class="row align-items-end">
+            <div class="col-auto">
+                <label for="year" class="form-label">Select Year:</label>
+                <select name="year" id="year" class="form-select" onchange="this.form.submit()">
+                    <?php foreach (getYearRange() as $year): ?>
+                        <?php $selected = ($year == $selectedYear) ? 'selected' : ''; ?>
+                        <option value="<?php echo $year; ?>" <?php echo $selected; ?>><?php echo $year; ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+    </form>
+
+    <?php if ($error): ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo htmlspecialchars($error); ?>
+        </div>
+    <?php else: ?>
+
+        <!-- Total TblAppealInfo Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Total TblAppealInfo Summary</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Total TblAppealInfo</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo number_format($totalSummary['total_TblAppealInfo'] ?? 0); ?></td>
+                            <td>₹<?php echo formatIndianCurrency(floatval($totalSummary['total_amount'] ?? 0)); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Status-wise TblAppealInfo Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Status-wise TblAppealInfo Summary</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Status</th>
+                            <th>Number of TblAppealInfo</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($statusSummary as $status): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($status['status'] ?? ''); ?></td>
+                            <td><?php echo number_format($status['appeal_count'] ?? 0); ?></td>
+                            <td>₹<?php echo formatIndianCurrency(floatval($status['total_amount'] ?? 0)); ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TblAppealInfo Without Transactions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">TblAppealInfo Without Transactions</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Appeal ID</th>
+                            <th>Appeal Name</th>
+                            <th>Status</th>
+                            <th>Created Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (count($noTransactions) > 0): ?>
+                            <?php foreach ($noTransactions as $appeal): ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($appeal['id'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($appeal['name'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($appeal['status'] ?? ''); ?></td>
+                                <td><?php echo !empty($appeal['created_date']) ? date('Y-m-d', strtotime($appeal['created_date'])) : ''; ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="text-center">No TblAppealInfo without transactions found</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <?php endif; ?>
+</div>
+
+<?php require_once('../includes/footer.php'); ?>
