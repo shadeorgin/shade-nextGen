@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHaDE</title>
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/bootstrap-icons.css">
+    <link rel="stylesheet" href="<?php echo getBaseUrl(); ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo getBaseUrl(); ?>assets/css/bootstrap-icons.css">
     <style>
         @font-face {
             font-family: "bootstrap-icons";
-            src: url("/assets/fonts/bootstrap-icons.woff2") format("woff2");
+            src: url("<?php echo getBaseUrl(); ?>assets/fonts/bootstrap-icons.woff2") format("woff2");
             font-weight: normal;
             font-style: normal;
         }
@@ -80,32 +80,32 @@
     </div>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="/">SHaDE</a>
+            <a class="navbar-brand" href="<?php echo getBaseUrl(); ?>">SHaDE</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/pages/about.php">About</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/about.php">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/reports/">Reports</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>analytics/">Reports</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pages/login.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Login</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/login.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/pages/register.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Register</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/register.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Register</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-    <script src="/assets/js/bootstrap.js"></script>
+    <script src="<?php echo getBaseUrl(); ?>assets/js/bootstrap.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips

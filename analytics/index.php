@@ -1,5 +1,5 @@
 <?php
-include('../includes/header.php');
+require_once('../includes/init.php');
 ?>
 
 <div class="container mt-4">
@@ -22,7 +22,7 @@ include('../includes/header.php');
                     </p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="/reports/appealSummary.php" class="btn btn-primary">View Report</a>
+                    <a href="<?php echo getBaseUrl(); ?>analytics/appealSummary.php" class="btn btn-primary">View Report</a>
                 </div>
             </div>
         </div>
@@ -48,4 +48,4 @@ include('../includes/header.php');
     </div>
 </div>
 
-<?php include('../includes/footer.php'); ?>
+<?php require_once('../includes/footer.php'); ?>

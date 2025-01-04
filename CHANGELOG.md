@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2025-01-04
+
+### URL Structure Updates
+- Renamed 'reports' directory to 'analytics' to avoid path duplication in production
+- Updated all references and links to use new directory structure
+- Improved URL structure for better organization
+
+### Environment Configuration
+- Added environment-based URL configuration:
+    - Automatic BASE_URL switching between local and production
+    - IS_PRODUCTION flag in config.php
+    - Unified path handling across environments
+- Updated all file paths to use getBaseUrl() function
+- Fixed base URL issues when serving under /reports/ subdirectory
+- Maintained separate reports views:
+    - Main reports dashboard in /reports/
+    - General reports view in /pages/reports.php
 ## [1.0.1] - 2025-01-01
 
 ### Reports Module

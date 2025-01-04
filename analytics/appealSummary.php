@@ -1,6 +1,5 @@
 <?php
-require_once('../includes/header.php');
-require_once('../includes/Database.php');
+require_once('../includes/init.php');
 require_once('./includes/report_utilities.php');
 
 // Get selected year or default to previous year
@@ -55,7 +54,7 @@ try {
 
 <div class="container mt-4">
     <!-- Back Button -->
-    <a href="index.php" class="btn btn-secondary mb-3">
+    <a href="<?php echo getBaseUrl(); ?>analytics/" class="btn btn-secondary mb-3">
         <i class="fas fa-arrow-left"></i> Back to Reports
     </a>
 
