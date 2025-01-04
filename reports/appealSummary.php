@@ -54,7 +54,7 @@ try {
 
 <div class="container mt-4">
     <!-- Back Button -->
-    <a href="<?php echo getBaseUrl(); ?>analytics/" class="btn btn-secondary mb-3">
+    <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary mb-3">
         <i class="fas fa-arrow-left"></i> Back to Reports
     </a>
 

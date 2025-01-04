@@ -5,7 +5,7 @@ require_once('../includes/init.php');
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Analytics Dashboard</h2>
-        <a href="<?php echo getBaseUrl(); ?>analytics/" class="btn btn-secondary">
+        <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Back to Reports
         </a>
     </div>

@@ -1,4 +1,4 @@
-<?php require_once '../includes/header.php'; ?>
+<?php require_once '../includes/init.php'; ?>
 
 <div class="container my-5">
     <h1 class="text-center mb-5">Contact Us</h1>

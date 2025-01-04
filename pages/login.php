@@ -1,4 +1,4 @@
-<?php require_once('../includes/header.php'); ?>
+<?php require_once '../includes/init.php'; ?>
 
 <div class="container py-5">
     <div class="row justify-content-center">

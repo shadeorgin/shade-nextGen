@@ -93,7 +93,7 @@
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>analytics/">Reports</a>
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>reports/">Reports</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/login.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Login</a>

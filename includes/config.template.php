@@ -5,11 +5,13 @@
 * Keep config.php secure and never commit to version control
 */
 
-// Environment detection
+// Environment detection and paths
 define('IS_PRODUCTION', false);  // Set to true in production
+define('PROD_BASE_PATH', '/SHaDE-nextGen');  // Production base path
+define('LOCAL_BASE_PATH', '');   // Local base path (empty for root)
 
 // Base URL Configuration
-define('BASE_URL', IS_PRODUCTION ? '/reports/' : '/');
+define('BASE_URL', IS_PRODUCTION ? PROD_BASE_PATH : LOCAL_BASE_PATH);
 
 // Function to get base URL
 function getBaseUrl() {

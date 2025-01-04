@@ -22,7 +22,7 @@ require_once('../includes/init.php');
                     </p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="<?php echo getBaseUrl(); ?>analytics/appealSummary.php" class="btn btn-primary">View Report</a>
+                    <a href="<?php echo getBaseUrl(); ?>reports/appealSummary.php" class="btn btn-primary">View Report</a>
                 </div>
             </div>
         </div>
