@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Enhanced
 - Year selection in reports with 2024 as default
+- Improved year selection dropdown in Causewise Summary Report with proper styling and label
 
 ### Improved
 - Database query handling with proper methods

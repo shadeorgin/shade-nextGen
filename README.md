@@ -91,7 +91,14 @@ Social media links are configured to:
 - Maintain consistent behavior across pages
 
 #### Toast Configuration
-The application includes a configurable toast notification system. Configure toast messages in `config.php`:
+#### Report Year Selection
+Reports include a standardized year selection dropdown:
+- Consistent styling across all reports
+- Bootstrap form-select implementation
+- Clear labeling for better UX
+- Automatic form submission on change
+
+The application includes a configurable toast notification system. Configure toast messages in `config.php`:"
 ```php
 $config['toast'] = [
     'enabled' => true,

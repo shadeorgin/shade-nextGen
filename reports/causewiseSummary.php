@@ -16,7 +16,8 @@ function debug_log($message) {
 // Initialize error message
 $error = '';
 
-// Get selected year (default to utility's default year if not set)
+// Get year range and selected year
+$yearRange = getYearRange();
 $selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
 
 try {
@@ -54,15 +55,15 @@ try {
         </div>
     <?php else: ?>
         <!-- Year Selection Form -->
-        <form method="get" class="mb-4">
-            <div class="row">
-                <div class="col-md-3">
-                    <select name="year" class="form-control" onchange="this.form.submit()">
-                        <?php for($year = $defaultYear; $year >= $defaultYear - 4; $year--): ?>
-                            <option value="<?php echo $year; ?>" <?php echo $selectedYear == $year ? 'selected' : ''; ?>>
-                                <?php echo $year; ?>
-                            </option>
-                        <?php endfor; ?>
+        <form method="GET" class="mb-4">
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    <label for="year" class="form-label">Select Year:</label>
+                    <select name="year" id="year" class="form-select" onchange="this.form.submit()">
+                        <?php foreach ($yearRange as $year): ?>
+                            <?php $selected = ($year == $selectedYear) ? 'selected' : ''; ?>
+                            <option value="<?php echo $year; ?>" <?php echo $selected; ?>><?php echo $year; ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
             </div>
