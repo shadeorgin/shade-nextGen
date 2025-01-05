@@ -118,7 +118,8 @@ Production URLs will be:
 │   └── footer.php   # Common footer 
 ├── pages/           # Page templates
 ├── reports/         # Reports module
-│   └── includes/    # Reports-specific utilities
+│   ├── includes/    # Reports-specific utilities
+│   └── sql/        # SQL query files for reports
 └── ftp/            # Deployment configuration
     ├── .env.template  # FTP credentials template
     ├── .ftpignore    # Files to exclude from deployment
@@ -129,6 +130,9 @@ Production URLs will be:
 - Debug mode available in reports (controlled by DEBUG_MODE flag)
 - Support for PHP 5.x and newer versions
 - Environment-specific configurations with proper path handling
+- Year-based filtering in reports (2024 as default)
+- SQL file organization in reports/sql/
+- Improved database query handling with proper methods
 
 ## Development
 - Use PHP 7+ for development
