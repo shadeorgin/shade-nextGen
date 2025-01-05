@@ -91,7 +91,14 @@ Social media links are configured to:
 - Maintain consistent behavior across pages
 
 #### Toast Configuration
-The application includes a configurable toast notification system. Configure toast messages in `config.php`:
+#### Report Year Selection
+Reports include a standardized year selection dropdown:
+- Consistent styling across all reports
+- Bootstrap form-select implementation
+- Clear labeling for better UX
+- Automatic form submission on change
+
+The application includes a configurable toast notification system. Configure toast messages in `config.php`:"
 ```php
 $config['toast'] = [
     'enabled' => true,
@@ -118,7 +125,8 @@ Production URLs will be:
 │   └── footer.php   # Common footer 
 ├── pages/           # Page templates
 ├── reports/         # Reports module
-│   └── includes/    # Reports-specific utilities
+│   ├── includes/    # Reports-specific utilities
+│   └── sql/        # SQL query files for reports
 └── ftp/            # Deployment configuration
     ├── .env.template  # FTP credentials template
     ├── .ftpignore    # Files to exclude from deployment
@@ -129,6 +137,9 @@ Production URLs will be:
 - Debug mode available in reports (controlled by DEBUG_MODE flag)
 - Support for PHP 5.x and newer versions
 - Environment-specific configurations with proper path handling
+- Year-based filtering in reports (2024 as default)
+- SQL file organization in reports/sql/
+- Improved database query handling with proper methods
 
 ## Development
 - Use PHP 7+ for development
