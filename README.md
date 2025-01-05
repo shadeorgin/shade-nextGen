@@ -60,3 +60,25 @@ Production URLs will be:
 - Configuration loading
 - Database initialization
 - Common header inclusion
+
+## Deployment
+The project includes an automated FTP deployment system located in the `ftp` directory.
+
+### Quick Start
+1. Navigate to ftp directory:
+```bash
+cd ftp
+```
+
+2. Set up deployment configuration:
+```bash
+cp .env.template .env
+# Edit .env with your FTP credentials
+```
+
+3. Run deployment:
+```bash
+./deploy.sh
+```
+
+For detailed deployment instructions, see the [FTP Deployment Guide](ftp/README.md).
