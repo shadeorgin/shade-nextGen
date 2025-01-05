@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2025-01-05
+
+### Enhanced
+- Made toast notification system configurable:
+    - Added configuration options for toast messages
+    - Reduced code duplication with "coming soon" tags
+    - Configurable message content and duration
+    - Flexible toast type options (info, warning, success)
+
 ## [1.0.2] - 2025-01-04
 
 ### Bug Fixes

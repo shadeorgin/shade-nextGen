@@ -16,7 +16,7 @@ echo "<div class='container mt-4'>";  // Start container earlier
 
 // SQL Queries
 $query1 = "SELECT
-    COUNT(DISTINCT a.id) as total_TblAppealInfo,
+    COUNT(DISTINCT a.id) as total_appeals,
     COALESCE(SUM(t.amount), 0) as total_amount
 FROM TblAppealInfo a
 JOIN TblTxDetails t ON a.id = t.appealid
@@ -108,22 +108,22 @@ try {
         </div>
     <?php else: ?>
 
-        <!-- Total TblAppealInfo Summary -->
+        <!-- Total Appeals Summary -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="mb-0">Total TblAppealInfo Summary</h4>
+                <h4 class="mb-0">Total Appeals Summary</h4>
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
                     <thead class="table-light">
                         <tr>
-                            <th>Total TblAppealInfo</th>
+                            <th>Total Appeals</th>
                             <th>Total Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo number_format(array_get($totalSummary, 'total_TblAppealInfo', 0)); ?></td>
+                            <td><?php echo number_format(array_get($totalSummary, 'total_appeals', 0)); ?></td>
                             <td>₹<?php echo formatIndianCurrency(floatval(array_get($totalSummary, 'total_amount', 0))); ?></td>
                         </tr>
                     </tbody>
@@ -131,17 +131,17 @@ try {
             </div>
         </div>
 
-        <!-- Status-wise TblAppealInfo Summary -->
+        <!-- Status-wise Appeals Summary -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="mb-0">Status-wise TblAppealInfo Summary</h4>
+                <h4 class="mb-0">Status-wise Appeals Summary</h4>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">
                     <thead class="table-light">
                         <tr>
                             <th>Status</th>
-                            <th>Number of TblAppealInfo</th>
+                            <th>Number of Appeals</th>
                             <th>Total Amount</th>
                         </tr>
                     </thead>
@@ -158,10 +158,10 @@ try {
             </div>
         </div>
 
-        <!-- TblAppealInfo Without Transactions -->
+        <!-- Appeals Without Transactions -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="mb-0">TblAppealInfo Without Transactions</h4>
+                <h4 class="mb-0">Appeals Without Transactions</h4>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">
@@ -185,7 +185,7 @@ try {
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" class="text-center">No TblAppealInfo without transactions found</td>
+                                <td colspan="4" class="text-center">No appeals without transactions found</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

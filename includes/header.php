@@ -77,7 +77,33 @@
 </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
+    <?php
+    // Start session if not already started
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    
+    // Determine if toast should be shown
+    $show_toast = false;
+    if ($TOAST_CONFIG['enabled']) {
+        switch ($TOAST_CONFIG['display_frequency']) {
+            case 'always':
+                $show_toast = true;
+                break;
+            case 'once':
+                if (!isset($_SESSION['toast_shown'])) {
+                    $show_toast = true;
+                    $_SESSION['toast_shown'] = true;
+                }
+                break;
+            case 'never':
+                $show_toast = false;
+                break;
+        }
+    }
+    ?>
     <div class="toast-container">
+        <?php if ($show_toast): ?>
         <div class="toast custom-toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <strong class="me-auto">SHaDE Status</strong>
@@ -88,7 +114,8 @@
                 🚧 This site is currently under development. Features like Login, Register and Contact are not yet functional.
             </div>
         </div>
-    </div>
+    <?php endif; ?>
+</div>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="<?php echo getBaseUrl(); ?>">SHaDE</a>
@@ -125,12 +152,14 @@
                 return new bootstrap.Tooltip(tooltipTriggerEl)
             });
 
-            // Show toast on page load
+            // Show toast on page load if element exists
             var toastEl = document.querySelector('.toast');
-            var toast = new bootstrap.Toast(toastEl, {
-                autohide: true,
-                delay: 5000
-            });
-            toast.show();
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl, {
+                    autohide: <?php echo $TOAST_CONFIG['timing']['autohide'] ? 'true' : 'false'; ?>,
+                    delay: <?php echo $TOAST_CONFIG['timing']['delay']; ?>
+                });
+                toast.show();
+            }
         });
     </script>

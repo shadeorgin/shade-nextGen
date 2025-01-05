@@ -30,6 +30,17 @@ define('LOCAL_BASE_PATH', '');
 ```
 This will set BASE_URL to '/SHaDE-nextGen' for production.
 
+### Toast Configuration
+The application includes a configurable toast notification system. Configure toast messages in `config.php`:
+```php
+$config['toast'] = [
+    'enabled' => true,
+    'message' => 'Feature coming soon!',
+    'type' => 'info',
+    'duration' => 5000  // milliseconds
+];
+```
+
 Production URLs will be:
 - Home: http://shade.org.in/SHaDE-nextGen/
 - Reports: http://shade.org.in/SHaDE-nextGen/reports/
