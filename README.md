@@ -20,17 +20,77 @@ Local URLs will be:
 - Pages: http://localhost:8000/pages/
 
 ### Production Deployment
+Before deploying to production, please review the [Production Deployment Checklist](PRODUCTION_CHECKLIST.md) for a comprehensive guide on:
+- Configuration settings and security checks
+- Database configuration
+- Feature flags management
+- Environmental variables
+- Security settings
+- File permissions
+- Backup procedures
+
+Basic deployment steps:
 1. Deploy the code to the production server under /SHaDE-nextGen directory
 2. Copy includes/config.template.php to config.php if not exists
-3. In config.php, set `IS_PRODUCTION` to `true`:
+3. Follow the production checklist to configure all settings
+4. In config.php, set `IS_PRODUCTION` to `true`:
 ```php
 define('IS_PRODUCTION', true);
 define('PROD_BASE_PATH', '/SHaDE-nextGen');
 define('LOCAL_BASE_PATH', '');
 ```
 This will set BASE_URL to '/SHaDE-nextGen' for production.
+### Component Configurations
 
-### Toast Configuration
+#### Carousel Configuration
+The carousel component is configured for optimal viewing:
+```css
+.carousel {
+max-width: 1200px;  /* Contained width */
+margin: auto;
+}
+.carousel-item img {
+max-height: 500px;  /* Controlled height */
+object-fit: cover;  /* Maintain aspect ratio */
+}
+```
+
+#### Feature Warnings Configuration
+The application includes a configurable warning system for upcoming features:
+```php
+$FEATURE_WARNINGS = [
+    'enabled' => true,  // Master switch for all warning messages
+    'features' => [
+        'login' => [
+            'enabled' => true,
+            'message' => 'Authentication system coming soon!'
+        ],
+        // Add more features as needed
+    ],
+    'style' => 'warning',     // Bootstrap alert style
+    'dismissible' => true     // Allow dismissing alerts
+];
+```
+
+Available configuration options:
+- Global enable/disable switch
+- Per-feature configuration
+- Customizable messages
+- Configurable alert styles
+- Optional dismissible alerts
+
+Warnings are displayed on:
+- Login page
+- Register page
+- Contact form
+- Other feature pages as configured
+#### Social Media Links
+Social media links are configured to:
+- Open in new tabs (target="_blank")
+- Include security attributes (rel="noopener noreferrer")
+- Maintain consistent behavior across pages
+
+#### Toast Configuration
 The application includes a configurable toast notification system. Configure toast messages in `config.php`:
 ```php
 $config['toast'] = [

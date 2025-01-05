@@ -1,6 +1,15 @@
 <?php require_once '../includes/init.php'; ?>
 
 <div class="container py-5">
+    <?php if ($FEATURE_WARNINGS['enabled'] && $FEATURE_WARNINGS['features']['login']['enabled']): ?>
+        <div class="alert alert-<?php echo $FEATURE_WARNINGS['style']; ?> <?php echo $FEATURE_WARNINGS['dismissible'] ? 'alert-dismissible fade show' : ''; ?> mb-4" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <?php echo $FEATURE_WARNINGS['features']['login']['message']; ?>
+            <?php if ($FEATURE_WARNINGS['dismissible']): ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="card shadow-lg">

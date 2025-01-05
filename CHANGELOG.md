@@ -6,7 +6,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.3] - 2025-01-05
 
+### Added
+- Production deployment checklist:
+    - Comprehensive guide for deployment
+    - Security configuration steps
+    - Database setup instructions
+    - Feature flags management
+    - Environmental variables guide
+    - File permissions checklist
+    - Backup procedures
+- Configurable feature warnings system:
+    - Centralized configuration in config.php
+    - Per-feature enable/disable flags
+    - Customizable warning messages
+    - Configurable alert styles
+    - Optional dismissible alerts
+    - Applied to login, register and contact pages
+    - Consistent styling with Bootstrap alerts
+    - Clear user feedback about feature status
 ### Enhanced
+- Made toast notification system configurable:
+
+### Improved
+- Enhanced carousel image sizing and responsiveness:
+    - Better fit within screen dimensions
+    - Maintained aspect ratio and quality
+    - Improved mobile display
+- Enhanced social media links:
+    - Links now open in new tabs
+    - Added security attributes
+    - Consistent behavior across the site
 - Made toast notification system configurable:
     - Added configuration options for toast messages
     - Reduced code duplication with "coming soon" tags

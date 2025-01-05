@@ -1,6 +1,15 @@
 <?php require_once '../includes/init.php'; ?>
 
 <div class="container my-5">
+    <?php if ($FEATURE_WARNINGS['enabled'] && $FEATURE_WARNINGS['features']['contact']['enabled']): ?>
+        <div class="alert alert-<?php echo $FEATURE_WARNINGS['style']; ?> <?php echo $FEATURE_WARNINGS['dismissible'] ? 'alert-dismissible fade show' : ''; ?> mb-4" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <?php echo $FEATURE_WARNINGS['features']['contact']['message']; ?>
+            <?php if ($FEATURE_WARNINGS['dismissible']): ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     <h1 class="text-center mb-5">Contact Us</h1>
 
     <div class="row">
@@ -97,10 +106,10 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-around">
-                        <a href="https://www.facebook.com/profile.php?id=100080343721975" class="text-success fs-3"><i class="bi bi-facebook"></i></a>
-                        <a href="https://x.com/shadegroup" class="text-success fs-3"><i class="bi bi-twitter"></i></a>
-                        <a href="https://www.linkedin.com/company/shadedotorgdotin/" class="text-success fs-3"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="text-success fs-3"><i class="bi bi-instagram"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=100080343721975" class="text-success fs-3" target="_blank" rel="noopener noreferrer"><i class="bi bi-facebook"></i></a>
+                        <a href="https://x.com/shadegroup" class="text-success fs-3" target="_blank" rel="noopener noreferrer"><i class="bi bi-twitter"></i></a>
+                        <a href="https://www.linkedin.com/company/shadedotorgdotin/" class="text-success fs-3" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="text-success fs-3" target="_blank" rel="noopener noreferrer"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
             </div>
