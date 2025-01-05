@@ -1,4 +1,4 @@
-<?php include '../includes/header.php'; ?>
+<?php require_once('../includes/init.php'); ?>
 
 <div class="container py-5">
     <!-- Page Title -->
@@ -200,5 +200,4 @@
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
-
+<?php require_once('../includes/footer.php'); ?>

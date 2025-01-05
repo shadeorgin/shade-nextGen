@@ -4,8 +4,90 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2024-12-31
+## [1.0.3] - 2025-01-05
 
+### Added
+- Production deployment checklist:
+    - Comprehensive guide for deployment
+    - Security configuration steps
+    - Database setup instructions
+    - Feature flags management
+    - Environmental variables guide
+    - File permissions checklist
+    - Backup procedures
+- Configurable feature warnings system:
+    - Centralized configuration in config.php
+    - Per-feature enable/disable flags
+    - Customizable warning messages
+    - Configurable alert styles
+    - Optional dismissible alerts
+    - Applied to login, register and contact pages
+    - Consistent styling with Bootstrap alerts
+    - Clear user feedback about feature status
+### Enhanced
+- Made toast notification system configurable:
+
+### Improved
+- Enhanced carousel image sizing and responsiveness:
+    - Better fit within screen dimensions
+    - Maintained aspect ratio and quality
+    - Improved mobile display
+- Enhanced social media links:
+    - Links now open in new tabs
+    - Added security attributes
+    - Consistent behavior across the site
+- Made toast notification system configurable:
+    - Added configuration options for toast messages
+    - Reduced code duplication with "coming soon" tags
+    - Configurable message content and duration
+    - Flexible toast type options (info, warning, success)
+
+## [1.0.2] - 2025-01-04
+
+### Bug Fixes
+- Fixed PHP version compatibility issues in Database and Reports modules
+- Improved path resolution for includes across environments
+- Added debug mode and improved error handling in reports
+- Updated DATABASE class to support older PHP versions
+
+### Deployment
+- Added FTP deployment system:
+    - Automated deployment script
+    - Environment-based configuration
+    - Secure credential management
+    - File exclusion system
+
+### Code Organization and Configuration
+- Added centralized initialization system:
+    - New init.php for consistent application bootstrapping
+    - Standardized includes across all pages
+    - Centralized configuration loading
+- Enhanced configuration system:
+    - Separate config template for easy setup
+    - Environment-specific base paths
+    - Production vs local URL handling
+- Updated all pages to use new initialization system
+- Improved project structure and documentation
+
+## [1.0.1] - 2025-01-01
+
+### Reports Module
+- Added Appeal Summary report functionality:
+    - Year-wise filtering for appeal data
+    - Transaction matching analysis
+    - Status-wise appeal summaries
+    - Appeals without transactions tracking
+- Implemented database infrastructure:
+    - Singleton Database connection class
+    - Secure configuration management
+    - Query execution utilities
+- Enhanced reports organization:
+    - Centralized reports landing page
+    - Modular report components
+    - Consistent styling across reports
+    - Analytics dashboard integration
+
+## [1.0.0] - 2024-12-31
 ### UI/UX Updates
 - Enhanced footer implementation:
     - Added sticky footer functionality

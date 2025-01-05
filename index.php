@@ -1,5 +1,6 @@
-<?php require_once 'includes/header.php'; ?>
+<?php require_once 'includes/init.php'; ?>
 
+<main>
 <!-- Hero Section -->
 <div class="container-fluid bg-success bg-gradient text-white py-5">
     <div class="container py-5">
@@ -10,7 +11,8 @@
 </div>
 
 <!-- Carousel Section -->
-<div id="mainCarousel" class="carousel slide my-5" data-bs-ride="carousel">
+<div class="container">
+    <div id="mainCarousel" class="carousel slide my-5" data-bs-ride="carousel" style="max-height: 500px;">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
         <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
@@ -18,21 +20,21 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="assets/images/food-aid.jpg" class="d-block w-100" alt="SHaDE volunteers providing food and medical assistance to those in need">
+            <img src="assets/images/food-aid.jpg" class="d-block w-100" alt="SHaDE volunteers providing food and medical assistance to those in need" style="object-fit: cover; height: 500px;">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
                 <h5>Food & Medical Aid</h5>
                 <p>Providing essential support to individuals and organizations across Tamil Nadu since 2008.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="assets/images/education.jpg" class="d-block w-100" alt="SHaDE Sponsored Students program empowering education">
+            <img src="assets/images/education.jpg" class="d-block w-100" alt="SHaDE Sponsored Students program empowering education" style="object-fit: cover; height: 500px;">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
                 <h5>SHaDE Sponsored Students (SSS)</h5>
                 <p>Transforming lives through education since 2011, supporting students across multiple states.</p>
             </div>
         </div>
         <div class="carousel-item">
-            <img src="assets/images/disaster-relief.jpg" class="d-block w-100" alt="SHaDE emergency response team providing disaster relief">
+            <img src="assets/images/disaster-relief.jpg" class="d-block w-100" alt="SHaDE emergency response team providing disaster relief" style="object-fit: cover; height: 500px;">
             <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
                 <h5>Emergency Relief</h5>
                 <p>Swift response to floods, COVID-19, and other emergencies, working with local NGO partners.</p>
@@ -47,6 +49,7 @@
         <span class="carousel-control-next-icon"></span>
         <span class="visually-hidden">Next</span>
     </button>
+</div>
 </div>
 
 <!-- Mission Statement Section -->
@@ -96,6 +99,7 @@
         </div>
     </div>
 </div>
+</main>
 
 <?php require_once 'includes/footer.php'; ?>
 

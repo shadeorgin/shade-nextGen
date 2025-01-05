@@ -1,0 +1,9 @@
+.git/
+.gitignore
+ftp/
+*.sql
+README.md
+CHANGELOG.md
+includes/config.template.php
+node_modules/
+

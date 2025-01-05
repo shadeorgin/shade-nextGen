@@ -23,3 +23,12 @@
 /app/Config/core.php
 /app/Config/database.php
 /vendors/*
+
+# Configuration files with sensitive data
+includes/config.php
+
+# Environment and Configuration files
+*.env
+.env
+.env.*
+config/*

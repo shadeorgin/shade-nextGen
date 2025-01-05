@@ -1,4 +1,4 @@
-<?php require_once '../includes/header.php'; ?>
+<?php require_once '../includes/init.php'; ?>
 
 <!-- Hero Section -->
 <div class="bg-success text-white py-5 mb-5">
