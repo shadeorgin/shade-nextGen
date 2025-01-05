@@ -46,8 +46,12 @@ Production URLs will be:
 │   ├── header.php   # Common header
 │   └── footer.php   # Common footer 
 ├── pages/           # Page templates
-└── reports/         # Reports module
-    └── includes/    # Reports-specific utilities
+├── reports/         # Reports module
+│   └── includes/    # Reports-specific utilities
+└── ftp/            # Deployment configuration
+    ├── .env.template  # FTP credentials template
+    ├── .ftpignore    # Files to exclude from deployment
+    └── deploy.sh     # Deployment script
 ```
 
 ## Development
@@ -62,23 +66,13 @@ Production URLs will be:
 - Common header inclusion
 
 ## Deployment
-The project includes an automated FTP deployment system located in the `ftp` directory.
+The project includes an FTP deployment system in the `ftp` directory.
+See [FTP Deployment Guide](ftp/README.md) for detailed deployment instructions.
 
-### Quick Start
-1. Navigate to ftp directory:
+Quick start:
 ```bash
 cd ftp
+cp .env.template .env    # Create and configure environment file
+chmod +x deploy.sh       # Make script executable
+./deploy.sh              # Run deployment
 ```
-
-2. Set up deployment configuration:
-```bash
-cp .env.template .env
-# Edit .env with your FTP credentials
-```
-
-3. Run deployment:
-```bash
-./deploy.sh
-```
-
-For detailed deployment instructions, see the [FTP Deployment Guide](ftp/README.md).
