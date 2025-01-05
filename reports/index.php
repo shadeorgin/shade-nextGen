@@ -27,6 +27,22 @@ require_once('../includes/init.php');
             </div>
         </div>
 
+        <!-- Causewise Summary Report Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Causewise Summary Report</h5>
+                    <p class="card-text">
+                        Detailed analysis of donations by cause, showing contribution patterns,
+                        cause-specific trends, and impact distribution across categories.
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="<?php echo getBaseUrl(); ?>reports/causewiseSummary.php" class="btn btn-primary">View Report</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Analytics Dashboard Card -->
         <div class="col-md-6 mb-4">
             <div class="card h-100">
