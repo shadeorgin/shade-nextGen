@@ -54,6 +54,11 @@ Production URLs will be:
     └── deploy.sh     # Deployment script
 ```
 
+## Debugging and Compatibility
+- Debug mode available in reports (controlled by DEBUG_MODE flag)
+- Support for PHP 5.x and newer versions
+- Environment-specific configurations with proper path handling
+
 ## Development
 - Use PHP 7+ for development
 - Bootstrap 5 for frontend  

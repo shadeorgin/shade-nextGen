@@ -7,7 +7,18 @@
     <link rel="stylesheet" href="<?php echo getBaseUrl(); ?>assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo getBaseUrl(); ?>assets/css/bootstrap-icons.css">
     <style>
-        @font-face {
+    html, body {
+        height: 100%;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    main {
+        flex: 1 0 auto;
+    }
+    @font-face {
             font-family: "bootstrap-icons";
             src: url("<?php echo getBaseUrl(); ?>assets/fonts/bootstrap-icons.woff2") format("woff2");
             font-weight: normal;
@@ -94,7 +105,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>reports/">Reports</a>
-                    </li>
+                </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/login.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Login</a>
                     </li>
@@ -105,7 +116,7 @@
             </div>
         </div>
     </nav>
-    <script src="<?php echo getBaseUrl(); ?>assets/js/bootstrap.js"></script>
+    <script src="<?php echo getBaseUrl(); ?>assets/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize tooltips

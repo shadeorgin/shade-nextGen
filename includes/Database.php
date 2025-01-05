@@ -86,7 +86,7 @@ class Database {
     * @return PDOStatement
     * @throws PDOException
     */
-    public function query(string $sql, array $params = []): PDOStatement {
+    public function query($sql, array $params = []) {
         try {
             $stmt = $this->getConnection()->prepare($sql);
             $stmt->execute($params);
@@ -103,7 +103,7 @@ class Database {
     * @return array|null Single row as associative array or null if no results
     * @throws PDOException
     */
-    public function queryOne(string $sql, array $params = []): ?array {
+    public function queryOne($sql, array $params = []) {
         try {
             $stmt = $this->query($sql, $params);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -120,7 +120,7 @@ class Database {
     * @return array Array of rows as associative arrays
     * @throws PDOException
     */
-    public function queryAll(string $sql, array $params = []): array {
+    public function queryAll($sql, array $params = []) {
         try {
             $stmt = $this->query($sql, $params);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

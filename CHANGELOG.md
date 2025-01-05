@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.2] - 2025-01-04
 
+### Bug Fixes
+- Fixed PHP version compatibility issues in Database and Reports modules
+- Improved path resolution for includes across environments
+- Added debug mode and improved error handling in reports
+- Updated DATABASE class to support older PHP versions
+
 ### Deployment
 - Added FTP deployment system:
     - Automated deployment script

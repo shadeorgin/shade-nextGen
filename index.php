@@ -1,5 +1,6 @@
 <?php require_once 'includes/init.php'; ?>
 
+<main>
 <!-- Hero Section -->
 <div class="container-fluid bg-success bg-gradient text-white py-5">
     <div class="container py-5">
@@ -96,6 +97,7 @@
         </div>
     </div>
 </div>
+</main>
 
 <?php require_once 'includes/footer.php'; ?>
 
