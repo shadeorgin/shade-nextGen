@@ -43,6 +43,22 @@ require_once('../includes/init.php');
             </div>
         </div>
 
+        <!-- Beneficiary Summary Report Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Beneficiary Summary Report</h5>
+                    <p class="card-text">
+                        Comprehensive overview of beneficiary data, including demographics,
+                        assistance types, and impact metrics across different periods.
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="<?php echo getBaseUrl(); ?>reports/beneficiarySummary.php" class="btn btn-primary">View Report</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Analytics Dashboard Card -->
         <div class="col-md-6 mb-4">
             <div class="card h-100">
