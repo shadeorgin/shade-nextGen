@@ -125,9 +125,12 @@ Production URLs will be:
 │   └── footer.php   # Common footer 
 ├── pages/           # Page templates
 ├── reports/         # Reports module
-│   ├── includes/    # Reports-specific utilities
-│   └── sql/        # SQL query files for reports
-└── ftp/            # Deployment configuration
+├── reports/          # Reports module
+│   ├── includes/     # Reports-specific utilities
+│   └── sql/         # SQL query files for reports
+│       ├── 01_AppealSummary.sql
+│       ├── 02_CausewiseSummary.sql
+│       └── 03_BeneficiarywiseSummary.sql   # Beneficiary analysis queries
     ├── .env.template  # FTP credentials template
     ├── .ftpignore    # Files to exclude from deployment
     └── deploy.sh     # Deployment script
