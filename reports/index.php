@@ -59,6 +59,22 @@ require_once('../includes/init.php');
             </div>
         </div>
 
+        <!-- Transaction Summary Report Card -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Transaction Summary Report</h5>
+                    <p class="card-text">
+                        Detailed analysis of transactions including donation patterns,
+                        frequency statistics, and temporal distribution of contributions.
+                    </p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="<?php echo getBaseUrl(); ?>reports/transactionSummary.php" class="btn btn-primary">View Report</a>
+                </div>
+            </div>
+        </div>
+
         <!-- Analytics Dashboard Card -->
         <div class="col-md-6 mb-4">
             <div class="card h-100">

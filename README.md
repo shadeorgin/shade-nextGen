@@ -1,6 +1,12 @@
 # SHaDE NextGen
+
 A repo to track the nextGen version of SHaDE Website and the portal (https://shade.org.in)
 
+## Introduction
+
+SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities.
+
+Through our online platform, we streamline and organize our welfare initiatives, making it easier for volunteers, donors, and beneficiaries to connect and collaborate effectively.
 ## Environment Setup
 
 ### Local Development
@@ -158,6 +164,19 @@ Production URLs will be:
 ## Deployment
 The project includes an FTP deployment system in the `ftp` directory.
 See [FTP Deployment Guide](ftp/README.md) for detailed deployment instructions.
+
+## Contributing
+
+We welcome contributions from developers of all skill levels! Here's how you can help:
+
+1. Fork the repository
+2. Create a new branch for your feature or bugfix
+3. Write clear, concise commit messages
+4. Test your changes thoroughly
+5. Submit a Pull Request with a description of your changes
+
+Please ensure your code follows our existing coding style and includes appropriate documentation.
+For major changes, please open an issue first to discuss what you would like to change.
 
 Quick start:
 ```bash
