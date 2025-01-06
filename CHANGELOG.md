@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2025-01-07
+
+### Enhanced
+- Improved Transaction Summary Reports:
+    - Special handling of Appeal ID 0 as Generic SHaDE Appeal
+    - Updated SQL queries to properly display Generic SHaDE Appeal name and status
+    - Fixed null value handling in appeal information display
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
 ## [1.0.5] - 2025-01-06
 
 ### Added

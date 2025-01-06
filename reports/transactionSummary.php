@@ -24,7 +24,64 @@ try {
     $db = Database::getInstance();
     debug_log("Database connection successful");
 
-    // SQL Queries will be added here
+    // SQL Queries
+    $query1 = "select Year(DateOfTx) as Year, TxType, sum(Amount) as Total 
+        from TblTxDetails where Year(DateOfTx)=:year and AppealId >= 0
+        group by Year, TxType";
+
+    $query2 = "select Year(DateOfTx) as Year, TxType, sum(Amount) as Total 
+        from TblTxDetails where Year(DateOfTx)=:year and AppealId >= 0
+        AND Remarks NOT LIKE '%SHaDE%Funds%' 
+        group by Year, TxType";
+
+    $query3 = "select
+        Year(DateOfTx) as Year,
+        AppealId,
+        CASE WHEN a.AppealId = 0 THEN 'Generic SHaDE Appeal' ELSE COALESCE(b.Name, 'Unknown Appeal') END as AppealName,
+        CASE WHEN a.AppealId = 0 THEN 'Active' ELSE COALESCE(b.Status, 'Unknown') END as AppealStatus,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end) as CREDIT,
+        sum(CASE WHEN TxType='D' then a.Amount else 0 end) as DEBIT,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
+        from TblTxDetails a
+        LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
+        where Year(DateOfTx)=:year and AppealId >= 0
+        group by Year, AppealId";
+
+    $query4 = "select
+        Year(DateOfTx) as Year,
+        AppealId,
+        CASE WHEN a.AppealId = 0 THEN 'Generic SHaDE Appeal' ELSE COALESCE(b.Name, 'Unknown Appeal') END as AppealName,
+        CASE WHEN a.AppealId = 0 THEN 'Active' ELSE COALESCE(b.Status, 'Unknown') END as AppealStatus,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end) as CREDIT,
+        sum(CASE WHEN TxType='D' then a.Amount else 0 end) as DEBIT,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
+        from TblTxDetails a
+        LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
+        where Year(DateOfTx)=:year and AppealId >= 0
+        and a.Remarks NOT LIKE '%SHaDE%Funds%'
+        group by Year, AppealId";
+
+    $query5 = "select
+        Year(DateOfTx) as Year,
+        AppealId,
+        CASE WHEN a.AppealId = 0 THEN 'Generic SHaDE Appeal' ELSE COALESCE(b.Name, 'Unknown Appeal') END as AppealName,
+        CASE WHEN a.AppealId = 0 THEN 'Active' ELSE COALESCE(b.Status, 'Unknown') END as AppealStatus,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end) as CREDIT,
+        sum(CASE WHEN TxType='D' then a.Amount else 0 end) as DEBIT,
+        sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
+        from TblTxDetails a
+        LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
+        where Year(DateOfTx)=:year and AppealId >= 0
+        and a.Remarks NOT LIKE '%SHaDE%Funds%'
+        and UPPER(b.Name) like '%COVID%'
+        group by Year, AppealId";
+
+    // Execute queries
+    $allTransactions = $db->queryAll($query1, ['year' => $selectedYear]);
+    $nonInternalTransactions = $db->queryAll($query2, ['year' => $selectedYear]);
+    $appealwiseTransactions = $db->queryAll($query3, ['year' => $selectedYear]);
+    $appealwiseNonInternal = $db->queryAll($query4, ['year' => $selectedYear]);
+    $covidTransactions = $db->queryAll($query5, ['year' => $selectedYear]);
 
 } catch (Exception $e) {
     $error = "Database error occurred";
@@ -69,9 +126,169 @@ try {
             </div>
         </form>
 
-        <!-- Report sections will be added here -->
-        <div class="alert alert-info">
-            Transaction Summary report sections are under development. Please check back later.
+        <!-- 1. Summary of all Transactions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">1. Summary of all Transactions</h5>
+            </div>
+            <div class="card-body">
+                <?php if (!empty($allTransactions)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <?php foreach (array_keys($allTransactions[0]) as $header): ?>
+                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($allTransactions as $row): ?>
+                                    <tr>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td><?php echo $key === 'Total' ? '₹' . formatIndianCurrency($value) : htmlspecialchars($value); ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No data available</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- 2. Summary excluding Internal Funds -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">2. Summary excluding Internal Funds</h5>
+            </div>
+            <div class="card-body">
+                <?php if (!empty($nonInternalTransactions)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <?php foreach (array_keys($nonInternalTransactions[0]) as $header): ?>
+                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($nonInternalTransactions as $row): ?>
+                                    <tr>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td><?php echo $key === 'Total' ? '₹' . formatIndianCurrency($value) : htmlspecialchars($value); ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No data available</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- 3. Appeal wise Transaction Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">3. Appeal wise Transaction Summary</h5>
+            </div>
+            <div class="card-body">
+                <?php if (!empty($appealwiseTransactions)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <?php foreach (array_keys($appealwiseTransactions[0]) as $header): ?>
+                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($appealwiseTransactions as $row): ?>
+                                    <tr>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td><?php echo in_array($key, ['CREDIT', 'DEBIT', 'EffectiveTotal']) ? '₹' . formatIndianCurrency($value) : ($value === null ? '' : ($key === 'AppealName' && $row['AppealId'] === '0' ? 'Generic SHaDE Appeal' : htmlspecialchars((string)$value))); ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No data available</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- 4. Appeal wise Transaction Summary - Excluding Internal Funds -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">4. Appeal wise Transaction Summary - Excluding Internal Funds</h5>
+            </div>
+            <div class="card-body">
+                <?php if (!empty($appealwiseNonInternal)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <?php foreach (array_keys($appealwiseNonInternal[0]) as $header): ?>
+                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($appealwiseNonInternal as $row): ?>
+                                    <tr>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td><?php echo in_array($key, ['CREDIT', 'DEBIT', 'EffectiveTotal']) ? '₹' . formatIndianCurrency($value) : ($value === null ? '' : ($key === 'AppealName' && $row['AppealId'] === '0' ? 'Generic SHaDE Appeal' : htmlspecialchars((string)$value))); ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No data available</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <!-- 5. COVID Specific Transaction Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">5. COVID Specific Transaction Summary</h5>
+            </div>
+            <div class="card-body">
+                <?php if (!empty($covidTransactions)): ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <?php foreach (array_keys($covidTransactions[0]) as $header): ?>
+                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                    <?php endforeach; ?>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($covidTransactions as $row): ?>
+                                    <tr>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td><?php echo in_array($key, ['CREDIT', 'DEBIT', 'EffectiveTotal']) ? '₹' . formatIndianCurrency($value) : ($value === null ? '' : ($key === 'AppealName' && $row['AppealId'] === '0' ? 'Generic SHaDE Appeal' : htmlspecialchars((string)$value))); ?></td>
+                                        <?php endforeach; ?>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php else: ?>
+                    <p class="text-muted">No data available</p>
+                <?php endif; ?>
+            </div>
         </div>
 
     <?php endif; ?>
