@@ -797,29 +797,33 @@ let isTxDetailedView = false;
                         return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
                     }),
                     datasets: [{
-                        label: 'Credit Amount (CR)',
+                        label: 'Credit (CR)',
                         data: monthlyBalanceData.map(item => parseFloat(item.credit_amount)),
-                        backgroundColor: chartColors[1],
-                        borderColor: chartColors[1],
+                        backgroundColor: 'rgba(40, 167, 69, 0.6)',
+                        borderColor: 'rgba(40, 167, 69, 1)',
                         borderWidth: 1
                     }, {
-                        label: 'Debit Amount (DR)',
-                        data: monthlyBalanceData.map(item => parseFloat(item.debit_amount)),
-                        backgroundColor: chartColors[2],
-                        borderColor: chartColors[2],
+                        label: 'Debit (DR)',
+                        data: monthlyBalanceData.map(item => -parseFloat(item.debit_amount)),
+                        backgroundColor: 'rgba(220, 53, 69, 0.6)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
                         borderWidth: 1
                     }, {
                         label: 'Net Balance',
                         data: monthlyBalanceData.map(item => parseFloat(item.net_balance)),
                         type: 'line',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                        borderColor: 'rgba(0, 123, 255, 1)',
                         borderWidth: 2,
-                        fill: false
+                        fill: true
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index'
+                    },
                     plugins: {
                         legend: {
                             labels: {
@@ -830,13 +834,6 @@ let isTxDetailedView = false;
                         }
                     },
                     scales: {
-                        x: {
-                            ticks: {
-                                font: {
-                                    size: chartConfig.axisLabelFontSize
-                                }
-                            }
-                        },
                         y: {
                             beginAtZero: true,
                             ticks: {
