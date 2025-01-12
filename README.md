@@ -123,11 +123,11 @@ Usage in templates:
 - Click legend items to show/hide specific data series
 - Dynamically update chart visualization
 - Maintain visibility of unselected data points
-- Monthly CR vs DR visualization:
-- Combined bar and line chart representation
-- Credit (green) and Debit (red) bar charts
-- Net balance trend line overlay (blue)
-- Interactive legend controls
+- Monthly Transaction visualization:
+- Credit (C) transactions shown in green bars
+- Debit (D) transactions shown in red bars
+- Net balance overlay as blue line
+- Interactive legend control for each metric
 - Detailed tooltips with transaction amounts
 - Toggleable Monthly Transaction count view:
 - Simple View: Shows total transactions per month (default)

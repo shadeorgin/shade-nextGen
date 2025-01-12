@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.11] - 2025-01-13
+### Fixed
+- Fixed Monthly CR vs DR chart data display:
+    - Corrected transaction type codes (C/D) to match database values
+    - Fixed data aggregation in balance calculations
+    - Added proper NULL handling in aggregations
+    - Updated chart labels to reflect correct transaction codes
+
 ## [1.0.10] - 2025-01-16
 ### Added
 - Enhanced Monthly CR vs DR chart features:

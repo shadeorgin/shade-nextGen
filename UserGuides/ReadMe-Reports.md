@@ -61,12 +61,12 @@ This guide provides detailed information about the various reports available in 
     * Switches between simple and detailed visualization modes
 
 ### 5. Monthly CR vs DR Report
-**Purpose**: Compares monthly credit and debit transactions with net balance trend.
+**Purpose**: Compares monthly credit (C) and debit (D) transactions with net balance trend.
 
 **Visualization**:
 - Hybrid visualization combining:
-    * Bar chart for Credit (green) and Debit (red) amounts
-    * Line chart overlay for Net Balance trend (blue)
+    * Bar chart for Credit (C) in green and Debit (D) in red
+    * Line chart overlay for Net Balance trend in blue
     * Monthly progression on X-axis
     * Amount scale on Y-axis (₹)
 

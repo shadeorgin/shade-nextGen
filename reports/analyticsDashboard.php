@@ -105,13 +105,29 @@ try {
         $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
         // Monthly CR vs DR
         // Monthly CR vs DR
+
+        // Add debug query
+        $debugQuery = "SELECT 
+            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+            t.TxType,
+            COUNT(*) as count,
+            SUM(t.amount) as total
+        FROM TblTxDetails t
+        WHERE YEAR(t.DateOfTx) = :year
+        GROUP BY month, t.TxType
+        ORDER BY month, t.TxType";
+        $debugTxData = $db->queryAll($debugQuery, ['year' => $selectedYear]);
+
         $monthlyBalanceQuery = "
-            SELECT 
-                DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
-                SUM(IF(t.TxType = 'CR', t.amount, 0)) as credit_amount,
-                SUM(IF(t.TxType = 'DR', t.amount, 0)) as debit_amount,
-                SUM(IF(t.TxType = 'CR', t.amount, -t.amount)) as net_balance
-            FROM TblTxDetails t
+        SELECT 
+            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+            COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as credit_amount,
+            COALESCE(SUM(CASE WHEN t.TxType = 'D' THEN t.amount ELSE 0 END), 0) as debit_amount,
+            COALESCE(SUM(CASE 
+                WHEN t.TxType = 'C' THEN t.amount 
+                WHEN t.TxType = 'D' THEN -t.amount 
+            END), 0) as net_balance
+        FROM TblTxDetails t
             WHERE YEAR(t.DateOfTx) = :year
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
             ORDER BY month";
@@ -390,11 +406,11 @@ try {
                             </h2>
                             <div id="debugCollapse" class="accordion-collapse collapse">
                                 <div class="accordion-body">
-                                    <h6>Raw Data Analysis:</h6>
-                                    <?php foreach ($debugData as $label => $data): ?>
-                                        <h6 class="mt-3"><?php echo $label; ?>:</h6>
-                                        <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($data, true)); ?></pre>
-                                    <?php endforeach; ?>
+                                    <h6>Raw Transaction Data:</h6>
+                                    <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($debugTxData, true)); ?></pre>
+                                    <h6>Monthly Balance Data:</h6>
+                                    <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($monthlyBalanceData, true)); ?></pre>
+                                </div>
                                     <h6 class="mt-3">Balance Query:</h6>
                                     <pre class="bg-light p-2"><?php echo htmlspecialchars($monthlyBalanceQuery); ?></pre>
                                     <h6 class="mt-3">Balance Data:</h6>
@@ -797,13 +813,13 @@ let isTxDetailedView = false;
                         return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
                     }),
                     datasets: [{
-                        label: 'Credit (CR)',
+                        label: 'Credit (C)',
                         data: monthlyBalanceData.map(item => parseFloat(item.credit_amount)),
                         backgroundColor: 'rgba(40, 167, 69, 0.6)',
                         borderColor: 'rgba(40, 167, 69, 1)',
                         borderWidth: 1
                     }, {
-                        label: 'Debit (DR)',
+                        label: 'Debit (D)',
                         data: monthlyBalanceData.map(item => -parseFloat(item.debit_amount)),
                         backgroundColor: 'rgba(220, 53, 69, 0.6)',
                         borderColor: 'rgba(220, 53, 69, 1)',
