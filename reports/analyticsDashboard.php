@@ -93,11 +93,16 @@ try {
             ORDER BY month, t.TargetAcct";
         $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
         // Monthly CR vs DR
+        // Monthly CR vs DR
         $monthlyBalanceQuery = "SELECT 
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
             SUM(CASE WHEN t.TxType = 'CR' THEN t.amount ELSE 0 END) as credit_amount,
             SUM(CASE WHEN t.TxType = 'DR' THEN t.amount ELSE 0 END) as debit_amount,
-            SUM(CASE WHEN t.TxType = 'CR' THEN t.amount WHEN t.TxType = 'DR' THEN -t.amount END) as net_balance
+            SUM(CASE 
+                WHEN t.TxType = 'CR' THEN t.amount 
+                WHEN t.TxType = 'DR' THEN -t.amount 
+                ELSE 0 
+            END) as net_balance
             FROM TblTxDetails t
             WHERE YEAR(t.DateOfTx) = :year
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
@@ -367,7 +372,28 @@ try {
                             </div>
                         </div>
                     </div>
+                    <?php if (!IS_PRODUCTION): ?>
+                    <div class="accordion mt-2" id="debugAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed bg-danger text-white" type="button" data-bs-toggle="collapse" data-bs-target="#debugCollapse" aria-expanded="false">
+                                    Debug Information
+                                </button>
+                            </h2>
+                            <div id="debugCollapse" class="accordion-collapse collapse">
+                                <div class="accordion-body">
+                                    <h6>SQL Query:</h6>
+                                    <pre class="bg-light p-2"><?php echo htmlspecialchars($monthlyBalanceQuery); ?></pre>
+                                    <h6>Data:</h6>
+                                    <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($monthlyBalanceData, true)); ?></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                 </div>
+            </div>
+        </div>
             </div>
         <?php endif; ?>
     </div>
