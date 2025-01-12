@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2025-01-12
+### Added
+- Analytics Dashboard with interactive charts using Chart.js
+- Chart.js integration guide with implementation examples
+- Visual representation of appeals and beneficiary data through charts
+
 ## [1.0.6] - 2025-01-07
 
 ### Enhanced

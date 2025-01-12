@@ -155,6 +155,9 @@ Production URLs will be:
 - Bootstrap 5 for frontend  
 - Local MySQL database for development
 
+## Documentation
+- [Chart.js Integration Guide](docs/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
+
 ## File Organization
 - All pages include init.php which handles:
 - Configuration loading

@@ -1,124 +1,222 @@
 <?php
-require_once('../includes/init.php');
+define('DEBUG_MODE', false);
+
+require_once(__DIR__ . '/../includes/init.php');
+require_once(__DIR__ . '/../includes/utilities.php');
+require_once(__DIR__ . '/includes/report_utilities.php');
+
+$error = '';
+$appealsData = [];
+$geoData = [];
+$categoryData = [];
+
+try {
+    // Initialize database connection
+    $db = Database::getInstance();
+    $selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
+
+    // Appeals status distribution
+    $appealsQuery = "SELECT
+        COALESCE(a.status, 'Pending') as status,
+        COUNT(DISTINCT a.Id) as total_appeals,
+        COALESCE(SUM(t.amount), 0) as total_amount
+        FROM TblAppealInfo a
+        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+        WHERE YEAR(a.created_date) = :year
+        GROUP BY a.status";
+    $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
+
+    // Geographic distribution by State
+    $geoQuery = "SELECT
+        COALESCE(b.State, 'Unknown') as region,
+        COUNT(DISTINCT b.Id) as beneficiary_count,
+        COUNT(DISTINCT a.Id) as appeal_count
+        FROM TblBeneficiary b
+        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+        WHERE YEAR(b.created_date) = :year
+        GROUP BY b.State";
+    $geoData = $db->queryAll($geoQuery, ['year' => $selectedYear]);
+
+    // Category and Type distribution
+    $categoryQuery = "SELECT
+        COALESCE(Category, 'General') as category,
+        Type,
+        COUNT(DISTINCT Id) as beneficiary_count
+        FROM TblBeneficiary
+        WHERE YEAR(created_date) = :year
+        GROUP BY Category, Type";
+    $categoryData = $db->queryAll($categoryQuery, ['year' => $selectedYear]);
+} catch (Exception $e) {
+    $error = "Failed to fetch dashboard data";
+    if (DEBUG_MODE) {
+        $error .= ": " . $e->getMessage();
+    }
+}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - SHaDE-nextGen</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Analytics Dashboard</h2>
+            <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Reports
+            </a>
+        </div>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>Analytics Dashboard</h2>
-        <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Reports
-        </a>
-    </div>
+        <form method="GET" class="mb-4">
+            <div class="row align-items-end">
+                <div class="col-auto">
+                    <label for="year" class="form-label">Select Year:</label>
+                    <select name="year" id="year" class="form-select" onchange="this.form.submit()">
+                        <?php foreach (getYearRange() as $year): ?>
+                            <?php $selected = ($year == $selectedYear) ? 'selected' : ''; ?>
+                            <option value="<?php echo $year; ?>" <?php echo $selected; ?>><?php echo $year; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+        </form>
 
-    <!-- Summary Cards Row -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Total Appeals</h5>
-                    <h2 class="card-text">1,234</h2>
-                    <p class="text-muted">+15% from last month</p>
+        <?php if ($error): ?>
+            <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
+        <?php else: ?>
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Appeals Distribution</h5>
+                            <div class="chart-container">
+                                <canvas id="appealsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Processing Time</h5>
-                    <h2 class="card-text">4.5 days</h2>
-                    <p class="text-muted">-2 days from average</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Success Rate</h5>
-                    <h2 class="card-text">78%</h2>
-                    <p class="text-muted">+5% from last month</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Active Cases</h5>
-                    <h2 class="card-text">456</h2>
-                    <p class="text-muted">Currently in progress</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Charts Row -->
-    <div class="row mb-4">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Monthly Appeals Trend</h5>
-                    <div class="bg-light p-5 text-center">
-                        <p class="text-muted">Chart Placeholder</p>
-                        <p class="text-muted"><i class="fas fa-chart-line fa-3x"></i></p>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Geographic Distribution</h5>
+                            <div class="chart-container">
+                                <canvas id="geoChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Category Distribution</h5>
+                            <div class="chart-container">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Appeal Types Distribution</h5>
-                    <div class="bg-light p-5 text-center">
-                        <p class="text-muted">Chart Placeholder</p>
-                        <p class="text-muted"><i class="fas fa-chart-pie fa-3x"></i></p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php endif; ?>
     </div>
 
-    <!-- Detailed Stats Table -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Detailed Statistics</h5>
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Metric</th>
-                            <th>Current</th>
-                            <th>Previous</th>
-                            <th>Change</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>New Appeals</td>
-                            <td>245</td>
-                            <td>212</td>
-                            <td class="text-success">+15.6%</td>
-                        </tr>
-                        <tr>
-                            <td>Resolved Cases</td>
-                            <td>198</td>
-                            <td>187</td>
-                            <td class="text-success">+5.9%</td>
-                        </tr>
-                        <tr>
-                            <td>Average Resolution Time</td>
-                            <td>4.5 days</td>
-                            <td>6.2 days</td>
-                            <td class="text-success">-27.4%</td>
-                        </tr>
-                        <tr>
-                            <td>Customer Satisfaction</td>
-                            <td>4.2/5.0</td>
-                            <td>3.8/5.0</td>
-                            <td class="text-success">+10.5%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const appealsData = <?php echo json_encode($appealsData); ?>;
+        const geoData = <?php echo json_encode($geoData); ?>;
+        const categoryData = <?php echo json_encode($categoryData); ?>;
 
+        // Appeals Chart
+        if (appealsData && appealsData.length > 0) {
+            new Chart(document.getElementById('appealsChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: appealsData.map(item => item.status),
+                    datasets: [{
+                        label: 'Number of Appeals',
+                        data: appealsData.map(item => parseInt(item.total_appeals)),
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Total Amount (₹)',
+                        data: appealsData.map(item => parseFloat(item.total_amount)),
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Geographic Chart
+        if (geoData && geoData.length > 0) {
+            new Chart(document.getElementById('geoChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: geoData.map(item => item.region),
+                    datasets: [{
+                        label: 'Beneficiaries',
+                        data: geoData.map(item => parseInt(item.beneficiary_count)),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    }, {
+                        label: 'Appeals',
+                        data: geoData.map(item => parseInt(item.appeal_count)),
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y'
+                }
+            });
+        }
+
+        // Category Chart
+        if (categoryData && categoryData.length > 0) {
+            new Chart(document.getElementById('categoryChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: categoryData.map(item => `${item.category} (${item.Type})`),
+                    datasets: [{
+                        data: categoryData.map(item => parseInt(item.beneficiary_count)),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
