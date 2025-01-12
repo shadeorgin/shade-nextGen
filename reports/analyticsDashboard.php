@@ -22,6 +22,17 @@ try {
     $db = Database::getInstance();
     $selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
 
+    // Debug queries
+    $debugQueries = [
+        "Sample Transactions" => "SELECT * FROM TblTxDetails WHERE YEAR(DateOfTx) = :year LIMIT 5",
+        "Transaction Types" => "SELECT DISTINCT TxType, COUNT(*) as count FROM TblTxDetails WHERE YEAR(DateOfTx) = :year GROUP BY TxType",
+        "Monthly Data" => "SELECT DATE_FORMAT(DateOfTx, '%Y-%m') as month, TxType, COUNT(*) as count, SUM(amount) as total FROM TblTxDetails WHERE YEAR(DateOfTx) = :year GROUP BY month, TxType ORDER BY month"
+    ];
+    $debugData = [];
+    foreach ($debugQueries as $label => $query) {
+        $debugData[$label] = $db->queryAll($query, ['year' => $selectedYear]);
+    }
+
     // Appeals status distribution
     $appealsQuery = "SELECT
         COALESCE(a.status, 'Pending') as status,
@@ -382,9 +393,14 @@ try {
                             </h2>
                             <div id="debugCollapse" class="accordion-collapse collapse">
                                 <div class="accordion-body">
-                                    <h6>SQL Query:</h6>
+                                    <h6>Raw Data Analysis:</h6>
+                                    <?php foreach ($debugData as $label => $data): ?>
+                                        <h6 class="mt-3"><?php echo $label; ?>:</h6>
+                                        <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($data, true)); ?></pre>
+                                    <?php endforeach; ?>
+                                    <h6 class="mt-3">Balance Query:</h6>
                                     <pre class="bg-light p-2"><?php echo htmlspecialchars($monthlyBalanceQuery); ?></pre>
-                                    <h6>Data:</h6>
+                                    <h6 class="mt-3">Balance Data:</h6>
                                     <pre class="bg-light p-2"><?php echo htmlspecialchars(print_r($monthlyBalanceData, true)); ?></pre>
                                 </div>
                             </div>
