@@ -161,6 +161,36 @@ try {
                             <div class="chart-container">
                                 <canvas id="appealsChart"></canvas>
                             </div>
+                            <div class="accordion mt-3 bg-light" id="appealsAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appealsCollapse" aria-expanded="false">
+                                            Chart Information
+                                        </button>
+                                    </h2>
+                                    <div id="appealsCollapse" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <p><strong>Purpose:</strong></p>
+                                            <ul>
+                                                <li>Shows distribution of appeals by their status</li>
+                                                <li>Displays both appeal counts and monetary amounts</li>
+                                                <li>Helps track appeal processing effectiveness</li>
+                                            </ul>
+                                            <p><strong>Interactive Features:</strong></p>
+                                            <ul>
+                                                <li>Click any legend item to hide/show that data series</li>
+                                                <li>Mouse over bars to see exact values</li>
+                                                <li>Compare appeal counts against total amounts</li>
+                                            </ul>
+                                            <p><strong>Available Controls:</strong></p>
+                                            <ul>
+                                                <li>Year selector at top of dashboard</li>
+                                                <li>Toggleable legends for Appeal Count and Total Amount</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -171,6 +201,36 @@ try {
                             <h5 class="card-title">Geographic Distribution</h5>
                             <div class="chart-container">
                                 <canvas id="geoChart"></canvas>
+                            </div>
+                            <div class="accordion mt-3 bg-light" id="geoAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#geoCollapse" aria-expanded="false">
+                                            Chart Information
+                                        </button>
+                                    </h2>
+                                    <div id="geoCollapse" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <p><strong>Purpose:</strong></p>
+                                            <ul>
+                                                <li>Displays regional distribution by state</li>
+                                                <li>Compares beneficiary and appeal counts geographically</li>
+                                                <li>Identifies high-activity regions</li>
+                                            </ul>
+                                            <p><strong>Interactive Features:</strong></p>
+                                            <ul>
+                                                <li>Click legend items to hide/show specific metrics</li>
+                                                <li>Hover over bars for detailed state-wise counts</li>
+                                                <li>Horizontal layout for better readability</li>
+                                            </ul>
+                                            <p><strong>Available Controls:</strong></p>
+                                            <ul>
+                                                <li>Year selector at top of dashboard</li>
+                                                <li>Toggleable legends for Beneficiaries and Appeals</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -186,6 +246,37 @@ try {
                                                     <div class="chart-container">
                                                         <canvas id="categoryChart"></canvas>
                             </div>
+                            <div class="accordion mt-3 bg-light" id="categoryAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#categoryCollapse" aria-expanded="false">
+                                            Chart Information
+                                        </button>
+                                    </h2>
+                                    <div id="categoryCollapse" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <p><strong>Purpose:</strong></p>
+                                            <ul>
+                                                <li>Shows beneficiary distribution across categories</li>
+                                                <li>Provides insights into beneficiary types</li>
+                                                <li>Supports both overview and detailed analysis</li>
+                                            </ul>
+                                            <p><strong>Interactive Features:</strong></p>
+                                            <ul>
+                                                <li>Click legend items to hide/show specific categories</li>
+                                                <li>Hover over segments for exact counts and percentages</li>
+                                                <li>Switch between pie and bar chart views</li>
+                                            </ul>
+                                            <p><strong>Available Controls:</strong></p>
+                                            <ul>
+                                                <li>Year selector at top of dashboard</li>
+                                                <li>"Show Details" toggle button for view switching</li>
+                                                <li>Toggleable category legends</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -200,6 +291,37 @@ try {
                             <div class="chart-container">
                                 <canvas id="monthlyTxChart"></canvas>
                             </div>
+                            <div class="accordion mt-3 bg-light" id="monthlyTxAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#monthlyTxCollapse" aria-expanded="false">
+                                            Chart Information
+                                        </button>
+                                    </h2>
+                                    <div id="monthlyTxCollapse" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <p><strong>Purpose:</strong></p>
+                                            <ul>
+                                                <li>Visualizes monthly transaction trends</li>
+                                                <li>Shows transaction patterns over time</li>
+                                                <li>Tracks account-wise transaction distribution</li>
+                                            </ul>
+                                            <p><strong>Interactive Features:</strong></p>
+                                            <ul>
+                                                <li>Click legend items to hide/show specific accounts</li>
+                                                <li>Hover over points to see exact transaction counts</li>
+                                                <li>View overall trends or account-specific patterns</li>
+                                            </ul>
+                                            <p><strong>Available Controls:</strong></p>
+                                            <ul>
+                                                <li>Year selector at top of dashboard</li>
+                                                <li>"Show Details" toggle for account-wise breakdown</li>
+                                                <li>Toggleable account legends in detailed view</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,6 +332,37 @@ try {
                             <h5 class="card-title">Monthly CR vs DR</h5>
                             <div class="chart-container">
                                 <canvas id="monthlyBalanceChart"></canvas>
+                            </div>
+                            <div class="accordion mt-3 bg-light" id="monthlyBalanceAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#monthlyBalanceCollapse" aria-expanded="false">
+                                            Chart Information
+                                        </button>
+                                    </h2>
+                                    <div id="monthlyBalanceCollapse" class="accordion-collapse collapse">
+                                        <div class="accordion-body">
+                                            <p><strong>Purpose:</strong></p>
+                                            <ul>
+                                                <li>Compares monthly credit and debit transactions</li>
+                                                <li>Shows financial balance trends</li>
+                                                <li>Tracks monetary flow patterns</li>
+                                            </ul>
+                                            <p><strong>Interactive Features:</strong></p>
+                                            <ul>
+                                                <li>Click legend items to hide/show CR or DR data</li>
+                                                <li>Hover over bars for exact monetary values</li>
+                                                <li>Compare credit vs debit amounts</li>
+                                            </ul>
+                                            <p><strong>Available Controls:</strong></p>
+                                            <ul>
+                                                <li>Year selector at top of dashboard</li>
+                                                <li>Toggleable legends for CR and DR amounts</li>
+                                                <li>All amounts shown in ₹ (INR)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
