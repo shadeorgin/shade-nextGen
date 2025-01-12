@@ -112,7 +112,14 @@ Usage in templates:
 <?php endif; ?>
 ```
 
-#### Analytics Dashboard Configuration
+- Layout
+
+### Analytics Dashboard Features
+- Interactive charts for data visualization
+- Toggleable category distribution view:
+- Simple View: High-level category overview (default)
+- Detailed View: Detailed breakdown with subcategories
+- Consistent color scheme across charts for better readability
 The analytics dashboard uses Chart.js for data visualization with configurable font sizes that can be customized through config.php for optimal readability:
 
 ```php

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.7] - 2025-01-12
 ### Added
+- Enhanced category distribution chart with:
+    - Toggle between simple and detailed views
+    - Improved color scheme with 12 distinct colors
+    - Simple view as default for better initial comprehension
 - Analytics Dashboard with interactive charts using Chart.js
 - Fixed chart configuration with standardized font sizes through config.php:
     - Configurable global font size settings via constants

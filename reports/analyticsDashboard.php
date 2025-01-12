@@ -157,8 +157,22 @@ try {
     </div>
 
     <script>
-    // Initialize chart configuration
-    const chartConfig = <?php echo json_encode($chartConfig); ?>;
+// Initialize chart configuration
+const chartColors = [
+    'rgba(255, 99, 132, 0.6)',   // Pink
+    'rgba(54, 162, 235, 0.6)',   // Blue
+    'rgba(255, 206, 86, 0.6)',   // Yellow
+    'rgba(75, 192, 192, 0.6)',   // Teal
+    'rgba(153, 102, 255, 0.6)',  // Purple
+    'rgba(255, 159, 64, 0.6)',   // Orange
+    'rgba(46, 204, 113, 0.6)',   // Green
+    'rgba(142, 68, 173, 0.6)',   // Deep Purple
+    'rgba(52, 152, 219, 0.6)',   // Light Blue
+    'rgba(231, 76, 60, 0.6)',    // Red
+    'rgba(26, 188, 156, 0.6)',   // Turquoise
+    'rgba(243, 156, 18, 0.6)'    // Dark Yellow
+];
+const chartConfig = <?php echo json_encode($chartConfig); ?>;
     const appealsData = <?php echo json_encode($appealsData); ?>;
     const geoData = <?php echo json_encode($geoData); ?>;
     const categoryData = <?php echo json_encode($categoryData); ?>;
@@ -196,7 +210,7 @@ try {
                         data: Object.values(groupedData).map(types => 
                             types.reduce((sum, item) => sum + item.count, 0)
                         ),
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                        backgroundColor: chartColors
                     }]
                 },
                 options: {
@@ -220,13 +234,7 @@ try {
                     labels: data.map(item => item.category),
                     datasets: [{
                         data: data.map(item => parseInt(item.beneficiary_count)),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)'
-                        ]
+                        backgroundColor: chartColors
                     }]
                 },
                 options: {
