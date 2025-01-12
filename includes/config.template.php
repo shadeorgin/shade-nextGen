@@ -30,3 +30,11 @@ define('DB_CHARSET', 'utf8mb4');
 define('DB_PERSISTENT', true);  // Enable connection pooling
 define('DB_TIMEOUT', 5);        // Connection timeout in seconds
 define('DB_ERRMODE', PDO::ERRMODE_EXCEPTION);
+
+// Asset Configuration
+define('USE_LOCAL_CHARTJS', true);  // Set false to use CDN version of Chart.js
+
+// Chart Font Size Configuration
+define('CHART_LEGEND_FONT_SIZE', 16);     // Font size for chart legends
+define('CHART_AXIS_LABEL_FONT_SIZE', 16); // Font size for chart axis labels
+define('CHART_TITLE_FONT_SIZE', 18);      // Font size for chart titles

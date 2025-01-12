@@ -79,17 +79,15 @@ require_once('../includes/init.php');
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h5 class="card-title">
-                        Analytics Dashboard
-                        <span class="badge bg-warning text-dark ms-2">Coming Soon</span>
-                    </h5>
+                    <h5 class="card-title">Analytics Dashboard</h5>
                     <p class="card-text">
                         Interactive dashboard displaying key metrics, trends, and performance indicators
-                        for program analysis and decision making. (Currently under development)
+                        through visual charts and analytics. View appeals, beneficiaries, and geographical
+                        distributions in comprehensive 3D and 2D visualizations.
                     </p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-secondary disabled" aria-disabled="true">View Report</a>
+                    <a href="<?php echo getBaseUrl(); ?>reports/analyticsDashboard.php" class="btn btn-primary">View Dashboard</a>
                 </div>
             </div>
         </div>

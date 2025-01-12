@@ -4,6 +4,87 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.11] - 2025-01-13
+### Fixed
+- Fixed Monthly CR vs DR chart data display:
+    - Corrected transaction type codes (C/D) to match database values
+    - Fixed data aggregation in balance calculations
+    - Added proper NULL handling in aggregations
+    - Updated chart labels to reflect correct transaction codes
+
+## [1.0.10] - 2025-01-16
+### Added
+- Enhanced Monthly CR vs DR chart features:
+    - Added net balance line overlay
+    - Improved transaction data visualization
+    - Combined bar and line chart representation
+    - Color-coded credit and debit amounts
+    - Debug information panel for development
+    - Fixed balance calculations for accurate reporting
+
+## [1.0.9] - 2025-01-15
+### Added
+- Added interactive chart documentation with collapsible guides:
+    - Chart-specific help sections with usage instructions
+    - Feature and control documentation for each visualization
+    - Interactive legend usage guidelines
+- Enhanced user interface with per-chart help sections:
+    - Collapsible documentation panels
+    - Clear visibility with light background styling
+    - Improved accessibility with structured information
+- Improved legend interaction descriptions:
+    - Clear instructions for showing/hiding data series
+    - Dynamic chart updating documentation
+    - Visual feedback explanations
+- Added detailed chart controls and features documentation:
+    - Toggle functionality explanation
+    - Data visualization options
+    - Interaction capabilities
+
+## [1.0.8] - 2025-01-12
+### Added
+- Enhanced Monthly Transaction count chart with toggle functionality:
+    - Simple view showing total transactions per month
+    - Detailed view breaking down transactions by account
+    - Improved visualization with line charts
+    - Interactive toggle button for switching views
+
+### Enhanced
+- Reorganized chart initialization code for better maintainability
+- Improved code structure following the category chart pattern
+- Consistent toggle button behavior across different chart types
+
+## [1.0.7] - 2025-01-12
+### Added
+- Enhanced category distribution chart with:
+    - Toggle between simple and detailed views
+    - Improved color scheme with 12 distinct colors
+    - Simple view as default for better initial comprehension
+- Analytics Dashboard with interactive charts using Chart.js
+- Fixed chart configuration with standardized font sizes through config.php:
+    - Configurable global font size settings via constants
+    - Default legend and axis font size set to 16px for better readability
+    - Default title font size set to 18px for improved visibility
+- Chart.js integration guide with implementation examples
+- Visual representation of appeals and beneficiary data through charts
+- Chart.js local setup implementation with configuration flags:
+    - Added local Chart.js file under assets/js/
+    - Configuration option to toggle between local and CDN versions
+    - Documentation for local setup in UserGuides
+
+### Enhanced
+- Standardized Analytics Dashboard layout:
+    - Integrated common header and footer components
+    - Improved UI consistency with main application
+    - Better navigation integration
+- Improved chart readability with configurable font sizes:
+    - Consistent and easily configurable text sizes
+    - Enhanced visibility through standardized sizing
+    - Better user experience with legible chart elements
+- Consistent "Back to Reports" button positioning:
+    - Fixed left-side placement across all report pages
+    - Standardized layout for better navigation experience
+    - Improved user interface consistency
 ## [1.0.6] - 2025-01-07
 
 ### Enhanced
