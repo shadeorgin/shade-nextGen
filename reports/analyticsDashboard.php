@@ -105,15 +105,12 @@ try {
         $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
         // Monthly CR vs DR
         // Monthly CR vs DR
-        $monthlyBalanceQuery = "SELECT 
-            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
-            SUM(CASE WHEN t.TxType = 'CR' THEN t.amount ELSE 0 END) as credit_amount,
-            SUM(CASE WHEN t.TxType = 'DR' THEN t.amount ELSE 0 END) as debit_amount,
-            SUM(CASE 
-                WHEN t.TxType = 'CR' THEN t.amount 
-                WHEN t.TxType = 'DR' THEN -t.amount 
-                ELSE 0 
-            END) as net_balance
+        $monthlyBalanceQuery = "
+            SELECT 
+                DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+                SUM(IF(t.TxType = 'CR', t.amount, 0)) as credit_amount,
+                SUM(IF(t.TxType = 'DR', t.amount, 0)) as debit_amount,
+                SUM(IF(t.TxType = 'CR', t.amount, -t.amount)) as net_balance
             FROM TblTxDetails t
             WHERE YEAR(t.DateOfTx) = :year
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
