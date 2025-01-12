@@ -14,7 +14,7 @@ $error = '';
 $appealsData = [];
 $geoData = [];
 $categoryData = [];
-
+$simpleCategoryData = [];
 try {
     // Initialize database connection
     $db = Database::getInstance();
@@ -27,7 +27,7 @@ try {
         COALESCE(SUM(t.amount), 0) as total_amount
         FROM TblAppealInfo a
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid
-        WHERE YEAR(a.created_date) = :year
+        WHERE YEAR(t.DateOfTx) = :year
         GROUP BY a.status";
     $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
 
@@ -38,22 +38,36 @@ try {
         COUNT(DISTINCT a.Id) as appeal_count
         FROM TblBeneficiary b
         LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
-        WHERE YEAR(b.created_date) = :year
+        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+        WHERE YEAR(t.DateOfTx) = :year
         GROUP BY b.State";
     $geoData = $db->queryAll($geoQuery, ['year' => $selectedYear]);
 
-    // Category and Type distribution
+    // Category and Type distribution (detailed view)
     $categoryQuery = "SELECT
-        COALESCE(Category, 'General') as category,
-        Type,
-        COUNT(DISTINCT Id) as beneficiary_count
-        FROM TblBeneficiary
-        WHERE YEAR(created_date) = :year
-        GROUP BY Category, Type";
+        COALESCE(b.Category, 'General') as category,
+        b.Type,
+        COUNT(DISTINCT b.Id) as beneficiary_count
+        FROM TblBeneficiary b
+        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+        WHERE YEAR(t.DateOfTx) = :year
+        GROUP BY b.Category, b.Type";
     $categoryData = $db->queryAll($categoryQuery, ['year' => $selectedYear]);
+
+    // Simplified category distribution
+    $simpleCategoryQuery = "SELECT 
+        COALESCE(b.Category, 'General') as category,
+        COUNT(DISTINCT b.Id) as beneficiary_count 
+        FROM TblBeneficiary b 
+        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId 
+        LEFT JOIN TblTxDetails t ON a.Id = t.appealid 
+        WHERE YEAR(t.DateOfTx) = :year 
+        GROUP BY b.Category";
+    $simpleCategoryData = $db->queryAll($simpleCategoryQuery, ['year' => $selectedYear]);
 } catch (Exception $e) {
     $error = "Failed to fetch dashboard data";
-    if (DEBUG_MODE) {
+    if (!IS_PRODUCTION) {
         $error .= ": " . $e->getMessage();
     }
 }
@@ -65,6 +79,12 @@ try {
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <?php endif; ?>
 <style>
+    .toggle-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1;
+    }
     .chart-container {
         position: relative;
         height: 400px;
@@ -123,8 +143,11 @@ try {
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Category Distribution</h5>
-                            <div class="chart-container">
-                                <canvas id="categoryChart"></canvas>
+                                                    <button class="btn btn-outline-secondary btn-sm toggle-button" onclick="toggleCategoryView()">
+                                                        <i class="fas fa-list"></i> Show Details
+                                                    </button>
+                                                    <div class="chart-container">
+                                                        <canvas id="categoryChart"></canvas>
                             </div>
                         </div>
                     </div>
@@ -136,10 +159,104 @@ try {
     <script>
     // Initialize chart configuration
     const chartConfig = <?php echo json_encode($chartConfig); ?>;
+    const appealsData = <?php echo json_encode($appealsData); ?>;
+    const geoData = <?php echo json_encode($geoData); ?>;
+    const categoryData = <?php echo json_encode($categoryData); ?>;
+    const simpleCategoryData = <?php echo json_encode($simpleCategoryData); ?>;
+    let isDetailedView = false;
+    let categoryChart = null;
+
+    function initializeCategoryChart(isDetailed = false) {
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const data = isDetailed ? categoryData : simpleCategoryData;
+        
+        if (categoryChart) {
+            categoryChart.destroy();
+        }
+
+        if (isDetailed) {
+            // Group data by category
+            const groupedData = {};
+            data.forEach(item => {
+                if (!groupedData[item.category]) {
+                    groupedData[item.category] = [];
+                }
+                groupedData[item.category].push({
+                    type: item.Type,
+                    count: parseInt(item.beneficiary_count)
+                });
+            });
+
+            categoryChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(groupedData),
+                    datasets: [{
+                        label: 'Beneficiaries by Category and Type',
+                        data: Object.values(groupedData).map(types => 
+                            types.reduce((sum, item) => sum + item.count, 0)
+                        ),
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            categoryChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.map(item => item.category),
+                    datasets: [{
+                        data: data.map(item => parseInt(item.beneficiary_count)),
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function toggleCategoryView() {
+        isDetailedView = !isDetailedView;
+        const button = document.querySelector('.toggle-button');
+        button.innerHTML = isDetailedView ? 
+            '<i class="fas fa-chart-pie"></i> Show Simple View' : 
+            '<i class="fas fa-list"></i> Show Details';
+        initializeCategoryChart(isDetailedView);
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        const appealsData = <?php echo json_encode($appealsData); ?>;
-        const geoData = <?php echo json_encode($geoData); ?>;
-        const categoryData = <?php echo json_encode($categoryData); ?>;
 
         // Appeals Chart
         if (appealsData && appealsData.length > 0) {
@@ -266,41 +383,10 @@ try {
             });
         }
 
-        // Category Chart
-        if (categoryData && categoryData.length > 0) {
-            new Chart(document.getElementById('categoryChart').getContext('2d'), {
-                type: 'pie',
-                data: {
-                    labels: categoryData.map(item => `${item.category} (${item.Type})`),
-                    datasets: [{
-                        data: categoryData.map(item => parseInt(item.beneficiary_count)),
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)'
-                        ]
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'right',
-                            labels: {
-                                font: {
-                                    size: chartConfig.legendFontSize
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
+        // Initialize all charts
+        initializeCategoryChart(false); // Start with simple view
     });
-    </script>
-    <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
-    </body>
-    </html>
+</script>
+<?php require_once(__DIR__ . '/../includes/footer.php'); ?>
+</body>
+</html>
