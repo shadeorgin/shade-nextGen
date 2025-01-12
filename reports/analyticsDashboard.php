@@ -15,6 +15,8 @@ $appealsData = [];
 $geoData = [];
 $categoryData = [];
 $simpleCategoryData = [];
+$monthlyTxData = [];
+$monthlyBalanceData = [];
 try {
     // Initialize database connection
     $db = Database::getInstance();
@@ -64,7 +66,28 @@ try {
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid 
         WHERE YEAR(t.DateOfTx) = :year 
         GROUP BY b.Category";
-    $simpleCategoryData = $db->queryAll($simpleCategoryQuery, ['year' => $selectedYear]);
+        $simpleCategoryData = $db->queryAll($simpleCategoryQuery, ['year' => $selectedYear]);
+
+        // Monthly transaction count
+        $monthlyTxQuery = "SELECT 
+            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+            COUNT(*) as tx_count
+            FROM TblTxDetails t
+            WHERE YEAR(t.DateOfTx) = :year
+            GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
+            ORDER BY month";
+        $monthlyTxData = $db->queryAll($monthlyTxQuery, ['year' => $selectedYear]);
+
+        // Monthly CR vs DR
+        $monthlyBalanceQuery = "SELECT 
+            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+            SUM(CASE WHEN t.TxType = 'CR' THEN t.amount ELSE 0 END) as credit_amount,
+            SUM(CASE WHEN t.TxType = 'DR' THEN t.amount ELSE 0 END) as debit_amount
+            FROM TblTxDetails t
+            WHERE YEAR(t.DateOfTx) = :year
+            GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
+            ORDER BY month";
+        $monthlyBalanceData = $db->queryAll($monthlyBalanceQuery, ['year' => $selectedYear]);
 } catch (Exception $e) {
     $error = "Failed to fetch dashboard data";
     if (!IS_PRODUCTION) {
@@ -152,6 +175,28 @@ try {
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Monthly Transaction Count</h5>
+                            <div class="chart-container">
+                                <canvas id="monthlyTxChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Monthly CR vs DR</h5>
+                            <div class="chart-container">
+                                <canvas id="monthlyBalanceChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         <?php endif; ?>
     </div>
@@ -177,6 +222,8 @@ const chartConfig = <?php echo json_encode($chartConfig); ?>;
     const geoData = <?php echo json_encode($geoData); ?>;
     const categoryData = <?php echo json_encode($categoryData); ?>;
     const simpleCategoryData = <?php echo json_encode($simpleCategoryData); ?>;
+    const monthlyTxData = <?php echo json_encode($monthlyTxData); ?>;
+    const monthlyBalanceData = <?php echo json_encode($monthlyBalanceData); ?>;
     let isDetailedView = false;
     let categoryChart = null;
 
@@ -393,6 +440,116 @@ const chartConfig = <?php echo json_encode($chartConfig); ?>;
 
         // Initialize all charts
         initializeCategoryChart(false); // Start with simple view
+
+        // Monthly Transaction Count Chart
+        if (monthlyTxData && monthlyTxData.length > 0) {
+            new Chart(document.getElementById('monthlyTxChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: monthlyTxData.map(item => {
+                        const [year, month] = item.month.split('-');
+                        return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
+                    }),
+                    datasets: [{
+                        label: 'Transaction Count',
+                        data: monthlyTxData.map(item => parseInt(item.tx_count)),
+                        borderColor: chartColors[0],
+                        backgroundColor: chartColors[0].replace('0.6', '0.1'),
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Monthly CR vs DR Chart
+        if (monthlyBalanceData && monthlyBalanceData.length > 0) {
+            new Chart(document.getElementById('monthlyBalanceChart').getContext('2d'), {
+                type: 'bar',
+                data: {
+                    labels: monthlyBalanceData.map(item => {
+                        const [year, month] = item.month.split('-');
+                        return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
+                    }),
+                    datasets: [{
+                        label: 'Credit Amount (CR)',
+                        data: monthlyBalanceData.map(item => parseFloat(item.credit_amount)),
+                        backgroundColor: chartColors[1],
+                        borderColor: chartColors[1],
+                        borderWidth: 1
+                    }, {
+                        label: 'Debit Amount (DR)',
+                        data: monthlyBalanceData.map(item => parseFloat(item.debit_amount)),
+                        backgroundColor: chartColors[2],
+                        borderColor: chartColors[2],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                },
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
