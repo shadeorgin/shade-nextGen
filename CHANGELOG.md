@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.7] - 2025-01-12
 ### Added
 - Analytics Dashboard with interactive charts using Chart.js
+- Fixed chart configuration with standardized font sizes through config.php:
+    - Configurable global font size settings via constants
+    - Default legend and axis font size set to 16px for better readability
+    - Default title font size set to 18px for improved visibility
 - Chart.js integration guide with implementation examples
 - Visual representation of appeals and beneficiary data through charts
-- Chart.js local setup implementation with configuration flags
+- Chart.js local setup implementation with configuration flags:
     - Added local Chart.js file under assets/js/
     - Configuration option to toggle between local and CDN versions
     - Documentation for local setup in UserGuides
@@ -19,6 +23,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Integrated common header and footer components
     - Improved UI consistency with main application
     - Better navigation integration
+- Improved chart readability with configurable font sizes:
+    - Consistent and easily configurable text sizes
+    - Enhanced visibility through standardized sizing
+    - Better user experience with legible chart elements
+- Consistent "Back to Reports" button positioning:
+    - Fixed left-side placement across all report pages
+    - Standardized layout for better navigation experience
+    - Improved user interface consistency
 ## [1.0.6] - 2025-01-07
 
 ### Enhanced

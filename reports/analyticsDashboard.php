@@ -1,7 +1,12 @@
 <?php
-define('DEBUG_MODE', false);
-
 require_once(__DIR__ . '/../includes/init.php');
+
+// Chart configuration with default values
+$chartConfig = [
+    'legendFontSize' => 16,
+    'axisLabelFontSize' => 16,
+    'titleFontSize' => 18
+];
 require_once(__DIR__ . '/../includes/utilities.php');
 require_once(__DIR__ . '/includes/report_utilities.php');
 
@@ -69,12 +74,10 @@ try {
 
 <?php require_once(__DIR__ . '/../includes/header.php'); ?>
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Analytics Dashboard</h2>
-            <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Reports
-            </a>
-        </div>
+        <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Reports
+        </a>
+        <h2>Analytics Dashboard</h2>
 
         <form method="GET" class="mb-4">
             <div class="row align-items-end">
@@ -131,6 +134,8 @@ try {
     </div>
 
     <script>
+    // Initialize chart configuration
+    const chartConfig = <?php echo json_encode($chartConfig); ?>;
     document.addEventListener('DOMContentLoaded', function() {
         const appealsData = <?php echo json_encode($appealsData); ?>;
         const geoData = <?php echo json_encode($geoData); ?>;
@@ -158,7 +163,44 @@ try {
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            },
+                            title: {
+                                display: true,
+                                font: {
+                                    size: chartConfig.titleFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            },
+                            title: {
+                                display: true,
+                                font: {
+                                    size: chartConfig.titleFontSize
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -182,7 +224,44 @@ try {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    indexAxis: 'y'
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            },
+                            title: {
+                                display: true,
+                                font: {
+                                    size: chartConfig.titleFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            },
+                            title: {
+                                display: true,
+                                font: {
+                                    size: chartConfig.titleFontSize
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
@@ -209,7 +288,12 @@ try {
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'right'
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
                         }
                     }
                 }
@@ -218,3 +302,5 @@ try {
     });
     </script>
     <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
+    </body>
+    </html>

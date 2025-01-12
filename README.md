@@ -113,7 +113,16 @@ Usage in templates:
 ```
 
 #### Analytics Dashboard Configuration
-The analytics dashboard uses Chart.js for data visualization:
+The analytics dashboard uses Chart.js for data visualization with configurable font sizes that can be customized through config.php for optimal readability:
+
+```php
+// In config.php
+define('CHART_LEGEND_FONT_SIZE', 16);    // Font size for chart legends (default: 16px)
+define('CHART_TITLE_FONT_SIZE', 18);     // Font size for chart titles (default: 18px)
+define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 16px)
+```
+
+These settings are applied consistently across all charts in the analytics dashboard. The chart configuration uses these values as shown below:
 ```javascript
 const chartConfig = {
     responsive: true,
@@ -121,10 +130,34 @@ const chartConfig = {
     plugins: {
         legend: {
             position: 'top',
+            labels: {
+                font: {
+                    size: 16  // Standardized legend font size
+                }
+            }
         },
         title: {
             display: true,
-            text: 'Analytics Overview'
+            text: 'Analytics Overview',
+            font: {
+                size: 18  // Larger title font size
+            }
+        }
+    },
+    scales: {
+        x: {
+            ticks: {
+                font: {
+                    size: 16  // Standardized x-axis labels
+                }
+            }
+        },
+        y: {
+            ticks: {
+                font: {
+                    size: 16  // Standardized y-axis labels
+                }
+            }
         }
     }
 };
