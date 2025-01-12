@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.10] - 2025-01-16
+### Added
+- Enhanced Monthly CR vs DR chart features:
+    - Added net balance line overlay
+    - Improved transaction data visualization
+    - Combined bar and line chart representation
+    - Color-coded credit and debit amounts
+    - Debug information panel for development
+    - Fixed balance calculations for accurate reporting
+
 ## [1.0.9] - 2025-01-15
 ### Added
 - Added interactive chart documentation with collapsible guides:

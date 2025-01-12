@@ -61,17 +61,27 @@ This guide provides detailed information about the various reports available in 
     * Switches between simple and detailed visualization modes
 
 ### 5. Monthly CR vs DR Report
-**Purpose**: Compares monthly credit and debit transactions.
+**Purpose**: Compares monthly credit and debit transactions with net balance trend.
 
 **Visualization**:
-- Interactive legend to toggle between CR and DR displays
-- Bar chart representation
-- Metrics displayed:
-    * Credit Amount (CR) in ₹
-    * Debit Amount (DR) in ₹
-- Formatted amounts with ₹ symbol
+- Hybrid visualization combining:
+    * Bar chart for Credit (green) and Debit (red) amounts
+    * Line chart overlay for Net Balance trend (blue)
+    * Monthly progression on X-axis
+    * Amount scale on Y-axis (₹)
 
-**Controls**: No specific toggle controls available
+**Interactive Features**:
+- Click legend items to toggle:
+    * Credit amount bars
+    * Debit amount bars
+    * Net balance line
+- Hover over elements for detailed values
+- Developer mode shows debug information panel
+
+**Controls**:
+- Year selector at dashboard top
+- Toggleable legends for each data series
+- Debug accordion in development environment
 
 ## Common Features
 All reports include the following features:
