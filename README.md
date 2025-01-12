@@ -116,6 +116,9 @@ Usage in templates:
 
 ### Analytics Dashboard Features
 - Interactive charts for data visualization
+- Toggleable Monthly Transaction count view:
+- Simple View: Shows total transactions per month (default)
+- Detailed View: Breaks down transactions by account
 - Toggleable category distribution view:
 - Simple View: High-level category overview (default)
 - Detailed View: Detailed breakdown with subcategories

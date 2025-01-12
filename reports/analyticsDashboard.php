@@ -79,6 +79,9 @@ try {
             ORDER BY month";
         $monthlyTxData = $db->queryAll($monthlyTxQuery, ['year' => $selectedYear]);
 
+        // Monthly transaction count by account
+        // Monthly transaction count by account
+
         // Monthly transaction count by TargetAcct
         $monthlyTxDetailedQuery = "SELECT 
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
@@ -232,18 +235,17 @@ const chartColors = [
     'rgba(243, 156, 18, 0.6)'    // Dark Yellow
 ];
 const chartConfig = <?php echo json_encode($chartConfig); ?>;
+const monthlyTxData = <?php echo json_encode($monthlyTxData); ?>;
 const monthlyTxDetailedData = <?php echo json_encode($monthlyTxDetailedData); ?>;
-let isTxDetailedView = false;
-let txChart = null;
 const appealsData = <?php echo json_encode($appealsData); ?>;
-    const geoData = <?php echo json_encode($geoData); ?>;
-    const categoryData = <?php echo json_encode($categoryData); ?>;
-    const simpleCategoryData = <?php echo json_encode($simpleCategoryData); ?>;
-    const monthlyTxData = <?php echo json_encode($monthlyTxData); ?>;
-    const monthlyBalanceData = <?php echo json_encode($monthlyBalanceData); ?>;
-    let isDetailedView = false;
-    let categoryChart = null;
-
+const geoData = <?php echo json_encode($geoData); ?>;
+const categoryData = <?php echo json_encode($categoryData); ?>;
+const simpleCategoryData = <?php echo json_encode($simpleCategoryData); ?>;
+const monthlyBalanceData = <?php echo json_encode($monthlyBalanceData); ?>;
+let isDetailedView = false;
+let categoryChart = null;
+let txChart = null;
+let isTxDetailedView = false;
     function initializeCategoryChart(isDetailed = false) {
         const ctx = document.getElementById('categoryChart').getContext('2d');
         const data = isDetailed ? categoryData : simpleCategoryData;
@@ -326,6 +328,138 @@ const appealsData = <?php echo json_encode($appealsData); ?>;
             '<i class="fas fa-chart-pie"></i> Show Simple View' : 
             '<i class="fas fa-list"></i> Show Details';
         initializeCategoryChart(isDetailedView);
+    }
+
+    function initializeTransactionChart(isDetailed = false) {
+        const ctx = document.getElementById('monthlyTxChart').getContext('2d');
+        
+        if (txChart) {
+            txChart.destroy();
+        }
+
+        if (!isDetailed) {
+            // Simple view - single line chart
+            txChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthlyTxData.map(item => {
+                        const [year, month] = item.month.split('-');
+                        return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
+                    }),
+                    datasets: [{
+                        label: 'Total Transactions',
+                        data: monthlyTxData.map(item => parseInt(item.tx_count)),
+                        borderColor: chartColors[0],
+                        backgroundColor: chartColors[0].replace('0.6', '0.1'),
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        } else {
+            // Detailed view - multiple line chart
+            const months = [...new Set(monthlyTxDetailedData.map(item => item.month))].sort();
+            const targetAccts = [...new Set(monthlyTxDetailedData.map(item => item.TargetAcct))].sort();
+            
+            const datasets = targetAccts.map((acct, index) => {
+                const data = months.map(month => {
+                    const record = monthlyTxDetailedData.find(item => 
+                        item.month === month && item.TargetAcct === acct
+                    );
+                    return record ? parseInt(record.tx_count) : 0;
+                });
+                
+                return {
+                    label: acct,
+                    data: data,
+                    borderColor: chartColors[index],
+                    backgroundColor: chartColors[index].replace('0.6', '0.1'),
+                    borderWidth: 2,
+                    fill: true
+                };
+            });
+
+            txChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: months.map(month => {
+                        const [year, m] = month.split('-');
+                        return new Date(year, m - 1).toLocaleDateString('default', { month: 'short' });
+                    }),
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: chartConfig.axisLabelFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    function toggleTxView() {
+        isTxDetailedView = !isTxDetailedView;
+        const button = document.querySelector('#monthlyTxChart').closest('.card-body').querySelector('.toggle-button');
+        button.innerHTML = isTxDetailedView ? 
+            '<i class="fas fa-chart-line"></i> Show Simple View' : 
+            '<i class="fas fa-list"></i> Show Details';
+        initializeTransactionChart(isTxDetailedView);
     }
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -458,136 +592,7 @@ const appealsData = <?php echo json_encode($appealsData); ?>;
         // Initialize all charts
         initializeCategoryChart(false); // Start with simple view
 
-        function toggleTxView() {
-            isTxDetailedView = !isTxDetailedView;
-            const button = document.querySelector('#monthlyTxChart').closest('.card-body').querySelector('.toggle-button');
-            button.innerHTML = isTxDetailedView ? 
-                '<i class="fas fa-chart-line"></i> Show Simple View' : 
-                '<i class="fas fa-list"></i> Show Details';
-            
-            const ctx = document.getElementById('monthlyTxChart').getContext('2d');
-            if (txChart) {
-                txChart.destroy();
-            }
-
-            if (!isTxDetailedView) {
-                // Simple view - existing code
-                txChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: monthlyTxData.map(item => {
-                            const [year, month] = item.month.split('-');
-                            return new Date(year, month - 1).toLocaleDateString('default', { month: 'short' });
-                        }),
-                        datasets: [{
-                            label: 'Total Transactions',
-                            data: monthlyTxData.map(item => parseInt(item.tx_count)),
-                            borderColor: chartColors[0],
-                            backgroundColor: chartColors[0].replace('0.6', '0.1'),
-                            borderWidth: 2,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                labels: {
-                                    font: {
-                                        size: chartConfig.legendFontSize
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    font: {
-                                        size: chartConfig.axisLabelFontSize
-                                    }
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    font: {
-                                        size: chartConfig.axisLabelFontSize
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            } else {
-                // Detailed view
-                const months = [...new Set(monthlyTxDetailedData.map(item => item.month))].sort();
-                const targetAccts = [...new Set(monthlyTxDetailedData.map(item => item.TargetAcct))].sort();
-                
-                const datasets = targetAccts.map((acct, index) => {
-                    const data = months.map(month => {
-                        const record = monthlyTxDetailedData.find(item => 
-                            item.month === month && item.TargetAcct === acct
-                        );
-                        return record ? parseInt(record.tx_count) : 0;
-                    });
-                    
-                    return {
-                        label: acct,
-                        data: data,
-                        borderColor: chartColors[index],
-                        backgroundColor: chartColors[index].replace('0.6', '0.1'),
-                        borderWidth: 2,
-                        fill: true
-                    };
-                });
-
-                txChart = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: months.map(month => {
-                            const [year, m] = month.split('-');
-                            return new Date(year, m - 1).toLocaleDateString('default', { month: 'short' });
-                        }),
-                        datasets: datasets
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: {
-                                        size: chartConfig.legendFontSize
-                                    }
-                                }
-                            }
-                        },
-                        scales: {
-                            x: {
-                                ticks: {
-                                    font: {
-                                        size: chartConfig.axisLabelFontSize
-                                    }
-                                }
-                            },
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    font: {
-                                        size: chartConfig.axisLabelFontSize
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        // Initial chart setup
-        toggleTxView();
+        initializeTransactionChart(false);
 
         // Monthly CR vs DR Chart
         if (monthlyBalanceData && monthlyBalanceData.length > 0) {

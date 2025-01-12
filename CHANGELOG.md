@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] - 2025-01-12
+### Added
+- Enhanced Monthly Transaction count chart with toggle functionality:
+    - Simple view showing total transactions per month
+    - Detailed view breaking down transactions by account
+    - Improved visualization with line charts
+    - Interactive toggle button for switching views
+
+### Enhanced
+- Reorganized chart initialization code for better maintainability
+- Improved code structure following the category chart pattern
+- Consistent toggle button behavior across different chart types
+
 ## [1.0.7] - 2025-01-12
 ### Added
 - Enhanced category distribution chart with:
