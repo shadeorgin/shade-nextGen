@@ -115,7 +115,14 @@ Usage in templates:
 - Layout
 
 ### Analytics Dashboard Features
-- Interactive charts for data visualization
+- Interactive charts for data visualization with detailed usage guides:
+- Collapsible help sections for each chart
+- Step-by-step usage instructions
+- Feature-specific controls documentation
+- Interactive legend functionality across all charts:
+- Click legend items to show/hide specific data series
+- Dynamically update chart visualization
+- Maintain visibility of unselected data points
 - Toggleable Monthly Transaction count view:
 - Simple View: Shows total transactions per month (default)
 - Detailed View: Breaks down transactions by account
@@ -123,6 +130,8 @@ Usage in templates:
 - Simple View: High-level category overview (default)
 - Detailed View: Detailed breakdown with subcategories
 - Consistent color scheme across charts for better readability
+- Intuitive user interface with embedded documentation
+- Interactive help sections with visual guides
 The analytics dashboard uses Chart.js for data visualization with configurable font sizes that can be customized through config.php for optimal readability:
 
 ```php

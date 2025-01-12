@@ -165,7 +165,7 @@ try {
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#appealsCollapse" aria-expanded="false">
-                                            Chart Information
+                                            How to Use Appeals Chart
                                         </button>
                                     </h2>
                                     <div id="appealsCollapse" class="accordion-collapse collapse">
@@ -206,7 +206,7 @@ try {
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#geoCollapse" aria-expanded="false">
-                                            Chart Information
+                                            How to Use Geographic Chart
                                         </button>
                                     </h2>
                                     <div id="geoCollapse" class="accordion-collapse collapse">
@@ -250,7 +250,7 @@ try {
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#categoryCollapse" aria-expanded="false">
-                                            Chart Information
+                                            How to Use Category Chart
                                         </button>
                                     </h2>
                                     <div id="categoryCollapse" class="accordion-collapse collapse">
@@ -295,7 +295,7 @@ try {
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#monthlyTxCollapse" aria-expanded="false">
-                                            Chart Information
+                                            How to Use Transaction Chart
                                         </button>
                                     </h2>
                                     <div id="monthlyTxCollapse" class="accordion-collapse collapse">
@@ -337,7 +337,7 @@ try {
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
                                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#monthlyBalanceCollapse" aria-expanded="false">
-                                            Chart Information
+                                            How to Use Balance Chart
                                         </button>
                                     </h2>
                                     <div id="monthlyBalanceCollapse" class="accordion-collapse collapse">

@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2025-01-15
+### Added
+- Added interactive chart documentation with collapsible guides:
+    - Chart-specific help sections with usage instructions
+    - Feature and control documentation for each visualization
+    - Interactive legend usage guidelines
+- Enhanced user interface with per-chart help sections:
+    - Collapsible documentation panels
+    - Clear visibility with light background styling
+    - Improved accessibility with structured information
+- Improved legend interaction descriptions:
+    - Clear instructions for showing/hiding data series
+    - Dynamic chart updating documentation
+    - Visual feedback explanations
+- Added detailed chart controls and features documentation:
+    - Toggle functionality explanation
+    - Data visualization options
+    - Interaction capabilities
+
 ## [1.0.8] - 2025-01-12
 ### Added
 - Enhanced Monthly Transaction count chart with toggle functionality:
