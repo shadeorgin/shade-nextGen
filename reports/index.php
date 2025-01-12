@@ -11,8 +11,8 @@ require_once('../includes/init.php');
     </div>
 
     <div class="row">
-        <!-- Appeal Summary Report Card -->
-        <div class="col-md-6 mb-4">
+        <!-- First row -->
+        <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Appeal Summary Report</h5>
@@ -27,8 +27,7 @@ require_once('../includes/init.php');
             </div>
         </div>
 
-        <!-- Causewise Summary Report Card -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Causewise Summary Report</h5>
@@ -43,8 +42,7 @@ require_once('../includes/init.php');
             </div>
         </div>
 
-        <!-- Beneficiary Summary Report Card -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Beneficiary Summary Report</h5>
@@ -59,8 +57,8 @@ require_once('../includes/init.php');
             </div>
         </div>
 
-        <!-- Transaction Summary Report Card -->
-        <div class="col-md-6 mb-4">
+        <!-- Second row -->
+        <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Transaction Summary Report</h5>
@@ -75,8 +73,25 @@ require_once('../includes/init.php');
             </div>
         </div>
 
+        <!-- State Coverage Heat Map Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">State Coverage Heat Map</h5>
+                    <p class="card-text">Visual representation of beneficiary distribution across India using an interactive heat map. Shows coverage intensity and state-wise statistics.</p>
+                    <div class="d-grid">
+                        <a href="<?php echo getBaseUrl(); ?>reports/stateHeatMap.php" class="btn btn-primary">
+                            <i class="fas fa-map-marked-alt me-2"></i>View Heat Map
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <i class="fas fa-chart-area"></i> Geographic Visualization
+                </div>
+            </div>
+        </div>
         <!-- Analytics Dashboard Card -->
-        <div class="col-md-6 mb-4">
+        <div class="col-md-4 mb-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Analytics Dashboard</h5>

@@ -1,0 +1,72 @@
+#mapContainer {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+#indiaMap {
+    width: 100%;
+    height: auto;
+    background: #f8f9fa;
+}
+
+#indiaMap path {
+    fill: #e9ecef;
+    stroke: #495057;
+    stroke-width: 0.5;
+    vector-effect: non-scaling-stroke;
+    transition: all 0.3s ease;
+}
+
+#indiaMap path:hover {
+    stroke-width: 1;
+    stroke: #212529;
+    cursor: pointer;
+    filter: brightness(0.95);
+}
+
+.map-tooltip {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.legend-gradient {
+    width: 200px;
+    height: 20px;
+    background: linear-gradient(to right, 
+        rgba(54, 162, 235, 0.2),
+        rgba(54, 162, 235, 1)
+    );
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+    margin: 0 10px;
+}
+
+.state-label {
+    font-size: 8px;
+    fill: #495057;
+    font-weight: 500;
+    pointer-events: none;
+}
+
+/* For development visualization */
+#indiaMap path[data-active="false"] {
+    fill: #f8d7da;
+    opacity: 0.5;
+}
+
+#indiaMap path[data-active="true"] {
+    fill: #d4edda;
+}
