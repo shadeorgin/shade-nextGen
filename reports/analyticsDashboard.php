@@ -53,22 +53,21 @@ try {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard - SHaDE-nextGen</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .chart-container {
-            position: relative;
-            height: 400px;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
+<!-- Include Chart.js before header -->
+<?php if (USE_LOCAL_CHARTJS): ?>
+<script src="<?php echo getBaseUrl(); ?>assets/js/chart.min.js"></script>
+<?php else: ?>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<?php endif; ?>
+<style>
+    .chart-container {
+        position: relative;
+        height: 400px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<?php require_once(__DIR__ . '/../includes/header.php'); ?>
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Analytics Dashboard</h2>
@@ -218,5 +217,4 @@ try {
         }
     });
     </script>
-</body>
-</html>
+    <?php require_once(__DIR__ . '/../includes/footer.php'); ?>

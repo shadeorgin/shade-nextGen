@@ -29,6 +29,10 @@ download_file "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.m
 download_file "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" \
             "assets/js/bootstrap.bundle.min.js"
 
+# Download Chart.js
+download_file "https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js" \
+            "assets/js/chart.min.js"
+
 # Download Bootstrap Icons CSS and fonts
 BOOTSTRAP_ICONS_VERSION="1.11.1"
 download_file "https://cdn.jsdelivr.net/npm/bootstrap-icons@${BOOTSTRAP_ICONS_VERSION}/font/bootstrap-icons.css" \

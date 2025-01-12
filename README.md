@@ -90,12 +90,58 @@ Warnings are displayed on:
 - Register page
 - Contact form
 - Other feature pages as configured
+#### Chart.js Configuration
+The Chart.js library can be configured to use either local files or CDN:
+```php
+// In config.php
+define('USE_LOCAL_CHARTJS', true);  // Set to false to use CDN version
+```
+
+Local setup path:
+```
+assets/js/
+└── chart.min.js   # Local Chart.js library
+```
+
+Usage in templates:
+```php
+<?php if (USE_LOCAL_CHARTJS): ?>
+    <script src="<?php echo BASE_URL; ?>/assets/js/chart.min.js"></script>
+<?php else: ?>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<?php endif; ?>
+```
+
+#### Analytics Dashboard Configuration
+The analytics dashboard uses Chart.js for data visualization:
+```javascript
+const chartConfig = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Analytics Overview'
+        }
+    }
+};
+```
+
+Features include:
+- Responsive chart layouts
+- Customizable data views
+- Interactive tooltips
+- CSV data export
+- Dynamic data filtering
+
 #### Social Media Links
 Social media links are configured to:
 - Open in new tabs (target="_blank")
 - Include security attributes (rel="noopener noreferrer")
 - Maintain consistent behavior across pages
-
 #### Toast Configuration
 #### Report Year Selection
 Reports include a standardized year selection dropdown:
@@ -131,8 +177,10 @@ Production URLs will be:
 │   └── footer.php   # Common footer 
 ├── pages/           # Page templates
 ├── reports/         # Reports module
-├── reports/          # Reports module
 │   ├── includes/     # Reports-specific utilities
+│   ├── analytics/    # Analytics dashboard components
+│   │   ├── charts/   # Chart.js implementations
+│   │   └── data/     # Data processing scripts
 │   └── sql/         # SQL query files for reports
 │       ├── 01_AppealSummary.sql
 │       ├── 02_CausewiseSummary.sql
@@ -156,7 +204,8 @@ Production URLs will be:
 - Local MySQL database for development
 
 ## Documentation
-- [Chart.js Integration Guide](docs/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
+- [Chart.js Integration Guide](UserGuides/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
+- [Analytics Dashboard Guide](UserGuides/analytics-dashboard.md) - Documentation for using and customizing the analytics dashboard
 
 ## File Organization
 - All pages include init.php which handles:

@@ -30,3 +30,6 @@ define('DB_CHARSET', 'utf8mb4');
 define('DB_PERSISTENT', true);  // Enable connection pooling
 define('DB_TIMEOUT', 5);        // Connection timeout in seconds
 define('DB_ERRMODE', PDO::ERRMODE_EXCEPTION);
+
+// Asset Configuration
+define('USE_LOCAL_CHARTJS', true);  // Set false to use CDN version of Chart.js
