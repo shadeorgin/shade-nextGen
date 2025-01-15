@@ -201,7 +201,7 @@ try {
         <?php
         $sql = "select Year(DateEntered) As Year, Status, Cause, Count(*) as Count
             from TblAppealInfo
-            where Year(DateEntered)=:year
+            where Year(DateEntered)=:year and Id <> -1
             and Id NOT in (select AppealId from TblTxDetails where Year(DateOfTx)=:year)
             group by Status, Cause";
         $noTransactions = $db->queryAll($sql, ['year' => $selectedYear]);
@@ -242,7 +242,7 @@ try {
         <?php
         $sql = "select Year(DateEntered) as Year, Id, Name, Cause, Status
             from TblAppealInfo
-            where Year(DateEntered)=:year and UPPER(Name) like '%COVID%'
+            where Year(DateEntered)=:year and UPPER(Name) like '%COVID%' and Id <> -1
             order by Id asc";
         $covidAppeals = $db->queryAll($sql, ['year' => $selectedYear]);
         ?>
@@ -282,9 +282,9 @@ try {
         <?php
         $sql = "select distinct Year(a.DateOfTx) as Year, Year(b.DateEntered) as Year_Created,
             a.AppealId, b.Name
-            from TblTxDetails a, TblAppealInfo b
-            where a.AppealId=b.Id
-            and a.DateOfTx between :yearStart and :yearEnd
+            from TblTxDetails a
+            inner join TblAppealInfo b ON a.AppealId=b.Id and b.Id <> -1
+            where a.DateOfTx between :yearStart and :yearEnd
             and UPPER(b.Name) like '%COVID%'
             order by a.AppealId asc";
         $continuingCovid = $db->queryAll($sql, [

@@ -147,9 +147,12 @@ define('CHART_TITLE_FONT_SIZE', 18);     // Font size for chart titles (default:
 define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 16px)
 ```
 
-These settings are applied consistently across all charts in the analytics dashboard. The chart configuration uses these values as shown below:
-```javascript
-const chartConfig = {
+- Clear user feedback explanations
+- Dynamic chart updating documentation
+- Interaction capabilities
+- Appeal filtering excludes Misc transactions (appealId -1)
+- Appeal filtering improved to use TblAppealInfo table
+- Standardized SQL operators for better compatibility
     responsive: true,
     maintainAspectRatio: false,
     plugins: {

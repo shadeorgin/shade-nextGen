@@ -19,16 +19,18 @@ $query1 = "SELECT
     COUNT(DISTINCT a.id) as total_appeals,
     COALESCE(SUM(t.amount), 0) as total_amount
 FROM TblAppealInfo a
-JOIN TblTxDetails t ON a.id = t.appealid
-WHERE YEAR(t.created_date) = :year";
+JOIN TblTxDetails t ON a.id = t.appealId 
+WHERE YEAR(t.created_date) = :year
+AND t.appealId <> -1
 
 $query2 = "SELECT
     a.status,
     COUNT(DISTINCT a.id) as appeal_count,
     COALESCE(SUM(t.amount), 0) as total_amount
 FROM TblAppealInfo a
-JOIN TblTxDetails t ON a.id = t.appealid
+JOIN TblTxDetails t ON a.id = t.appealId
 WHERE YEAR(t.created_date) = :year
+AND t.appealId <> -1
 GROUP BY a.status";
 
 $query3 = "SELECT
@@ -37,8 +39,9 @@ $query3 = "SELECT
     a.status,
     a.created_date
 FROM TblAppealInfo a
-LEFT JOIN TblTxDetails t ON a.id = t.appealid
+LEFT JOIN TblTxDetails t ON a.id = t.appealId
 WHERE t.TxId IS NULL
+AND (a.id <> -1)
 AND YEAR(a.created_date) = :year";
 
 // Get selected year or default to previous year

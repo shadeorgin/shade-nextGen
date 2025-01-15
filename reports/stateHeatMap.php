@@ -15,7 +15,9 @@ try {
         COUNT(DISTINCT a.Id) as appeal_count
     FROM TblBeneficiary b
     LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
-    WHERE b.State IS NOT NULL
+    LEFT JOIN TblTxDetails t ON t.AppealId = a.Id
+    WHERE b.State IS NOT NULL 
+    WHERE t.AppealId <> -1
     GROUP BY b.State
     ORDER BY beneficiary_count DESC";
     

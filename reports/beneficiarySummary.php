@@ -30,7 +30,7 @@ try {
         count(distinct beneficiaryId) as 'Total Beneficiaries' 
         from TblAppealInfo a 
         LEFT OUTER JOIN TblBeneficiary b ON a.BeneficiaryId=b.Id 
-        where Year(a.DateEntered)=:year and a.Id<>-1 
+        where Year(a.DateEntered)=:year and a.Id <> -1
         group by Year, a.status";
 
     $query2 = "select distinct substr(a.appealId,1,5) as Id, 
@@ -42,7 +42,7 @@ try {
         from TblTxDetails a 
         LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.Id 
         INNER JOIN TblBeneficiary c ON b.BeneficiaryId=c.Id 
-        where Year(a.DateOfTx)=:year and a.appealId<>-1 
+        where Year(a.DateOfTx)=:year and a.appealId <> -1
         order by a.appealId";
 
     // Execute Query 1 - Status-wise Beneficiaries

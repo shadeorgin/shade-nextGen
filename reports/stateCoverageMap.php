@@ -14,10 +14,11 @@ try {
     $stateQuery = "SELECT 
         COALESCE(b.State, 'Unknown') as state,
         COUNT(DISTINCT b.Id) as beneficiary_count,
-        COUNT(DISTINCT a.Id) as appeal_count,
+        COUNT(DISTINCT CASE WHEN t.appealId != -1 THEN a.Id END) as appeal_count,
         MAX(b.City) as sample_city
     FROM TblBeneficiary b
     LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+    WHERE t.appealId <> -1
     GROUP BY b.State
     ORDER BY b.State";
     

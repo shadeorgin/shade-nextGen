@@ -24,9 +24,9 @@ try {
 
     // Debug queries
     $debugQueries = [
-        "Sample Transactions" => "SELECT * FROM TblTxDetails WHERE YEAR(DateOfTx) = :year LIMIT 5",
-        "Transaction Types" => "SELECT DISTINCT TxType, COUNT(*) as count FROM TblTxDetails WHERE YEAR(DateOfTx) = :year GROUP BY TxType",
-        "Monthly Data" => "SELECT DATE_FORMAT(DateOfTx, '%Y-%m') as month, TxType, COUNT(*) as count, SUM(amount) as total FROM TblTxDetails WHERE YEAR(DateOfTx) = :year GROUP BY month, TxType ORDER BY month"
+        "Sample Transactions" => "SELECT t.* FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 LIMIT 5",
+        "Transaction Types" => "SELECT DISTINCT t.TxType, COUNT(*) as count FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 GROUP BY t.TxType",
+        "Monthly Data" => "SELECT DATE_FORMAT(t.DateOfTx, '%Y-%m') as month, t.TxType, COUNT(*) as count, SUM(t.amount) as total FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 GROUP BY month, t.TxType ORDER BY month"
     ];
     $debugData = [];
     foreach ($debugQueries as $label => $query) {
@@ -41,6 +41,7 @@ try {
         FROM TblAppealInfo a
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid
         WHERE YEAR(t.DateOfTx) = :year
+        AND a.Id <> -1
         GROUP BY a.status";
     $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
 
@@ -53,6 +54,7 @@ try {
         LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid
         WHERE YEAR(t.DateOfTx) = :year
+        AND a.Id <> -1
         GROUP BY b.State";
     $geoData = $db->queryAll($geoQuery, ['year' => $selectedYear]);
 
@@ -65,27 +67,31 @@ try {
         LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid
         WHERE YEAR(t.DateOfTx) = :year
+        AND a.Id <> -1
         GROUP BY b.Category, b.Type";
     $categoryData = $db->queryAll($categoryQuery, ['year' => $selectedYear]);
 
     // Simplified category distribution
-    $simpleCategoryQuery = "SELECT 
+    $simpleCategoryQuery = "SELECT
         COALESCE(b.Category, 'General') as category,
-        COUNT(DISTINCT b.Id) as beneficiary_count 
-        FROM TblBeneficiary b 
-        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId 
-        LEFT JOIN TblTxDetails t ON a.Id = t.appealid 
-        WHERE YEAR(t.DateOfTx) = :year 
+        COUNT(DISTINCT b.Id) as beneficiary_count
+        FROM TblBeneficiary b
+        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+        WHERE YEAR(t.DateOfTx) = :year
+        AND a.Id <> -1
         GROUP BY b.Category";
         $simpleCategoryData = $db->queryAll($simpleCategoryQuery, ['year' => $selectedYear]);
 
         // Monthly transaction count
         // Monthly transaction count
-        $monthlyTxQuery = "SELECT 
+        $monthlyTxQuery = "SELECT
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
             COUNT(*) as tx_count
             FROM TblTxDetails t
+            JOIN TblAppealInfo a ON t.appealId = a.Id
             WHERE YEAR(t.DateOfTx) = :year
+            AND a.Id <> -1
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
             ORDER BY month";
         $monthlyTxData = $db->queryAll($monthlyTxQuery, ['year' => $selectedYear]);
@@ -94,12 +100,14 @@ try {
         // Monthly transaction count by account
 
         // Monthly transaction count by TargetAcct
-        $monthlyTxDetailedQuery = "SELECT 
+        $monthlyTxDetailedQuery = "SELECT
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
             t.TargetAcct,
             COUNT(*) as tx_count
             FROM TblTxDetails t
+            JOIN TblAppealInfo a ON t.appealId = a.Id
             WHERE YEAR(t.DateOfTx) = :year
+            AND a.Id <> -1
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m'), t.TargetAcct
             ORDER BY month, t.TargetAcct";
         $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
@@ -107,7 +115,7 @@ try {
         // Monthly CR vs DR
 
         // Add debug query
-        $debugQuery = "SELECT 
+        $debugQuery = "SELECT
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
             t.TxType,
             COUNT(*) as count,
@@ -119,16 +127,18 @@ try {
         $debugTxData = $db->queryAll($debugQuery, ['year' => $selectedYear]);
 
         $monthlyBalanceQuery = "
-        SELECT 
+        SELECT
             DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
             COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as credit_amount,
             COALESCE(SUM(CASE WHEN t.TxType = 'D' THEN t.amount ELSE 0 END), 0) as debit_amount,
-            COALESCE(SUM(CASE 
-                WHEN t.TxType = 'C' THEN t.amount 
-                WHEN t.TxType = 'D' THEN -t.amount 
+            COALESCE(SUM(CASE
+                WHEN t.TxType = 'C' THEN t.amount
+                WHEN t.TxType = 'D' THEN -t.amount
             END), 0) as net_balance
         FROM TblTxDetails t
+            JOIN TblAppealInfo a ON t.appealId = a.Id
             WHERE YEAR(t.DateOfTx) = :year
+            AND a.Id <> -1 
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
             ORDER BY month";
         $monthlyBalanceData = $db->queryAll($monthlyBalanceQuery, ['year' => $selectedYear]);
@@ -458,7 +468,7 @@ let isTxDetailedView = false;
     function initializeCategoryChart(isDetailed = false) {
         const ctx = document.getElementById('categoryChart').getContext('2d');
         const data = isDetailed ? categoryData : simpleCategoryData;
-        
+
         if (categoryChart) {
             categoryChart.destroy();
         }
@@ -482,7 +492,7 @@ let isTxDetailedView = false;
                     labels: Object.keys(groupedData),
                     datasets: [{
                         label: 'Beneficiaries by Category and Type',
-                        data: Object.values(groupedData).map(types => 
+                        data: Object.values(groupedData).map(types =>
                             types.reduce((sum, item) => sum + item.count, 0)
                         ),
                         backgroundColor: chartColors
@@ -533,15 +543,15 @@ let isTxDetailedView = false;
     function toggleCategoryView() {
         isDetailedView = !isDetailedView;
         const button = document.querySelector('.toggle-button');
-        button.innerHTML = isDetailedView ? 
-            '<i class="fas fa-chart-pie"></i> Show Simple View' : 
+        button.innerHTML = isDetailedView ?
+            '<i class="fas fa-chart-pie"></i> Show Simple View' :
             '<i class="fas fa-list"></i> Show Details';
         initializeCategoryChart(isDetailedView);
     }
 
     function initializeTransactionChart(isDetailed = false) {
         const ctx = document.getElementById('monthlyTxChart').getContext('2d');
-        
+
         if (txChart) {
             txChart.destroy();
         }
@@ -599,15 +609,15 @@ let isTxDetailedView = false;
             // Detailed view - multiple line chart
             const months = [...new Set(monthlyTxDetailedData.map(item => item.month))].sort();
             const targetAccts = [...new Set(monthlyTxDetailedData.map(item => item.TargetAcct))].sort();
-            
+
             const datasets = targetAccts.map((acct, index) => {
                 const data = months.map(month => {
-                    const record = monthlyTxDetailedData.find(item => 
+                    const record = monthlyTxDetailedData.find(item =>
                         item.month === month && item.TargetAcct === acct
                     );
                     return record ? parseInt(record.tx_count) : 0;
                 });
-                
+
                 return {
                     label: acct,
                     data: data,
@@ -665,8 +675,8 @@ let isTxDetailedView = false;
     function toggleTxView() {
         isTxDetailedView = !isTxDetailedView;
         const button = document.querySelector('#monthlyTxChart').closest('.card-body').querySelector('.toggle-button');
-        button.innerHTML = isTxDetailedView ? 
-            '<i class="fas fa-chart-line"></i> Show Simple View' : 
+        button.innerHTML = isTxDetailedView ?
+            '<i class="fas fa-chart-line"></i> Show Simple View' :
             '<i class="fas fa-list"></i> Show Details';
         initializeTransactionChart(isTxDetailedView);
     }

@@ -26,11 +26,11 @@ try {
 
     // SQL Queries
     $query1 = "select Year(DateOfTx) as Year, TxType, sum(Amount) as Total 
-        from TblTxDetails where Year(DateOfTx)=:year and AppealId >= 0
+        from TblTxDetails where Year(DateOfTx)=:year and appealId <> -1
         group by Year, TxType";
 
     $query2 = "select Year(DateOfTx) as Year, TxType, sum(Amount) as Total 
-        from TblTxDetails where Year(DateOfTx)=:year and AppealId >= 0
+        from TblTxDetails where Year(DateOfTx)=:year and appealId <> -1
         AND Remarks NOT LIKE '%SHaDE%Funds%' 
         group by Year, TxType";
 
@@ -44,7 +44,7 @@ try {
         sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
         from TblTxDetails a
         LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
-        where Year(DateOfTx)=:year and AppealId >= 0
+        where Year(DateOfTx)=:year and a.appealId <> -1
         group by Year, AppealId";
 
     $query4 = "select
@@ -57,7 +57,7 @@ try {
         sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
         from TblTxDetails a
         LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
-        where Year(DateOfTx)=:year and AppealId >= 0
+        where Year(DateOfTx)=:year and a.appealId <> -1
         and a.Remarks NOT LIKE '%SHaDE%Funds%'
         group by Year, AppealId";
 
@@ -71,7 +71,7 @@ try {
         sum(CASE WHEN TxType='C' then a.Amount else 0 end)-sum(CASE WHEN TxType='D' then a.Amount else 0 end) as EffectiveTotal
         from TblTxDetails a
         LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.ID
-        where Year(DateOfTx)=:year and AppealId >= 0
+        where Year(DateOfTx)=:year and a.appealId <> -1
         and a.Remarks NOT LIKE '%SHaDE%Funds%'
         and UPPER(b.Name) like '%COVID%'
         group by Year, AppealId";
