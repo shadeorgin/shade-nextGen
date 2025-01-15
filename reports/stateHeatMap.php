@@ -5,117 +5,137 @@ require_once(__DIR__ . '/includes/report_utilities.php');
 
 $error = '';
 $stateData = [];
-$debugData = [];
 
 try {
     $db = Database::getInstance();
-
-    // Simple debug queries
-    $debugData['States in DB'] = $db->queryAll("
-        SELECT DISTINCT State, COUNT(*) as count
-        FROM TblBeneficiary
-        WHERE State IS NOT NULL
-        GROUP BY State
-        ORDER BY count DESC
-    ");
-
-    $debugData['Sample Records'] = $db->queryAll("
-        SELECT Id, State, City
-        FROM TblBeneficiary
-        WHERE State IS NOT NULL
-        LIMIT 5
-    ");
-
-    // Main query with simpler JOIN
-    $stateQuery = "
-        SELECT
-            b.State as state,
-            COUNT(*) as beneficiary_count
-        FROM TblBeneficiary b
-        WHERE b.State IS NOT NULL
-        GROUP BY b.State
-        ORDER BY beneficiary_count DESC
-    ";
-
+    
+    $stateQuery = "SELECT 
+        b.State as state,
+        COUNT(DISTINCT b.Id) as beneficiary_count,
+        COUNT(DISTINCT a.Id) as appeal_count
+    FROM TblBeneficiary b
+    LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+    WHERE b.State IS NOT NULL
+    GROUP BY b.State
+    ORDER BY beneficiary_count DESC";
+    
     $stateData = $db->queryAll($stateQuery);
-    $debugData['Heat Map Data'] = $stateData;
+    
 } catch (Exception $e) {
     $error = "Failed to fetch state coverage data";
     if (!IS_PRODUCTION) {
         $error .= ": " . $e->getMessage();
     }
 }
+
+require_once(__DIR__ . '/../includes/header.php');
 ?>
 
-<?php require_once(__DIR__ . '/../includes/header.php'); ?>
-<!-- Include map visualization library -->
-<link rel="stylesheet" href="assets/css/heatmap.css">
-<script src="assets/js/indiaMap.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+    #mapContainer {
+        width: 100%;
+        height: 600px;
+        margin: 20px 0;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #dee2e6;
+    }
+    .info {
+        padding: 6px 8px;
+        font: 14px/16px Arial, sans-serif;
+        background: white;
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+</style>
 
 <div class="container mt-4">
     <a href="<?php echo getBaseUrl(); ?>reports/" class="btn btn-secondary mb-3">
         <i class="fas fa-arrow-left"></i> Back to Reports
     </a>
-
+    
     <h2>State Coverage Heat Map</h2>
 
     <?php if ($error): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
     <?php else: ?>
-        <div class="row">
-            <div class="col-12">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Coverage Intensity by State</h5>
-                        <div id="mapContainer" class="position-relative">
-                            <?php include(__DIR__ . '/templates/indiaMapSvg.php'); ?>
-                            <div id="tooltipContainer" class="map-tooltip d-none"></div>
-                        </div>
+        <div class="card">
+            <div class="card-body">
+                <div id="debug" class="alert alert-info mb-3">Map loading...</div>
+                <div id="mapContainer"></div>
+            </div>
+        </div>
 
-                        <div class="row mt-4">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h6>Legend</h6>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span>Low Coverage</span>
-                                            <div class="legend-gradient"></div>
-                                            <span>High Coverage</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        <?php if (!IS_PRODUCTION): ?>
+            <div class="accordion mt-3">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#debugData">
+                            Debug Information
+                        </button>
+                    </h2>
+                    <div id="debugData" class="accordion-collapse collapse">
+                        <div class="accordion-body">
+                            <h6>State Data:</h6>
+                            <pre><?php echo htmlspecialchars(print_r($stateData, true)); ?></pre>
+                            <h6>GeoJSON Path:</h6>
+                            <pre><?php echo htmlspecialchars(getBaseUrl() . 'reports/assets/data/india-states.geojson'); ?></pre>
                         </div>
-
-                        <?php if (!IS_PRODUCTION): ?>
-                            <div class="accordion mt-3">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#debugData">
-                                            Debug Information
-                                        </button>
-                                    </h2>
-                                    <div id="debugData" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            <pre><?php echo htmlspecialchars(print_r($stateData, true)); ?></pre>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif; ?>
                     </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 </div>
 
 <script>
-    // Initialize heat map with state data
-    document.addEventListener('DOMContentLoaded', function() {
-        const stateData = <?php echo json_encode($stateData); ?>;
-        indiaMap.init(stateData);
-    });
+document.addEventListener('DOMContentLoaded', function() {
+    const debug = document.getElementById('debug');
+    try {
+        debug.innerHTML = 'Initializing map...';
+        const map = L.map('mapContainer').setView([20.5937, 78.9629], 5);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        const geoJsonUrl = '<?php echo getBaseUrl(); ?>reports/assets/data/india-states.geojson';
+        debug.innerHTML = 'Loading GeoJSON from: ' + geoJsonUrl;
+
+        fetch(geoJsonUrl)
+            .then(response => response.json())
+            .then(geojson => {
+                const stateData = <?php echo json_encode($stateData); ?>;
+                L.geoJSON(geojson, {
+                    style: function(feature) {
+                        return {
+                            fillColor: '#0868ac',
+                            weight: 2,
+                            opacity: 1,
+                            color: 'white',
+                            fillOpacity: 0.7
+                        };
+                    }
+                }).addTo(map);
+                debug.innerHTML = 'Map rendered successfully';
+                setTimeout(() => debug.style.display = 'none', 3000);
+            })
+            .catch(error => {
+                debug.innerHTML = 'Error loading map: ' + error.message;
+                debug.classList.remove('alert-info');
+                debug.classList.add('alert-danger');
+            });
+    } catch (error) {
+        debug.innerHTML = 'Error initializing map: ' + error.message;
+        debug.classList.remove('alert-info');
+        debug.classList.add('alert-danger');
+    }
+});
 </script>
 
 <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
+
