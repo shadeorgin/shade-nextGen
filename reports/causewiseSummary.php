@@ -80,7 +80,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">1. Total Appeals</h5>
+                <h5 class="mb-0">1. Total Appeals
+                    <?php if (!empty($totalAppeals)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($totalAppeals, 'Appeal Count')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($totalAppeals)): ?>
@@ -123,7 +127,12 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">2. Causewise Appeals</h5>
+                <h5 class="mb-0">2. Causewise Appeals
+                    <?php if (!empty($causewiseAppeals)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($causewiseAppeals, 'Total Appeals')); ?> Appeals</span>
+                        <span class="badge bg-secondary"><?php echo count(array_unique(array_column($causewiseAppeals, 'cause'))); ?> Categories</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($causewiseAppeals)): ?>
@@ -167,7 +176,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">3. Status and Causewise Appeals</h5>
+                <h5 class="mb-0">3. Status and Causewise Appeals
+                    <?php if (!empty($statusCausewise)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($statusCausewise, 'Total Appeals')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($statusCausewise)): ?>
@@ -208,7 +221,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">4. Appeals without Transactions</h5>
+                <h5 class="mb-0">4. Appeals without Transactions
+                    <?php if (!empty($noTransactions)): ?>
+                        <span class="badge bg-warning"><?php echo array_sum(array_column($noTransactions, 'Count')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($noTransactions)): ?>
@@ -248,7 +265,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">5. New COVID Related Appeals</h5>
+                <h5 class="mb-0">5. New COVID Related Appeals
+                    <?php if (!empty($covidAppeals)): ?>
+                        <span class="badge bg-info"><?php echo count($covidAppeals); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($covidAppeals)): ?>
@@ -294,7 +315,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">6. Continuing COVID Appeals</h5>
+                <h5 class="mb-0">6. Continuing COVID Appeals
+                    <?php if (!empty($continuingCovid)): ?>
+                        <span class="badge bg-info"><?php echo count($continuingCovid); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($continuingCovid)): ?>

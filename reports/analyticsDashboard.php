@@ -33,11 +33,19 @@ try {
         $debugData[$label] = $db->queryAll($query, ['year' => $selectedYear]);
     }
 
-    // Appeals status distribution
-    $appealsQuery = "SELECT
+    // Appeals status distribution query
+    // Only count credit (C) transactions for total amount to avoid double counting from debits
+    $appealsQuery = "SELECT 
         COALESCE(a.status, 'Pending') as status,
         COUNT(DISTINCT a.Id) as total_appeals,
-        COALESCE(SUM(t.amount), 0) as total_amount
+        COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
+    FROM TblAppealInfo a
+    LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+    WHERE YEAR(t.DateOfTx) = :year
+    GROUP BY a.status";
+        COALESCE(a.status, 'Pending') as status,
+        COUNT(DISTINCT a.Id) as total_appeals,
+        COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
         FROM TblAppealInfo a
         LEFT JOIN TblTxDetails t ON a.Id = t.appealid
         WHERE YEAR(t.DateOfTx) = :year
