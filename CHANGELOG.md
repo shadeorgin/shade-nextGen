@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Changed
+- Analytics Dashboard: Include Generic SHaDE Appeal (AppealId 0) in Appeals Distribution chart
+- Shows as "In-Progress" status in the chart
+- Contributes to total appeal counts and amounts
+- Maintains consistency with Transaction Summary report
 ## [1.0.13] - 2025-01-15
 ### Fixed
 - Fixed duplicate SQL query in Analytics Dashboard causing syntax error

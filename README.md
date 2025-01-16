@@ -85,7 +85,19 @@ Available configuration options:
 - Configurable alert styles
 - Optional dismissible alerts
 
-Warnings are displayed on:
+## Generic SHaDE Appeal (AppealId 0)
+Generic SHaDE Appeal is a special case in the system that:
+- Represents general food-related appeals
+- Always shown with 'In-Progress' status
+- Included in all appeal-related analytics and reports
+- Used for transactions that don't belong to specific appeals
+
+### How it's handled
+- In Analytics Dashboard: Shows under 'In-Progress' status in Appeals Distribution
+- In Transaction Summary: Listed as "Generic SHaDE Appeal"
+- For statistical purposes: Counted as a single appeal
+
+### Development
 - Login page
 - Register page
 - Contact form

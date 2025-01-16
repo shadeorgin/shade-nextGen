@@ -35,15 +35,21 @@ try {
 
     // Appeals status distribution query
     // Only count credit (C) transactions for total amount to avoid double counting from debits
-    $appealsQuery = "SELECT 
-        COALESCE(a.status, 'Pending') as status,
-        COUNT(DISTINCT a.Id) as total_appeals,
+    $appealsQuery = "SELECT
+        CASE 
+            WHEN t.appealId = 0 THEN 'In-Progress'
+            ELSE COALESCE(a.status, 'Pending')
+        END as status,
+        COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.Id END) as total_appeals,
         COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
-    FROM TblAppealInfo a
-    LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+    FROM TblTxDetails t
+    LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
     WHERE YEAR(t.DateOfTx) = :year
-    AND a.Id <> -1
-    GROUP BY a.status";
+    AND (a.id <> -1 OR t.appealId = 0)
+    GROUP BY CASE 
+        WHEN t.appealId = 0 THEN 'In-Progress'
+        ELSE COALESCE(a.status, 'Pending')
+    END";
     $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
 
     // Geographic distribution by State
