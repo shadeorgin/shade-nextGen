@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - Improved status-wise grouping in Beneficiary Summary
     - Added detailed count indicators for status groups
     - Standardized badge display format across Transaction and Beneficiary summaries
+- Standardized table styling across reports:
+    - Unified badge display format in table headers
+    - Simplified count displays in table rows
+    - Consistent styling between Beneficiary and Causewise summaries
+    - Improved visual hierarchy in data presentation
 - Improved transaction reporting with totals:
     - Added Credit, Debit, and Balance totals in Transaction Summary tables
     - Included totals for Appeal-wise, Non-Internal, and COVID-specific transactions

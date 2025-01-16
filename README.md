@@ -156,6 +156,11 @@ define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 
     - Status-wise counts with descriptive labels
     - Consistent styling and placement
     - Grouped status displays with count summaries
+- Unified report styling:
+    - Standardized header badge displays
+    - Consistent count presentation
+    - Clear visual hierarchy
+    - Improved readability across summaries
 - Comprehensive transaction summaries with:
     - Total amounts (Credit, Debit, Balance) for each summary type
     - Proper handling of Generic SHaDE Appeal transactions

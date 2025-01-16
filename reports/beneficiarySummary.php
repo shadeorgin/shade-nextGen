@@ -102,24 +102,22 @@ try {
         <!-- Status-wise Beneficiaries -->
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">1. Status-wise Beneficiaries</h5>
+                <h5 class="mb-0">1. Status-wise Beneficiaries
+                    <?php if (!empty($statuswiseBeneficiaries)): ?>
+                        <span class="badge bg-info">
+                            <?php 
+                            $totalBeneficiaries = array_sum(array_column($statuswiseBeneficiaries, 'Total Beneficiaries'));
+                            echo $totalBeneficiaries . ' ' . ($totalBeneficiaries == 1 ? 'Beneficiary' : 'Beneficiaries');
+                            ?>
+                        </span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($statuswiseBeneficiaries)): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
                             <thead>
-                                <tr>
-                                    <th colspan="3">
-                                        Status-wise Beneficiaries 
-                                        <span class="badge bg-info">
-                                            <?php 
-                                            $totalBeneficiaries = array_sum(array_column($statuswiseBeneficiaries, 'Total Beneficiaries'));
-                                            echo $totalBeneficiaries . ' ' . ($totalBeneficiaries == 1 ? 'Beneficiary' : 'Beneficiaries');
-                                            ?>
-                                        </span>
-                                    </th>
-                                </tr>
                                 <tr>
                                     <?php foreach (array_keys($statuswiseBeneficiaries[0]) as $header): ?>
                                         <th><?php echo ucfirst(strtolower($header)); ?></th>
@@ -129,30 +127,11 @@ try {
                             <tbody>
                                 <?php foreach ($statuswiseBeneficiaries as $row): ?>
                                     <tr>
-                                        <?php foreach ($row as $key => $value): ?>
-                                            <td>
-                                                <?php
-                                                if ($key === 'Total Beneficiaries') {
-                                                    echo "<span class='badge bg-info'>" . htmlspecialchars($value) . "</span>";
-                                                } else {
-                                                    echo htmlspecialchars($value);
-                                                }
-                                                ?>
-                                            </td>
+                                        <?php foreach ($row as $value): ?>
+                                            <td><?php echo htmlspecialchars($value); ?></td>
                                         <?php endforeach; ?>
                                     </tr>
                                 <?php endforeach; ?>
-                                <tr class="table-info">
-                                    <td colspan="2"><strong>Total</strong></td>
-                                    <td>
-                                        <span class="badge bg-info">
-                                            <?php
-                                            $total = array_sum(array_column($statuswiseBeneficiaries, 'Total Beneficiaries'));
-                                            echo $total;
-                                            ?>
-                                        </span>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
