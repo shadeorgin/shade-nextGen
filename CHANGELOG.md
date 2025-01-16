@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.13] - 2025-01-15
+### Enhanced
+- Enhanced report displays with improved badge counts:
+    - Added consistent badge styling across all reports
+    - Improved status-wise grouping in Beneficiary Summary
+    - Added detailed count indicators for status groups
+    - Standardized badge display format across Transaction and Beneficiary summaries
+- Improved transaction reporting with totals:
+    - Added Credit, Debit, and Balance totals in Transaction Summary tables
+    - Included totals for Appeal-wise, Non-Internal, and COVID-specific transactions
+- Enhanced appeal filtering across reports:
+    - Moved appeal filtering from TblTxDetails to TblAppealInfo table
+    - Standardized SQL operators from != to <> for better compatibility
+    - Included Generic SHaDE Appeal (appealId = 0) in relevant summaries
+    - Excluded Misc transactions (appealId -1) from analytics
+- Added new Git documentation:
+    - Guide for managing multiple Git remotes
+    - Guide for Git no-pager option usage
+
 ## [1.0.12] - 2025-01-15
 ### Enhanced
 - Improved SQL queries across all reports:

@@ -147,16 +147,27 @@ define('CHART_TITLE_FONT_SIZE', 18);     // Font size for chart titles (default:
 define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 16px)
 ```
 
-- Clear user feedback explanations
-- Dynamic chart updating documentation
-- Interaction capabilities
-- Appeal filtering excludes Misc transactions (appealId -1)
-- Appeal filtering improved to use TblAppealInfo table
-- Standardized SQL operators for better compatibility
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
+### Reports and Analytics
+- Standardized report badge indicators:
+    - Status-wise counts with descriptive labels
+    - Consistent styling and placement
+    - Grouped status displays with count summaries
+- Comprehensive transaction summaries with:
+    - Total amounts (Credit, Debit, Balance) for each summary type
+    - Proper handling of Generic SHaDE Appeal transactions
+    - Exclusion of miscellaneous transactions
+    - Clear separation of internal and external transactions
+
+### Improved
+- Enhanced carousel image sizing and responsiveness:
+    - Better fit within screen dimensions
+    - Maintained aspect ratio and quality
+    - Improved mobile display
+- Enhanced social media links:
+    - Links now open in new tabs
+    - Added security attributes
+    - Consistent behavior across the site
+- Made toast notification system configurable:
             position: 'top',
             labels: {
                 font: {

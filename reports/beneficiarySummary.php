@@ -25,25 +25,26 @@ try {
     debug_log("Database connection successful");
 
     // SQL Queries
-    $query1 = "select Year(a.DateEntered) as Year, 
-        (case when a.status IS NULL then 'In-Progress' else a.status end) as status, 
-        count(distinct beneficiaryId) as 'Total Beneficiaries' 
-        from TblAppealInfo a 
-        LEFT OUTER JOIN TblBeneficiary b ON a.BeneficiaryId=b.Id 
+    $query1 = "select Year(a.DateEntered) as Year,
+        (case when a.status IS NULL then 'In-Progress' else a.status end) as status,
+        count(distinct beneficiaryId) as 'Total Beneficiaries'
+        from TblAppealInfo a
+        LEFT OUTER JOIN TblBeneficiary b ON a.BeneficiaryId=b.Id
         where Year(a.DateEntered)=:year and a.Id <> -1
-        group by Year, a.status";
+        group by Year, a.status
+        order by status ASC";
 
-    $query2 = "select distinct substr(a.appealId,1,5) as Id, 
-        b.Name as AppealName, 
-        substr(c.Name, 1, 30) as Beneficiary, 
-        (case when b.status IS NULL then 'In-Progress' else b.status end) as status, 
-        (case when b.cause IS NULL then 'General' else b.cause end) as cause, 
-        c.Category, c.Type 
-        from TblTxDetails a 
-        LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.Id 
-        INNER JOIN TblBeneficiary c ON b.BeneficiaryId=c.Id 
-        where Year(a.DateOfTx)=:year and a.appealId <> -1
-        order by a.appealId";
+    $query2 = "SELECT DISTINCT substr(a.appealId,1,5) as Id,
+        b.Name as AppealName,
+        substr(c.Name, 1, 30) as Beneficiary,
+        (CASE WHEN b.status IS NULL THEN 'In-Progress' ELSE b.status END) as status,
+        (CASE WHEN b.cause IS NULL THEN 'General' ELSE b.cause END) as cause,
+        c.Category, c.Type
+    FROM TblTxDetails a
+    LEFT OUTER JOIN TblAppealInfo b ON a.AppealId=b.Id
+    INNER JOIN TblBeneficiary c ON b.BeneficiaryId=c.Id
+    WHERE Year(a.DateOfTx)=:year AND a.appealId <> -1
+    ORDER BY status ASC, b.Name ASC";
 
     // Execute Query 1 - Status-wise Beneficiaries
     debug_log("Executing Query 1 - Status-wise Beneficiaries");
@@ -109,19 +110,49 @@ try {
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th colspan="3">
+                                        Status-wise Beneficiaries 
+                                        <span class="badge bg-info">
+                                            <?php 
+                                            $totalBeneficiaries = array_sum(array_column($statuswiseBeneficiaries, 'Total Beneficiaries'));
+                                            echo $totalBeneficiaries . ' ' . ($totalBeneficiaries == 1 ? 'Beneficiary' : 'Beneficiaries');
+                                            ?>
+                                        </span>
+                                    </th>
+                                </tr>
+                                <tr>
                                     <?php foreach (array_keys($statuswiseBeneficiaries[0]) as $header): ?>
-                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                        <th><?php echo ucfirst(strtolower($header)); ?></th>
                                     <?php endforeach; ?>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($statuswiseBeneficiaries as $row): ?>
                                     <tr>
-                                        <?php foreach ($row as $value): ?>
-                                            <td><?php echo htmlspecialchars($value); ?></td>
+                                        <?php foreach ($row as $key => $value): ?>
+                                            <td>
+                                                <?php
+                                                if ($key === 'Total Beneficiaries') {
+                                                    echo "<span class='badge bg-info'>" . htmlspecialchars($value) . "</span>";
+                                                } else {
+                                                    echo htmlspecialchars($value);
+                                                }
+                                                ?>
+                                            </td>
                                         <?php endforeach; ?>
                                     </tr>
                                 <?php endforeach; ?>
+                                <tr class="table-info">
+                                    <td colspan="2"><strong>Total</strong></td>
+                                    <td>
+                                        <span class="badge bg-info">
+                                            <?php
+                                            $total = array_sum(array_column($statuswiseBeneficiaries, 'Total Beneficiaries'));
+                                            echo $total;
+                                            ?>
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -142,19 +173,54 @@ try {
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
+                                    <th colspan="7">
+                                        Detailed Beneficiary List
+                                        <span class="badge bg-info">
+                                            <?php 
+                                            $totalCount = count($beneficiaryList);
+                                            echo $totalCount . ' ' . ($totalCount == 1 ? 'Beneficiary' : 'Beneficiaries');
+                                            ?>
+                                        </span>
+                                    </th>
+                                </tr>
+                                <tr>
                                     <?php foreach (array_keys($beneficiaryList[0]) as $header): ?>
-                                        <th><?php echo htmlspecialchars($header); ?></th>
+                                        <th><?php echo ucfirst(strtolower($header)); ?></th>
                                     <?php endforeach; ?>
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($beneficiaryList as $row): ?>
-                                    <tr>
-                                        <?php foreach ($row as $value): ?>
-                                            <td><?php echo htmlspecialchars($value); ?></td>
-                                        <?php endforeach; ?>
-                                    </tr>
-                                <?php endforeach; ?>
+                                <?php
+                                // Pre-count records per status
+                                $statusCounts = [];
+                                foreach ($beneficiaryList as $row) {
+                                    $status = $row['status'];
+                                    if (!isset($statusCounts[$status])) {
+                                        $statusCounts[$status] = 0;
+                                    }
+                                    $statusCounts[$status]++;
+                                }
+
+                                $currentStatus = null;
+                                foreach ($beneficiaryList as $row):
+                                    if ($currentStatus !== $row['status']) {
+                                        $currentStatus = $row['status'];
+                                        echo "<tr class='table-secondary'>
+                                                <td colspan='7'>
+                                                    <strong>Status: " . htmlspecialchars($currentStatus) . "</strong>
+                                                    <span class='badge bg-info'>" . 
+                                                        $statusCounts[$currentStatus] . " in " . htmlspecialchars($currentStatus) . 
+                                                    "</span>
+                                                </td>
+                                            </tr>";
+                                    }
+                                    echo "<tr>";
+                                    foreach ($row as $value) {
+                                        echo "<td>" . htmlspecialchars($value) . "</td>";
+                                    }
+                                    echo "</tr>";
+                                endforeach;
+                                ?>
                             </tbody>
                         </table>
                     </div>
@@ -168,4 +234,3 @@ try {
 </div>
 
 <?php require_once(__DIR__ . '/../includes/footer.php'); ?>
-
