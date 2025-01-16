@@ -42,15 +42,8 @@ try {
     FROM TblAppealInfo a
     LEFT JOIN TblTxDetails t ON a.Id = t.appealid
     WHERE YEAR(t.DateOfTx) = :year
+    AND a.Id <> -1
     GROUP BY a.status";
-        COALESCE(a.status, 'Pending') as status,
-        COUNT(DISTINCT a.Id) as total_appeals,
-        COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
-        FROM TblAppealInfo a
-        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
-        WHERE YEAR(t.DateOfTx) = :year
-        AND a.Id <> -1
-        GROUP BY a.status";
     $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
 
     // Geographic distribution by State

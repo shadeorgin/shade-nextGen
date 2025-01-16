@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [1.0.13] - 2025-01-15
+### Fixed
+- Fixed duplicate SQL query in Analytics Dashboard causing syntax error
+- Improved SQL query structure in appeals status distribution report
+
 ### Enhanced
 - Enhanced report displays with improved badge counts:
     - Added consistent badge styling across all reports

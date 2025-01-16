@@ -148,6 +148,10 @@ define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 
 ```
 
 ### Reports and Analytics
+- Analytics Dashboard improvements:
+    - Optimized SQL queries for better performance
+    - Fixed syntax issues in appeals distribution queries
+    - Enhanced data filtering for accurate reporting
 - Standardized report badge indicators:
     - Status-wise counts with descriptive labels
     - Consistent styling and placement
