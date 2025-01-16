@@ -16,33 +16,34 @@ echo "<div class='container mt-4'>";  // Start container earlier
 
 // SQL Queries
 $query1 = "SELECT
-    COUNT(DISTINCT a.id) as total_appeals,
+    COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.id END) as total_appeals,
     COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
-FROM TblAppealInfo a
-JOIN TblTxDetails t ON a.id = t.appealId
+FROM TblTxDetails t
+LEFT JOIN TblAppealInfo a ON t.appealId = a.id
 WHERE YEAR(t.DateOfTx) = :year
-AND a.id <> -1";
+AND (a.id <> -1 OR t.appealId = 0)";
 
 $query2 = "SELECT
-    COALESCE(a.status, 'Pending') as status,
-    COUNT(DISTINCT a.id) as appeal_count,
+    COALESCE(CASE WHEN t.appealId = 0 THEN 'In-Progress' ELSE a.status END, 'Pending') as status,
+    COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.id END) as appeal_count,
     COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
-FROM TblAppealInfo a
-LEFT JOIN TblTxDetails t ON a.id = t.appealId
+FROM TblTxDetails t
+LEFT JOIN TblAppealInfo a ON t.appealId = a.id
 WHERE YEAR(t.DateOfTx) = :year
-AND a.id <> -1
-GROUP BY a.status";
+AND (a.id <> -1 OR t.appealId = 0)
+GROUP BY CASE WHEN t.appealId = 0 THEN 'In-Progress' ELSE a.status END";
 
 $query3 = "SELECT
-    a.id,
-    a.name,
-    a.status,
-    a.created_date
-FROM TblAppealInfo a
-LEFT JOIN TblTxDetails t ON a.id = t.appealId
-WHERE t.TxId IS NULL
-AND (a.id <> -1)
-AND YEAR(a.created_date) = :year";
+        a.id,
+        a.name,
+        a.status,
+        a.created_date
+    FROM TblAppealInfo a
+    LEFT JOIN TblTxDetails t ON a.id = t.appealId
+    WHERE t.TxId IS NULL
+        AND a.id <> -1
+        AND YEAR(a.created_date) = :year
+    ORDER BY created_date";
 
 // Get selected year or default to previous year
 $selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
