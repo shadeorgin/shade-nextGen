@@ -4,7 +4,7 @@
 <div class="bg-success text-white py-5 mb-5">
     <div class="container">
         <h1 class="display-4">About SHaDE</h1>
-        <p class="lead">Leading the way in sustainable development and environmental conservation</p>
+        <p class="lead">Empowering communities through food aid, medical support, education, and environmental initiatives</p>
     </div>
 </div>
 

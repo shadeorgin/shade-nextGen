@@ -17,7 +17,7 @@ try {
     LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
     LEFT JOIN TblTxDetails t ON t.AppealId = a.Id
     WHERE b.State IS NOT NULL 
-    WHERE t.AppealId <> -1
+        AND t.AppealId <> -1
     GROUP BY b.State
     ORDER BY beneficiary_count DESC";
     
@@ -33,11 +33,9 @@ try {
 require_once(__DIR__ . '/../includes/header.php');
 ?>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
+<!-- Interactive map assets coming soon -->
 <style>
-    #mapContainer {
+    #staticImageContainer {
         width: 100%;
         height: 600px;
         margin: 20px 0;
@@ -45,12 +43,10 @@ require_once(__DIR__ . '/../includes/header.php');
         overflow: hidden;
         border: 2px solid #dee2e6;
     }
-    .info {
-        padding: 6px 8px;
-        font: 14px/16px Arial, sans-serif;
-        background: white;
-        box-shadow: 0 0 15px rgba(0,0,0,0.2);
-        border-radius: 5px;
+    #staticImageContainer img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
     }
 </style>
 
@@ -60,15 +56,22 @@ require_once(__DIR__ . '/../includes/header.php');
     </a>
     
     <h2>State Coverage Heat Map</h2>
+    <p class="text-muted">2024 Coverage Visualization</p>
 
     <?php if ($error): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
     <?php else: ?>
-        <div class="card">
+        <div class="card" id="staticCard">
             <div class="card-body">
-                <div id="debug" class="alert alert-info mb-3">Map loading...</div>
-                <div id="mapContainer"></div>
+                <div id="staticImageContainer">
+                    <img src="<?php echo getBaseUrl(); ?>assets/images/SHaDE-HeatMap-2024-India.jpeg" alt="SHaDE Coverage Map 2024" class="img-fluid">
+                </div>
             </div>
+        </div>
+
+        <div class="alert alert-info text-center mt-3">
+            <i class="fas fa-map-marked-alt me-2"></i>
+            Interactive coverage map coming soon!
         </div>
 
         <?php if (!IS_PRODUCTION): ?>
@@ -93,8 +96,25 @@ require_once(__DIR__ . '/../includes/header.php');
     <?php endif; ?>
 </div>
 
+<!-- Interactive map code coming soon
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggleMapBtn');
+    const mapContainer = document.getElementById('mapContainer');
+    const staticCard = document.getElementById('staticCard');
+
+    toggleBtn.addEventListener('click', function() {
+        const isShowingStatic = staticCard.style.display !== 'none';
+        if (isShowingStatic) {
+            staticCard.style.display = 'none';
+            mapContainer.style.display = 'block';
+            toggleBtn.textContent = 'Switch to Static Image';
+        } else {
+            staticCard.style.display = 'block';
+            mapContainer.style.display = 'none';
+            toggleBtn.textContent = 'Switch to Interactive Map';
+        }
+    });
     const debug = document.getElementById('debug');
     try {
         debug.innerHTML = 'Initializing map...';
@@ -136,7 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
         debug.classList.remove('alert-info');
         debug.classList.add('alert-danger');
     }
-});
+});*/
+</script>
+-->
 </script>
 
 <?php require_once(__DIR__ . '/../includes/footer.php'); ?>

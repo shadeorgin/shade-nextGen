@@ -5,6 +5,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- New visual content and features:
+    - Added coverage heat map visualization for 2024
+    - Added automated reports preview showcase
+    - Added What's New preview image for feature highlights
+
+### Changed
+- Home page enhancements:
+    - Updated homepage navigation with "Home" instead of "SHaDE"
+    - Enhanced carousel with latest features showcase
+    - Added "What's New" section showcasing automated reports
+
+### Enhanced
+- State coverage visualization improvements:
+    - Added static coverage map for 2024
+    - Preserved interactive map functionality for future use
+
 ### Changed
 - Analytics Dashboard: Include Generic SHaDE Appeal (AppealId 0) in Appeals Distribution chart
 - Shows as "In-Progress" status in the chart

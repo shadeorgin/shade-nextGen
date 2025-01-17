@@ -6,6 +6,8 @@ A repo to track the nextGen version of SHaDE Website and the portal (https://sha
 
 SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities.
 
+Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities and improved state-wise coverage visualization, making it easier to track our impact across India.
+
 Through our online platform, we streamline and organize our welfare initiatives, making it easier for volunteers, donors, and beneficiaries to connect and collaborate effectively.
 ## Environment Setup
 
@@ -49,17 +51,27 @@ This will set BASE_URL to '/SHaDE-nextGen' for production.
 ### Component Configurations
 
 #### Carousel Configuration
-The carousel component is configured for optimal viewing:
+The carousel component is configured for optimal viewing with enhanced image handling:
 ```css
 .carousel {
-max-width: 1200px;  /* Contained width */
-margin: auto;
+    max-width: 1200px;  /* Contained width */
+    margin: auto;
 }
 .carousel-item img {
-max-height: 500px;  /* Controlled height */
-object-fit: cover;  /* Maintain aspect ratio */
+    max-height: 500px;  /* Controlled height */
+    object-fit: cover;  /* Default image fitting */
+}
+.carousel-item.info-slide img {
+    object-fit: contain;  /* Special handling for information slides */
+    background: white;    /* Clean background for visibility */
 }
 ```
+
+Special configurations include:
+- Adaptive image handling for different content types
+- Information slides with improved readability
+- Responsive design for all screen sizes
+- Optimized loading for high-resolution visuals
 
 #### Feature Warnings Configuration
 The application includes a configurable warning system for upcoming features:
@@ -164,6 +176,15 @@ define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 
     - Optimized SQL queries for better performance
     - Fixed syntax issues in appeals distribution queries
     - Enhanced data filtering for accurate reporting
+    - Added state coverage visualization
+    - Interactive and static coverage maps
+
+- State Coverage Visualization:
+    - Static heat map showing 2024 impact across India
+    - Comprehensive state-wise activity tracking
+    - Visual representation of beneficiary distribution
+    - Future support for interactive mapping
+    - Exportable coverage data for reports
 - Standardized report badge indicators:
     - Status-wise counts with descriptive labels
     - Consistent styling and placement
