@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Documentation:
+    - Added comprehensive Git Tags guide:
+        - Tag types and best practices
+        - Version numbering guidelines
+        - Tags vs Releases comparison
+        - Common tag operations with examples
+        - Real-world tagging workflows
+    - Enhanced project documentation with practical examples
 - New visual content and features:
     - Added coverage heat map visualization for 2024
     - Added automated reports preview showcase

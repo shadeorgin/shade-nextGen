@@ -337,7 +337,7 @@ Production URLs will be:
 ## Documentation
 - [Chart.js Integration Guide](UserGuides/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
 - [Analytics Dashboard Guide](UserGuides/analytics-dashboard.md) - Documentation for using and customizing the analytics dashboard
-
+- [Git Tags Guide](UserGuides/ReadMe-Git-Tags.md) - Comprehensive guide for managing Git tags and releases, including best practices, versioning conventions, and practical workflows
 ## File Organization
 - All pages include init.php which handles:
 - Configuration loading
