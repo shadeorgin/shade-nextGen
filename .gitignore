@@ -32,5 +32,3 @@ includes/config.php
 .env
 .env.*
 config/*
-.DS_Store
-*.bak

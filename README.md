@@ -4,9 +4,9 @@ A repo to track the nextGen version of SHaDE Website and the portal (https://sha
 
 ## Introduction
 
-SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities across 4+ operating states.
+SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities.
 
-Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities, improved state-wise coverage visualization across our operating regions (organized by geographical proximity from south to north - Tamil Nadu, Kerala, Karnataka, and Delhi), and a comprehensive Version History tracking system, making it easier to track our impact and development progress across India.
+Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities, improved state-wise coverage visualization, and a comprehensive Version History tracking system, making it easier to track our impact and development progress across India.
 
 Through our online platform, we streamline and organize our welfare initiatives, making it easier for volunteers, donors, and beneficiaries to connect and collaborate effectively.
 ## Environment Setup
@@ -191,18 +191,14 @@ define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 
     - Comprehensive Reports Overview with:
         - Monthly transaction summaries
         - Appeal distribution analytics
-        - State-wise activity tracking (now covering 4+ states)
+        - State-wise activity tracking
         - Beneficiary impact analysis
-        - Team composition updates including:
-            - Khushboo Mantri (Administrative Team and Tech Lead - Database)
-            - Sabarish Mahalingam (Technology Team - Database)
     - Automated report generation system
     
 
 - State Coverage Visualization:
     - Static heat map showing 2024 impact across India
-    - Comprehensive state-wise activity tracking for 4+ states
-    - States organized by geographical proximity (South to North)
+    - Comprehensive state-wise activity tracking
     - Visual representation of beneficiary distribution
     - Future support for interactive mapping
     - Exportable coverage data for reports
