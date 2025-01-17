@@ -16,30 +16,34 @@ echo "<div class='container mt-4'>";  // Start container earlier
 
 // SQL Queries
 $query1 = "SELECT
-    COUNT(DISTINCT a.id) as total_appeals,
-    COALESCE(SUM(t.amount), 0) as total_amount
-FROM TblAppealInfo a
-JOIN TblTxDetails t ON a.id = t.appealid
-WHERE YEAR(t.created_date) = :year";
+    COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.id END) as total_appeals,
+    COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
+FROM TblTxDetails t
+LEFT JOIN TblAppealInfo a ON t.appealId = a.id
+WHERE YEAR(t.DateOfTx) = :year
+AND (a.id <> -1 OR t.appealId = 0)";
 
 $query2 = "SELECT
-    a.status,
-    COUNT(DISTINCT a.id) as appeal_count,
-    COALESCE(SUM(t.amount), 0) as total_amount
-FROM TblAppealInfo a
-JOIN TblTxDetails t ON a.id = t.appealid
-WHERE YEAR(t.created_date) = :year
-GROUP BY a.status";
+    COALESCE(CASE WHEN t.appealId = 0 THEN 'In-Progress' ELSE a.status END, 'Pending') as status,
+    COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.id END) as appeal_count,
+    COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
+FROM TblTxDetails t
+LEFT JOIN TblAppealInfo a ON t.appealId = a.id
+WHERE YEAR(t.DateOfTx) = :year
+AND (a.id <> -1 OR t.appealId = 0)
+GROUP BY CASE WHEN t.appealId = 0 THEN 'In-Progress' ELSE a.status END";
 
 $query3 = "SELECT
-    a.id,
-    a.name,
-    a.status,
-    a.created_date
-FROM TblAppealInfo a
-LEFT JOIN TblTxDetails t ON a.id = t.appealid
-WHERE t.TxId IS NULL
-AND YEAR(a.created_date) = :year";
+        a.id,
+        a.name,
+        a.status,
+        a.created_date
+    FROM TblAppealInfo a
+    LEFT JOIN TblTxDetails t ON a.id = t.appealId
+    WHERE t.TxId IS NULL
+        AND a.id <> -1
+        AND YEAR(a.created_date) = :year
+    ORDER BY created_date";
 
 // Get selected year or default to previous year
 $selectedYear = isset($_GET['year']) ? intval($_GET['year']) : getDefaultYear();
@@ -134,7 +138,11 @@ try {
         <!-- Status-wise Appeals Summary -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="mb-0">Status-wise Appeals Summary</h4>
+                <h4 class="mb-0">Status-wise Appeals Summary
+                    <?php if (!empty($statusSummary)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($statusSummary, 'appeal_count')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h4>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">
@@ -161,7 +169,11 @@ try {
         <!-- Appeals Without Transactions -->
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="mb-0">Appeals Without Transactions</h4>
+                <h4 class="mb-0">Appeals Without Transactions
+                    <?php if (!empty($noTransactions)): ?>
+                        <span class="badge bg-warning"><?php echo count($noTransactions); ?> Appeals</span>
+                    <?php endif; ?>
+                </h4>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">

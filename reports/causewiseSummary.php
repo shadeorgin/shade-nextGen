@@ -80,7 +80,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">1. Total Appeals</h5>
+                <h5 class="mb-0">1. Total Appeals
+                    <?php if (!empty($totalAppeals)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($totalAppeals, 'Appeal Count')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($totalAppeals)): ?>
@@ -123,7 +127,12 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">2. Causewise Appeals</h5>
+                <h5 class="mb-0">2. Causewise Appeals
+                    <?php if (!empty($causewiseAppeals)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($causewiseAppeals, 'Total Appeals')); ?> Appeals</span>
+                        <span class="badge bg-secondary"><?php echo count(array_unique(array_column($causewiseAppeals, 'cause'))); ?> Categories</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($causewiseAppeals)): ?>
@@ -167,7 +176,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">3. Status and Causewise Appeals</h5>
+                <h5 class="mb-0">3. Status and Causewise Appeals
+                    <?php if (!empty($statusCausewise)): ?>
+                        <span class="badge bg-info"><?php echo array_sum(array_column($statusCausewise, 'Total Appeals')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($statusCausewise)): ?>
@@ -201,14 +214,18 @@ try {
         <?php
         $sql = "select Year(DateEntered) As Year, Status, Cause, Count(*) as Count
             from TblAppealInfo
-            where Year(DateEntered)=:year
+            where Year(DateEntered)=:year and Id <> -1
             and Id NOT in (select AppealId from TblTxDetails where Year(DateOfTx)=:year)
             group by Status, Cause";
         $noTransactions = $db->queryAll($sql, ['year' => $selectedYear]);
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">4. Appeals without Transactions</h5>
+                <h5 class="mb-0">4. Appeals without Transactions
+                    <?php if (!empty($noTransactions)): ?>
+                        <span class="badge bg-warning"><?php echo array_sum(array_column($noTransactions, 'Count')); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($noTransactions)): ?>
@@ -242,13 +259,17 @@ try {
         <?php
         $sql = "select Year(DateEntered) as Year, Id, Name, Cause, Status
             from TblAppealInfo
-            where Year(DateEntered)=:year and UPPER(Name) like '%COVID%'
+            where Year(DateEntered)=:year and UPPER(Name) like '%COVID%' and Id <> -1
             order by Id asc";
         $covidAppeals = $db->queryAll($sql, ['year' => $selectedYear]);
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">5. New COVID Related Appeals</h5>
+                <h5 class="mb-0">5. New COVID Related Appeals
+                    <?php if (!empty($covidAppeals)): ?>
+                        <span class="badge bg-info"><?php echo count($covidAppeals); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($covidAppeals)): ?>
@@ -282,9 +303,9 @@ try {
         <?php
         $sql = "select distinct Year(a.DateOfTx) as Year, Year(b.DateEntered) as Year_Created,
             a.AppealId, b.Name
-            from TblTxDetails a, TblAppealInfo b
-            where a.AppealId=b.Id
-            and a.DateOfTx between :yearStart and :yearEnd
+            from TblTxDetails a
+            inner join TblAppealInfo b ON a.AppealId=b.Id and b.Id <> -1
+            where a.DateOfTx between :yearStart and :yearEnd
             and UPPER(b.Name) like '%COVID%'
             order by a.AppealId asc";
         $continuingCovid = $db->queryAll($sql, [
@@ -294,7 +315,11 @@ try {
         ?>
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">6. Continuing COVID Appeals</h5>
+                <h5 class="mb-0">6. Continuing COVID Appeals
+                    <?php if (!empty($continuingCovid)): ?>
+                        <span class="badge bg-info"><?php echo count($continuingCovid); ?> Appeals</span>
+                    <?php endif; ?>
+                </h5>
             </div>
             <div class="card-body">
                 <?php if (!empty($continuingCovid)): ?>

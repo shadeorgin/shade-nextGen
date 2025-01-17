@@ -4,7 +4,9 @@ A repo to track the nextGen version of SHaDE Website and the portal (https://sha
 
 ## Introduction
 
-SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities.
+SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities across 4+ operating states.
+
+Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities, improved state-wise coverage visualization across our operating regions (organized by geographical proximity from south to north - Tamil Nadu, Kerala, Karnataka, and Delhi), and a comprehensive Version History tracking system, making it easier to track our impact and development progress across India.
 
 Through our online platform, we streamline and organize our welfare initiatives, making it easier for volunteers, donors, and beneficiaries to connect and collaborate effectively.
 ## Environment Setup
@@ -49,17 +51,38 @@ This will set BASE_URL to '/SHaDE-nextGen' for production.
 ### Component Configurations
 
 #### Carousel Configuration
-The carousel component is configured for optimal viewing:
+The carousel component is configured for optimal viewing with enhanced image handling and logical content organization:
+
+Slide Sequence:
+1. What's New - Latest platform features and updates
+2. Coverage Map - State-wise impact visualization
+3. Reports Overview - Comprehensive reporting capabilities
+4. Automated Reports - Streamlined reporting tools
+5. Food & Medical Aid - Core welfare initiatives
+6. Education Support - Educational programs
+7. Disaster Relief - Emergency response activities
+
+Styling Configuration:
 ```css
 .carousel {
-max-width: 1200px;  /* Contained width */
-margin: auto;
+    max-width: 1200px;  /* Contained width */
+    margin: auto;
 }
 .carousel-item img {
-max-height: 500px;  /* Controlled height */
-object-fit: cover;  /* Maintain aspect ratio */
+    max-height: 500px;  /* Controlled height */
+    object-fit: cover;  /* Default image fitting */
+}
+.carousel-item.info-slide img {
+    object-fit: contain;  /* Special handling for information slides */
+    background: white;    /* Clean background for visibility */
 }
 ```
+
+Special configurations include:
+- Adaptive image handling for different content types
+- Information slides with improved readability
+- Responsive design for all screen sizes
+- Optimized loading for high-resolution visuals
 
 #### Feature Warnings Configuration
 The application includes a configurable warning system for upcoming features:
@@ -85,7 +108,19 @@ Available configuration options:
 - Configurable alert styles
 - Optional dismissible alerts
 
-Warnings are displayed on:
+## Generic SHaDE Appeal (AppealId 0)
+Generic SHaDE Appeal is a special case in the system that:
+- Represents general food-related appeals
+- Always shown with 'In-Progress' status
+- Included in all appeal-related analytics and reports
+- Used for transactions that don't belong to specific appeals
+
+### How it's handled
+- In Analytics Dashboard: Shows under 'In-Progress' status in Appeals Distribution
+- In Transaction Summary: Listed as "Generic SHaDE Appeal"
+- For statistical purposes: Counted as a single appeal
+
+### Development
 - Login page
 - Register page
 - Contact form
@@ -147,13 +182,55 @@ define('CHART_TITLE_FONT_SIZE', 18);     // Font size for chart titles (default:
 define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 16px)
 ```
 
-These settings are applied consistently across all charts in the analytics dashboard. The chart configuration uses these values as shown below:
-```javascript
-const chartConfig = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
+- Analytics Dashboard improvements:
+    - Optimized SQL queries for better performance
+    - Fixed syntax issues in appeals distribution queries
+    - Enhanced data filtering for accurate reporting
+    - Added state coverage visualization
+    - Interactive and static coverage maps
+    - Comprehensive Reports Overview with:
+        - Monthly transaction summaries
+        - Appeal distribution analytics
+        - State-wise activity tracking (now covering 4+ states)
+        - Beneficiary impact analysis
+        - Team composition updates including:
+            - Khushboo Mantri (Administrative Team and Tech Lead - Database)
+            - Sabarish Mahalingam (Technology Team - Database)
+    - Automated report generation system
+    
+
+- State Coverage Visualization:
+    - Static heat map showing 2024 impact across India
+    - Comprehensive state-wise activity tracking for 4+ states
+    - States organized by geographical proximity (South to North)
+    - Visual representation of beneficiary distribution
+    - Future support for interactive mapping
+    - Exportable coverage data for reports
+- Standardized report badge indicators:
+    - Status-wise counts with descriptive labels
+    - Consistent styling and placement
+    - Grouped status displays with count summaries
+- Unified report styling:
+    - Standardized header badge displays
+    - Consistent count presentation
+    - Clear visual hierarchy
+    - Improved readability across summaries
+- Comprehensive transaction summaries with:
+    - Total amounts (Credit, Debit, Balance) for each summary type
+    - Proper handling of Generic SHaDE Appeal transactions
+    - Exclusion of miscellaneous transactions
+    - Clear separation of internal and external transactions
+
+### Improved
+- Enhanced carousel image sizing and responsiveness:
+    - Better fit within screen dimensions
+    - Maintained aspect ratio and quality
+    - Improved mobile display
+- Enhanced social media links:
+    - Links now open in new tabs
+    - Added security attributes
+    - Consistent behavior across the site
+- Made toast notification system configurable:
             position: 'top',
             labels: {
                 font: {
@@ -264,7 +341,21 @@ Production URLs will be:
 ## Documentation
 - [Chart.js Integration Guide](UserGuides/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
 - [Analytics Dashboard Guide](UserGuides/analytics-dashboard.md) - Documentation for using and customizing the analytics dashboard
+- [Git Tags Guide](UserGuides/ReadMe-Git-Tags.md) - Comprehensive guide for managing Git tags and releases, including best practices, versioning conventions, and practical workflows
+- [Version History](pages/versionHistory.php) - Complete timeline of project development:
+    - Chronological tracking of feature additions and improvements
+    - Historical milestones and key decisions
+    - Version tagging and release documentation
+    - Automated-to-manual reporting transition history
 
+### Version History Features
+- Comprehensive timeline tracking from project inception
+- Bootstrap-styled tabular view with version details
+- Color-coded badges for different types of changes
+- Integrated navigation through main menu
+- Historical context preservation
+- Links to relevant documentation and guides
+- Milestone tracking and decision documentation
 ## File Organization
 - All pages include init.php which handles:
 - Configuration loading

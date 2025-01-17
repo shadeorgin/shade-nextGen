@@ -118,7 +118,7 @@
 </div>
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="<?php echo getBaseUrl(); ?>">SHaDE</a>
+            <a class="navbar-brand" href="<?php echo getBaseUrl(); ?>">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -126,6 +126,9 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/about.php">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/versionHistory.php"><i class="bi bi-clock-history"></i> Version History</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>

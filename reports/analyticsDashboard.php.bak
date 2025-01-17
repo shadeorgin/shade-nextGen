@@ -13,8 +13,8 @@ require_once(__DIR__ . '/includes/report_utilities.php');
 $error = '';
 $appealsData = [];
 $geoData = [];
-$categoryData = [];
-$simpleCategoryData = [];
+$beneficiaryTypeData = [];
+$appealTypeData = [];
 $monthlyTxData = [];
 $monthlyBalanceData = [];
 try {
@@ -24,9 +24,9 @@ try {
 
     // Debug queries
     $debugQueries = [
-        "Sample Transactions" => "SELECT t.* FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 LIMIT 5",
-        "Transaction Types" => "SELECT DISTINCT t.TxType, COUNT(*) as count FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 GROUP BY t.TxType",
-        "Monthly Data" => "SELECT DATE_FORMAT(t.DateOfTx, '%Y-%m') as month, t.TxType, COUNT(*) as count, SUM(t.amount) as total FROM TblTxDetails t JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND a.Id <> -1 GROUP BY month, t.TxType ORDER BY month"
+        "Sample Transactions" => "SELECT t.* FROM TblTxDetails t LEFT JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND (a.Id <> -1 OR t.appealId = 0) LIMIT 5",
+        "Transaction Types" => "SELECT DISTINCT t.TxType, COUNT(*) as count FROM TblTxDetails t LEFT JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND (a.Id <> -1 OR t.appealId = 0) GROUP BY t.TxType",
+        "Monthly Data" => "SELECT DATE_FORMAT(t.DateOfTx, '%Y-%m') as month, t.TxType, COUNT(*) as count, SUM(t.amount) as total FROM TblTxDetails t LEFT JOIN TblAppealInfo a ON t.appealId = a.Id WHERE YEAR(t.DateOfTx) = :year AND (a.Id <> -1 OR t.appealId = 0) GROUP BY month, t.TxType ORDER BY month"
     ];
     $debugData = [];
     foreach ($debugQueries as $label => $query) {
@@ -36,20 +36,18 @@ try {
     // Appeals status distribution query
     // Only count credit (C) transactions for total amount to avoid double counting from debits
     $appealsQuery = "SELECT
-        CASE 
+        CASE
             WHEN t.appealId = 0 THEN 'In-Progress'
             ELSE COALESCE(a.status, 'Pending')
         END as status,
         COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.Id END) as total_appeals,
         COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
-    FROM TblTxDetails t
-    LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
+    FROM TblAppealInfo a
+    RIGHT JOIN TblTxDetails t ON a.Id = t.appealid
     WHERE YEAR(t.DateOfTx) = :year
     AND (a.id <> -1 OR t.appealId = 0)
-    GROUP BY CASE 
-        WHEN t.appealId = 0 THEN 'In-Progress'
-        ELSE COALESCE(a.status, 'Pending')
-    END";
+    GROUP BY CASE WHEN t.appealId = 0 THEN 'In-Progress' ELSE COALESCE(a.status, 'Pending') END";
+
     $appealsData = $db->queryAll($appealsQuery, ['year' => $selectedYear]);
 
     // Geographic distribution by State
@@ -57,74 +55,85 @@ try {
         COALESCE(b.State, 'Unknown') as region,
         COUNT(DISTINCT b.Id) as beneficiary_count,
         COUNT(DISTINCT a.Id) as appeal_count
-        FROM TblBeneficiary b
-        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
-        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
-        WHERE YEAR(t.DateOfTx) = :year
-        AND a.Id <> -1
-        GROUP BY b.State";
+    FROM TblBeneficiary b
+    LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+    LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+    WHERE YEAR(t.DateOfTx) = :year
+    AND a.Id <> -1
+    GROUP BY b.State";
+
     $geoData = $db->queryAll($geoQuery, ['year' => $selectedYear]);
 
-    // Category and Type distribution (detailed view)
-    $categoryQuery = "SELECT
+    // Appeal Type distribution (detailed view)
+    // Appeal Type distribution with amount
+    $appealTypeQuery = "SELECT
         CASE 
             WHEN t.appealId = 0 THEN 'Food'
             ELSE COALESCE(a.Cause, 'General')
-        END as category,
-        b.Type,
+        END as appeal_type,
+        COUNT(DISTINCT CASE WHEN t.appealId = 0 THEN 0 ELSE a.Id END) as appeal_count,
+        COALESCE(SUM(CASE WHEN t.TxType = 'C' THEN t.amount ELSE 0 END), 0) as total_amount
+    FROM TblTxDetails t
+    LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
+    WHERE YEAR(t.DateOfTx) = :year
+    AND (a.id <> -1 OR t.appealId = 0)
+    GROUP BY CASE 
+            WHEN t.appealId = 0 THEN 'Food'
+            ELSE COALESCE(a.Cause, 'General')
+        END";
+
+    // Beneficiary Type distribution
+    $beneficiaryTypeQuery = "SELECT
+        COALESCE(b.Type, 'Unknown') as beneficiary_type,
         COUNT(DISTINCT b.Id) as beneficiary_count
-        FROM TblTxDetails t
-        LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
-        LEFT JOIN TblBeneficiary b ON a.BeneficiaryId = b.Id
-        WHERE YEAR(t.DateOfTx) = :year
-        AND (a.id <> -1 OR t.appealId = 0)
-        GROUP BY 
-            CASE WHEN t.appealId = 0 THEN 'Food' ELSE COALESCE(a.Cause, 'General') END,
-            b.Type";
-    $categoryData = $db->queryAll($categoryQuery, ['year' => $selectedYear]);
-
-    // Simplified category distribution
-    $simpleCategoryQuery = "SELECT
-        COALESCE(b.Category, 'General') as category,
+    FROM TblBeneficiary b
+    LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+    LEFT JOIN TblTxDetails t ON a.Id = t.appealid
+    WHERE YEAR(t.DateOfTx) = :year
+    AND a.Id <> -1
+    GROUP BY b.Type";
+    // Beneficiary Type distribution
+    $beneficiaryTypeQuery = "SELECT
+        COALESCE(b.Type, 'Unknown') as beneficiary_type,
         COUNT(DISTINCT b.Id) as beneficiary_count
-        FROM TblBeneficiary b
-        LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
-        LEFT JOIN TblTxDetails t ON a.Id = t.appealid
-        WHERE YEAR(t.DateOfTx) = :year
-        AND a.Id <> -1
-        GROUP BY b.Category";
-        $simpleCategoryData = $db->queryAll($simpleCategoryQuery, ['year' => $selectedYear]);
+    FROM TblBeneficiary b
+    LEFT JOIN TblAppealInfo a ON b.Id = a.BeneficiaryId
+    LEFT JOIN TblTxDetails t ON a.Id = t.appealid  
+    WHERE YEAR(t.DateOfTx) = :year
+    AND a.Id <> -1
+    GROUP BY b.Type";
+    $beneficiaryTypeData = $db->queryAll($beneficiaryTypeQuery, ['year' => $selectedYear]);
 
-        // Monthly transaction count
-        // Monthly transaction count
-        $monthlyTxQuery = "SELECT
-            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
-            COUNT(*) as tx_count
-            FROM TblTxDetails t
-            JOIN TblAppealInfo a ON t.appealId = a.Id
-            WHERE YEAR(t.DateOfTx) = :year
-            AND a.Id <> -1
-            GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
-            ORDER BY month";
-        $monthlyTxData = $db->queryAll($monthlyTxQuery, ['year' => $selectedYear]);
+      // Monthly transaction count
+      // Monthly transaction count
+      $monthlyTxQuery = "SELECT
+          DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+          COUNT(*) as tx_count
+      FROM TblTxDetails t
+      LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
+      WHERE YEAR(t.DateOfTx) = :year
+      AND (a.id <> -1 OR t.appealId = 0)
+      GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
+      ORDER BY month";
 
-        // Monthly transaction count by account
-        // Monthly transaction count by account
+      $monthlyTxData = $db->queryAll($monthlyTxQuery, ['year' => $selectedYear]);
 
-        // Monthly transaction count by TargetAcct
-        $monthlyTxDetailedQuery = "SELECT
-            DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
-            t.TargetAcct,
-            COUNT(*) as tx_count
-            FROM TblTxDetails t
-            JOIN TblAppealInfo a ON t.appealId = a.Id
-            WHERE YEAR(t.DateOfTx) = :year
-            AND a.Id <> -1
-            GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m'), t.TargetAcct
-            ORDER BY month, t.TargetAcct";
-        $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
-        // Monthly CR vs DR
-        // Monthly CR vs DR
+      // Monthly transaction count by account
+
+      // Monthly transaction count by TargetAcct
+      $monthlyTxDetailedQuery = "SELECT
+          DATE_FORMAT(t.DateOfTx, '%Y-%m') as month,
+          t.TargetAcct,
+          COUNT(*) as tx_count
+      FROM TblTxDetails t
+      LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
+      WHERE YEAR(t.DateOfTx) = :year
+      AND (a.id <> -1 OR t.appealId = 0)
+      GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m'), t.TargetAcct
+      ORDER BY month, t.TargetAcct";
+
+      $monthlyTxDetailedData = $db->queryAll($monthlyTxDetailedQuery, ['year' => $selectedYear]);
+      // Monthly CR vs DR
 
         // Add debug query
         $debugQuery = "SELECT
@@ -148,9 +157,9 @@ try {
                 WHEN t.TxType = 'D' THEN -t.amount
             END), 0) as net_balance
         FROM TblTxDetails t
-            JOIN TblAppealInfo a ON t.appealId = a.Id
+            LEFT JOIN TblAppealInfo a ON t.appealId = a.Id
             WHERE YEAR(t.DateOfTx) = :year
-            AND a.Id <> -1 
+            AND (a.id <> -1 OR t.appealId = 0)
             GROUP BY DATE_FORMAT(t.DateOfTx, '%Y-%m')
             ORDER BY month";
         $monthlyBalanceData = $db->queryAll($monthlyBalanceQuery, ['year' => $selectedYear]);
@@ -291,13 +300,27 @@ try {
                 <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Category Distribution</h5>
-                                                    <button class="btn btn-outline-secondary btn-sm toggle-button" onclick="toggleCategoryView()">
-                                                        <i class="fas fa-list"></i> Show Details
-                                                    </button>
-                                                    <div class="chart-container">
-                                                        <canvas id="categoryChart"></canvas>
+                            <h5 class="card-title">Appeal Type Distribution</h5>
+                            <button class="btn btn-outline-secondary btn-sm toggle-button" onclick="toggleAppealTypeView()">
+                                <i class="fas fa-list"></i> Show Details
+                            </button>
+                            <div class="chart-container">
+                                <canvas id="appealTypeChart"></canvas>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Beneficiary Type Distribution</h5>
+                            <div class="chart-container">
+                                <canvas id="beneficiaryTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                             <div class="accordion mt-3 bg-light" id="categoryAccordion">
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
@@ -470,16 +493,16 @@ const monthlyTxData = <?php echo json_encode($monthlyTxData); ?>;
 const monthlyTxDetailedData = <?php echo json_encode($monthlyTxDetailedData); ?>;
 const appealsData = <?php echo json_encode($appealsData); ?>;
 const geoData = <?php echo json_encode($geoData); ?>;
-const categoryData = <?php echo json_encode($categoryData); ?>;
-const simpleCategoryData = <?php echo json_encode($simpleCategoryData); ?>;
-const monthlyBalanceData = <?php echo json_encode($monthlyBalanceData); ?>;
-let isDetailedView = false;
-let categoryChart = null;
+const appealTypeData = <?php echo json_encode($appealTypeData); ?>;
+const appealTypeData = <?php echo json_encode($appealTypeData); ?>;  
+const beneficiaryTypeData = <?php echo json_encode($beneficiaryTypeData); ?>;
+let isDetailedAppealView = false;
+let appealTypeChart = null;
 let txChart = null;
 let isTxDetailedView = false;
-    function initializeCategoryChart(isDetailed = false) {
-        const ctx = document.getElementById('categoryChart').getContext('2d');
-        const data = isDetailed ? categoryData : simpleCategoryData;
+    function initializeAppealTypeChart(isDetailed = false) {
+        const ctx = document.getElementById('appealTypeChart').getContext('2d');
+        const data = isDetailed ? appealTypeData : simpleAppealTypeData;
 
         if (categoryChart) {
             categoryChart.destroy();
@@ -552,13 +575,13 @@ let isTxDetailedView = false;
         }
     }
 
-    function toggleCategoryView() {
-        isDetailedView = !isDetailedView;
+    function toggleAppealTypeView() {
+        isDetailedAppealView = !isDetailedAppealView;
         const button = document.querySelector('.toggle-button');
-        button.innerHTML = isDetailedView ?
+        button.innerHTML = isDetailedAppealView ?
             '<i class="fas fa-chart-pie"></i> Show Simple View' :
             '<i class="fas fa-list"></i> Show Details';
-        initializeCategoryChart(isDetailedView);
+        initializeAppealTypeChart(isDetailedAppealView);
     }
 
     function initializeTransactionChart(isDetailed = false) {
@@ -820,9 +843,63 @@ let isTxDetailedView = false;
             });
         }
 
-        // Initialize all charts
-        initializeCategoryChart(false); // Start with simple view
+        // Initialize Appeal Type Chart
+        initializeAppealTypeChart(false); // Start with simple view
+        // Appeal Type Chart
+        if (document.getElementById('appealTypeChart')) {
+            new Chart(document.getElementById('appealTypeChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: appealTypeData.map(item => item.appeal_type),
+                    datasets: [{
+                        data: appealTypeData.map(item => parseInt(item.appeal_count)),
+                        backgroundColor: chartColors.slice(0, 5)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 
+        // Beneficiary Type Chart
+        if (document.getElementById('beneficiaryTypeChart')) {
+            new Chart(document.getElementById('beneficiaryTypeChart').getContext('2d'), {
+                type: 'pie',
+                data: {
+                    labels: beneficiaryTypeData.map(item => item.beneficiary_type),
+                    datasets: [{
+                        data: beneficiaryTypeData.map(item => parseInt(item.beneficiary_count)),
+                        backgroundColor: chartColors.slice(5, 10)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                font: {
+                                    size: chartConfig.legendFontSize
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
         initializeTransactionChart(false);
 
         // Monthly CR vs DR Chart

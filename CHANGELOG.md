@@ -4,6 +4,99 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Added Kerala to Primary Operations states coverage
+- Added new team members:
+    - Khushboo Mantri (Administrative Team and Tech Lead - Database)
+    - Sabarish Mahalingam (Technology Team - Database)
+### Changed
+- Reorganized states listing in Primary Operations to follow geographical proximity (south to north)
+- Updated Operating States count from 3+ to 4+ in Quick Facts
+
+### Added
+- Version History feature:
+    - New Version History page with complete release timeline
+    - Historical milestones documentation from December 2024
+    - Comprehensive version tracking with feature categorization
+- Navigation menu:
+    - Added Version History link in main navigation
+    - Improved menu organization for better accessibility
+- Documentation:
+    - Added comprehensive Git Tags guide:
+        - Tag types and best practices
+        - Version numbering guidelines
+        - Tags vs Releases comparison
+        - Common tag operations with examples
+        - Real-world tagging workflows
+    - Enhanced project documentation with practical examples
+- New visual content and features:
+    - Added coverage heat map visualization for 2024
+    - Added automated reports preview showcase
+    - Added What's New preview image for feature highlights
+
+### Changed
+- Home page enhancements:
+    - Updated homepage navigation with "Home" instead of "SHaDE"
+    - Enhanced carousel with latest features showcase
+    - Added "What's New" section showcasing automated reports
+
+### Enhanced
+- State coverage visualization improvements:
+    - Added static coverage map for 2024
+    - Preserved interactive map functionality for future use
+- Improved carousel organization and content:
+    - Added comprehensive Reports Overview slide
+    - Organized slides in logical sequence: What's New → Coverage → Reports Overview → Automated Reports
+    - Enhanced visual flow and user experience
+
+### Changed
+- Analytics Dashboard: Include Generic SHaDE Appeal (AppealId 0) in Appeals Distribution chart
+- Shows as "In-Progress" status in the chart
+- Contributes to total appeal counts and amounts
+- Maintains consistency with Transaction Summary report
+## [1.0.13] - 2025-01-15
+### Fixed
+- Fixed duplicate SQL query in Analytics Dashboard causing syntax error
+- Improved SQL query structure in appeals status distribution report
+
+### Enhanced
+- Enhanced report displays with improved badge counts:
+    - Added consistent badge styling across all reports
+    - Improved status-wise grouping in Beneficiary Summary
+    - Added detailed count indicators for status groups
+    - Standardized badge display format across Transaction and Beneficiary summaries
+- Standardized table styling across reports:
+    - Unified badge display format in table headers
+    - Simplified count displays in table rows
+    - Consistent styling between Beneficiary and Causewise summaries
+    - Improved visual hierarchy in data presentation
+- Improved transaction reporting with totals:
+    - Added Credit, Debit, and Balance totals in Transaction Summary tables
+    - Included totals for Appeal-wise, Non-Internal, and COVID-specific transactions
+- Enhanced appeal filtering across reports:
+    - Moved appeal filtering from TblTxDetails to TblAppealInfo table
+    - Standardized SQL operators from != to <> for better compatibility
+    - Included Generic SHaDE Appeal (appealId = 0) in relevant summaries
+    - Excluded Misc transactions (appealId -1) from analytics
+- Added new Git documentation:
+    - Guide for managing multiple Git remotes
+    - Guide for Git no-pager option usage
+
+## [1.0.12] - 2025-01-15
+### Enhanced
+- Improved SQL queries across all reports:
+    - Excluded appealId -1 (Misc transactions) from all reports for accurate analytics
+    - Changed appeal filtering from TblTxDetails to TblAppealInfo table
+    - Standardized SQL operators from != to <> for better compatibility
+    - Enhanced JOIN conditions in transaction-related queries
+    - Modified appeal filtering in:
+    - Analytics Dashboard
+    - Appeal Summary
+    - Beneficiary Summary
+    - Causewise Summary
+    - Transaction Summary
+    - State Coverage Maps
 ## [1.0.11] - 2025-01-13
 ### Fixed
 - Fixed Monthly CR vs DR chart data display:

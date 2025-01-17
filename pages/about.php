@@ -4,7 +4,7 @@
 <div class="bg-success text-white py-5 mb-5">
     <div class="container">
         <h1 class="display-4">About SHaDE</h1>
-        <p class="lead">Leading the way in sustainable development and environmental conservation</p>
+        <p class="lead">Empowering communities through food aid, medical support, education, and environmental initiatives</p>
     </div>
 </div>
 
@@ -25,7 +25,7 @@
                         <li>👥 Active Members: 200+</li>
                         <li>📚 SSS Division: Since 2011</li>
                         <li>🤝 NGO Partnerships: Multiple</li>
-                        <li>🌍 Operating States: 3+</li>
+                        <li>🌍 Operating States: 4+</li>
                         <li>🌎 International Funding</li>
                     </ul>
                 </div>
@@ -65,6 +65,7 @@
                     <p class="card-text">Headquartered in Tamil Nadu, we serve beneficiaries across:</p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">📍 Tamil Nadu</li>
+                        <li class="list-group-item">📍 Kerala</li>
                         <li class="list-group-item">📍 Karnataka</li>
                         <li class="list-group-item">📍 Delhi</li>
                     </ul>
@@ -130,7 +131,7 @@
             </div>
         </div>
     </div>
-    <!--<div class="row g-4 mt-2">
+    <div class="row g-4 mt-2">
         <div class="col-lg-4 col-md-6">
             <div class="card h-100 border-success">
                 <img src="https://ui-avatars.com/api/?name=Krishnaveni+S&background=198754&color=fff" class="card-img-top" alt="Krishnaveni S">
@@ -146,8 +147,8 @@
                 <img src="https://ui-avatars.com/api/?name=Khushboo+Mantri&background=198754&color=fff" class="card-img-top" alt="Khushboo Mantri">
                 <div class="card-body text-center">
                     <h5 class="card-title">Khushboo Mantri</h5>
-                    <p class="card-text text-muted">Technical Team</p>
-                    <p class="card-text text-success">DBA</p>
+                    <p class="card-text text-muted">Administrative Team</p>
+                    <p class="card-text text-success">Tech Lead (Database)</p>
                 </div>
             </div>
         </div>
@@ -156,13 +157,13 @@
                 <img src="https://ui-avatars.com/api/?name=Sabarish+Mahalingam&background=198754&color=fff" class="card-img-top" alt="Sabarish Mahalingam">
                 <div class="card-body text-center">
                     <h5 class="card-title">Sabarish Mahalingam</h5>
-                    <p class="card-text text-muted">Technical Team</p>
+                    <p class="card-text text-muted">Technology Team (Database)</p>
                     <p class="card-text text-success">DBA</p>
                 </div>
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 <!-- Timeline Section -->
 <div class="bg-light py-5">
