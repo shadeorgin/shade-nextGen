@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Added Kerala to Primary Operations states coverage
+- Added new team members:
+    - Khushboo Mantri (Administrative Team and Tech Lead - Database)
+    - Sabarish Mahalingam (Technology Team - Database)
+### Changed
+- Reorganized states listing in Primary Operations to follow geographical proximity (south to north)
+- Updated Operating States count from 3+ to 4+ in Quick Facts
+
+### Added
 - Version History feature:
     - New Version History page with complete release timeline
     - Historical milestones documentation from December 2024
