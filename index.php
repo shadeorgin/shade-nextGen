@@ -31,10 +31,11 @@
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="What's New in SHaDE NextGen"></button>
             <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1" aria-label="SHaDE 2024 Coverage Map"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Automated Reports"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3" aria-label="Food and Medical Aid"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="4" aria-label="Education"></button>
-            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="5" aria-label="Disaster Relief"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2" aria-label="Reports Overview"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="3" aria-label="Automated Reports"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="4" aria-label="Food and Medical Aid"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="5" aria-label="Education"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="6" aria-label="Disaster Relief"></button>
         </div>
         <div class="carousel-inner">
             <div class="carousel-item active">
@@ -49,6 +50,13 @@
                 <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
                     <h5>SHaDE 2024 Coverage</h5>
                     <p>Our growing impact across India with support initiatives in multiple states</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="assets/images/SHaDE-NextGen-Reports-Overview-17Jan2025.jpeg" class="d-block w-100 heatmap-image" alt="SHaDE NextGen Reports Overview">
+                <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 p-2 rounded">
+                    <h5>Reports Overview</h5>
+                    <p>Comprehensive reporting capabilities providing detailed insights into our charitable initiatives</p>
                 </div>
             </div>
             <div class="carousel-item">

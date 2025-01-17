@@ -51,7 +51,18 @@ This will set BASE_URL to '/SHaDE-nextGen' for production.
 ### Component Configurations
 
 #### Carousel Configuration
-The carousel component is configured for optimal viewing with enhanced image handling:
+The carousel component is configured for optimal viewing with enhanced image handling and logical content organization:
+
+Slide Sequence:
+1. What's New - Latest platform features and updates
+2. Coverage Map - State-wise impact visualization
+3. Reports Overview - Comprehensive reporting capabilities
+4. Automated Reports - Streamlined reporting tools
+5. Food & Medical Aid - Core welfare initiatives
+6. Education Support - Educational programs
+7. Disaster Relief - Emergency response activities
+
+Styling Configuration:
 ```css
 .carousel {
     max-width: 1200px;  /* Contained width */
@@ -171,13 +182,19 @@ define('CHART_TITLE_FONT_SIZE', 18);     // Font size for chart titles (default:
 define('CHART_AXIS_FONT_SIZE', 16);      // Font size for axis labels (default: 16px)
 ```
 
-### Reports and Analytics
 - Analytics Dashboard improvements:
     - Optimized SQL queries for better performance
     - Fixed syntax issues in appeals distribution queries
     - Enhanced data filtering for accurate reporting
     - Added state coverage visualization
     - Interactive and static coverage maps
+    - Comprehensive Reports Overview with:
+        - Monthly transaction summaries
+        - Appeal distribution analytics
+        - State-wise activity tracking
+        - Beneficiary impact analysis
+    - Automated report generation system
+    
 
 - State Coverage Visualization:
     - Static heat map showing 2024 impact across India

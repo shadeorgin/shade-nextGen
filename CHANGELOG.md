@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - State coverage visualization improvements:
     - Added static coverage map for 2024
     - Preserved interactive map functionality for future use
+- Improved carousel organization and content:
+    - Added comprehensive Reports Overview slide
+    - Organized slides in logical sequence: What's New → Coverage → Reports Overview → Automated Reports
+    - Enhanced visual flow and user experience
 
 ### Changed
 - Analytics Dashboard: Include Generic SHaDE Appeal (AppealId 0) in Appeals Distribution chart
