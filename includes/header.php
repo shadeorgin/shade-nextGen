@@ -128,6 +128,9 @@
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/about.php">About</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/versionHistory.php"><i class="bi bi-clock-history"></i> Version History</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="<?php echo getBaseUrl(); ?>pages/contact.php" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Coming Soon">Contact</a>
                     </li>
                     <li class="nav-item">

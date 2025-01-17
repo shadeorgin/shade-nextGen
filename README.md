@@ -6,7 +6,7 @@ A repo to track the nextGen version of SHaDE Website and the portal (https://sha
 
 SHaDE (Share, Help and ADorE) is a non-profit organization dedicated to making a positive impact through welfare activities. Our mission is to create meaningful change by sharing resources, helping those in need, and fostering an environment of care and support in our communities.
 
-Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities and improved state-wise coverage visualization, making it easier to track our impact across India.
+Our latest enhancements include an interactive "What's New" section showcasing automated reporting capabilities, improved state-wise coverage visualization, and a comprehensive Version History tracking system, making it easier to track our impact and development progress across India.
 
 Through our online platform, we streamline and organize our welfare initiatives, making it easier for volunteers, donors, and beneficiaries to connect and collaborate effectively.
 ## Environment Setup
@@ -338,6 +338,20 @@ Production URLs will be:
 - [Chart.js Integration Guide](UserGuides/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
 - [Analytics Dashboard Guide](UserGuides/analytics-dashboard.md) - Documentation for using and customizing the analytics dashboard
 - [Git Tags Guide](UserGuides/ReadMe-Git-Tags.md) - Comprehensive guide for managing Git tags and releases, including best practices, versioning conventions, and practical workflows
+- [Version History](pages/versionHistory.php) - Complete timeline of project development:
+    - Chronological tracking of feature additions and improvements
+    - Historical milestones and key decisions
+    - Version tagging and release documentation
+    - Automated-to-manual reporting transition history
+
+### Version History Features
+- Comprehensive timeline tracking from project inception
+- Bootstrap-styled tabular view with version details
+- Color-coded badges for different types of changes
+- Integrated navigation through main menu
+- Historical context preservation
+- Links to relevant documentation and guides
+- Milestone tracking and decision documentation
 ## File Organization
 - All pages include init.php which handles:
 - Configuration loading
