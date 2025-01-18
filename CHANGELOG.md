@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Documentation
+- Added comprehensive GitHub CLI (gh) usage guide:
+- Command reference and workflows
+- ASCII diagrams for visual understanding
+- Real-world examples and best practices
+- Added Git operations guide for branch management:
+- Detailed cherry-pick workflow documentation
+- Branch structure visualization
+- Step-by-step instructions with examples
+
 ### Added
 - Added Kerala to Primary Operations states coverage
 - Added new team members:

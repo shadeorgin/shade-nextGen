@@ -342,6 +342,8 @@ Production URLs will be:
 - [Chart.js Integration Guide](UserGuides/ReadMe-Chart.js-PHP.md) - Guide for implementing interactive charts using Chart.js in PHP applications
 - [Analytics Dashboard Guide](UserGuides/analytics-dashboard.md) - Documentation for using and customizing the analytics dashboard
 - [Git Tags Guide](UserGuides/ReadMe-Git-Tags.md) - Comprehensive guide for managing Git tags and releases, including best practices, versioning conventions, and practical workflows
+- [GitHub CLI Guide](UserGuides/ReadMe-GitHubClient.md) - Complete reference for GitHub CLI (gh) commands, workflows, and best practices with visual diagrams
+- [Git Operations Guide](UserGuides/ReadMe-GamePlan-GitCherryPick-OrgUpdates-from-Charts.md) - Detailed guide for Git operations including branch management and cherry-picking with practical examples
 - [Version History](pages/versionHistory.php) - Complete timeline of project development:
     - Chronological tracking of feature additions and improvements
     - Historical milestones and key decisions
