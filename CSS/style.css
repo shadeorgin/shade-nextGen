@@ -124,3 +124,18 @@
 #reg-container label{
     font-weight: bold;
 }
+#myProfile{
+    padding-bottom: 30rem;
+    margin-top: 7rem;
+    max-width: 50rem;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(121, 121, 121, 0.97);
+}
+#myProfile h1{
+    color: white;
+    font-size: 2rem;
+    padding: 0.5rem;
+    background-color: rgb(125, 192, 83);
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+}
