@@ -139,3 +139,7 @@
     text-align: center;
     border-radius: 10px 10px 0 0;
 }
+.navbar .dropdown-menu{
+    width: max-content;
+    min-width: unset;
+}
